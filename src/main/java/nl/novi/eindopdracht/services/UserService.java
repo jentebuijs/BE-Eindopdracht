@@ -6,7 +6,9 @@ import nl.novi.eindopdracht.models.User;
 
 public interface UserService {
     UserInputDto toUser(UserInputDto userInputDto);
+
     User fromUser(User user);
-    User addUser(User user);
+
+    void addUser(User user);
 
 }
