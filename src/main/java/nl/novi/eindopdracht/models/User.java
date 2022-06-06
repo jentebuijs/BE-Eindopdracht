@@ -1,9 +1,10 @@
 package nl.novi.eindopdracht.models;
-import org.hibernate.annotations.Entity;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 public class User {
@@ -12,17 +13,15 @@ public class User {
     Long id;
 
     private String userName;
-    private String email;
     private String password;
+    private String email;
+    private String level;
+    private String contactIntensity;
     private boolean isStudent;
-
-
-    public User(String userName, String email, String password, boolean isStudent) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.isStudent = isStudent;
-    }
+    private String firstName;
+    private String lastName;
+    private LocalDate dob;
+    private String aboutMe;
 
     public String getUserName() {
         return userName;
@@ -48,11 +47,59 @@ public class User {
         this.password = password;
     }
 
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getContactIntensity() {
+        return contactIntensity;
+    }
+
+    public void setContactIntensity(String contactIntensity) {
+        this.contactIntensity = contactIntensity;
+    }
+
     public boolean isStudent() {
         return isStudent;
     }
 
     public void setStudent(boolean student) {
         isStudent = student;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 }

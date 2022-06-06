@@ -1,7 +1,12 @@
 package nl.novi.eindopdracht.services;
 
-public interface UserService {
-//----METHODES (leeg)---//
+import nl.novi.eindopdracht.dtos.UserInputDto;
+import nl.novi.eindopdracht.dtos.UserOutputDto;
+import nl.novi.eindopdracht.models.User;
 
+public interface UserService {
+    UserInputDto toUser(UserInputDto userInputDto);
+    User fromUser(User user);
+    User addUser(User user);
 
 }
