@@ -1,9 +1,6 @@
 package nl.novi.eindopdracht.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -12,16 +9,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @OneToOne
+    private Profile profile;
+
     private String userName;
     private String password;
     private String email;
-    private String level;
-    private String contactIntensity;
-    private boolean isStudent;
-    private String firstName;
-    private String lastName;
-    private LocalDate dob;
-    private String aboutMe;
+
 
     public String getUserName() {
         return userName;
