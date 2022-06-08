@@ -4,11 +4,27 @@ import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.models.User;
 
+import java.util.List;
+
 public interface UserService {
-    UserInputDto toUser(UserInputDto userInputDto);
+    User toUser(UserInputDto userInputDto);
 
-    User fromUser(User user);
+    UserOutputDto fromUser(User user);
 
-    void addUser(User user);
+    User addUser(UserInputDto userInputDto);
+
+    User getUserByUsername(String username);
+
+    User getUserByEmail(String email);
+
+    List<User> getAllStudents();
+
+    List<User> getAllBuddies();
+
+
+
+//    List<User> getBuddies();
+//
+//    List<User> getStudents();
 
 }

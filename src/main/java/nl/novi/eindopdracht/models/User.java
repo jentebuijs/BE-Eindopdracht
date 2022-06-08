@@ -15,7 +15,9 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private boolean isStudent;
 
+    public Long getId() { return id; }
 
     public String getUsername() {
         return username;
@@ -41,4 +43,11 @@ public class User {
         this.password = password;
     }
 
+    public boolean getIsStudent() {
+        return isStudent;
+    }
+
+    public void setStudent(boolean student) {
+        isStudent = student;
+    }
 }
