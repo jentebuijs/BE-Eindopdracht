@@ -2,9 +2,8 @@ package nl.novi.eindopdracht.controllers;
 
 import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
-import nl.novi.eindopdracht.models.User;
-import nl.novi.eindopdracht.services.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import nl.novi.eindopdracht.services.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.net.URI;
@@ -12,28 +11,35 @@ import java.net.URI;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
-    @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping
-    public ResponseEntity<User> getUserBy(@RequestParam(value = "email", required = false) String email,
+    public ResponseEntity<Object> getUserBy(@RequestParam(value = "email", required = false) String email,
                                           @RequestParam(value = "username", required = false) String username) {
-        if (!email.isEmpty()) {
-            return ResponseEntity.ok().body(userService.getUserByEmail(email));
+        UserOutputDto userOutputDto = new UserOutputDto();
+        if (email != null) {
+            userOutputDto = userService.getUserByEmail(email);
         }
-        if (!username.isEmpty()) {
-            return ResponseEntity.ok().body(userService.getUserByUsername(username));
+        if (username != null) {
+            userOutputDto = userService.getUserByUsername(username);
         }
+        return ResponseEntity.ok().body(userOutputDto);
     }
 
     @PostMapping
     public ResponseEntity<UserOutputDto> addUser(@RequestBody UserInputDto userInputDto){
-        User user = userService.addUser(userInputDto);
-        URI location = URI.create("/users/" + user.getUsername());
-        return ResponseEntity.created(location).body(userService.fromUser(user));
+        UserOutputDto userOutputDto = userService.addUser(userInputDto);
+        URI location = URI.create("/users/" + userOutputDto.getUsername());
+        return ResponseEntity.created(location).body(userOutputDto);
+    }
+
+    @DeleteMapping("{userId}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.notFound().build();
     }
 }

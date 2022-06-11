@@ -7,20 +7,21 @@ import nl.novi.eindopdracht.models.User;
 import java.util.List;
 
 public interface UserService {
-    User toUser(UserInputDto userInputDto);
+    User fromDtoToUser(UserInputDto userInputDto);
 
-    UserOutputDto fromUser(User user);
+    UserOutputDto fromUserToDto(User user);
 
-    User addUser(UserInputDto userInputDto);
+    UserOutputDto addUser(UserInputDto userInputDto);
 
-    User getUserByUsername(String username);
+    UserOutputDto getUserByUsername(String username);
 
-    User getUserByEmail(String email);
+    UserOutputDto getUserByEmail(String email);
 
     List<User> getAllStudents();
 
     List<User> getAllBuddies();
 
+    void deleteUser(Long userId);
 
 
 //    List<User> getBuddies();
