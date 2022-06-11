@@ -4,9 +4,10 @@ import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.exceptions.AlreadyInUseException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
+import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.models.User;
+import nl.novi.eindopdracht.repositories.ProfileRepository;
 import nl.novi.eindopdracht.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -14,10 +15,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, ProfileRepository profileRepository) {
         this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
 
     //METHODS//
@@ -32,12 +34,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserOutputDto fromUserToDto(User user) {
-        Optional<User> possibleUser = userRepository.findById(user.getId());
+        Optional<User> possibleUser = userRepository.findById(user.getUserId());
         if (possibleUser.isEmpty()) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
         }
         UserOutputDto userOutputDto = new UserOutputDto();
-        userOutputDto.setId(user.getId());
+        userOutputDto.setId(user.getUserId());
         userOutputDto.setUsername(user.getUsername());
         userOutputDto.setEmail(user.getEmail());
 
@@ -57,7 +59,16 @@ public class UserServiceImpl implements UserService {
             throw new AlreadyInUseException("Dit emailadres is al in gebruik");
         }
 
-        return fromUserToDto(userRepository.save(fromDtoToUser(userInputDto)));
+        User user = userRepository.save(fromDtoToUser(userInputDto));
+        profileRepository.save(profileFromUser(user));
+        return fromUserToDto(user);
+    }
+
+    private Profile profileFromUser(User user) {
+        Profile profile = new Profile();
+        profile.setUserId(user.getUserId());
+        profile.setStudent(user.getIsStudent());
+        return profile;
     }
 
     @Override

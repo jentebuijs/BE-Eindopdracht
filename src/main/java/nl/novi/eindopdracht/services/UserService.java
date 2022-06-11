@@ -3,10 +3,10 @@ package nl.novi.eindopdracht.services;
 import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.models.User;
-
 import java.util.List;
 
 public interface UserService {
+
     User fromDtoToUser(UserInputDto userInputDto);
 
     UserOutputDto fromUserToDto(User user);
@@ -22,10 +22,5 @@ public interface UserService {
     List<User> getAllBuddies();
 
     void deleteUser(Long userId);
-
-
-//    List<User> getBuddies();
-//
-//    List<User> getStudents();
 
 }
