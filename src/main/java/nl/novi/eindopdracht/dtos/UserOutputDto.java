@@ -1,7 +1,6 @@
 package nl.novi.eindopdracht.dtos;
 
 import javax.persistence.Id;
-import java.time.LocalDate;
 
 public class UserOutputDto {
     @Id
@@ -34,14 +33,13 @@ public class UserOutputDto {
         this.email = email;
     }
 
-    public boolean isStudent() {
+    public boolean getIsStudent() {
         return isStudent;
     }
 
-    public void setStudent(boolean student) {
-        isStudent = student;
+    public void setIsStudent(boolean isStudent) {
+
+        this.isStudent = isStudent;
     }
-
-
 
 }

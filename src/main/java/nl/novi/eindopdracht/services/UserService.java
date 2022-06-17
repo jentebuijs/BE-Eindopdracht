@@ -7,10 +7,6 @@ import java.util.List;
 
 public interface UserService {
 
-    User fromDtoToUser(UserInputDto userInputDto);
-
-    UserOutputDto fromUserToDto(User user);
-
     UserOutputDto addUser(UserInputDto userInputDto);
 
     UserOutputDto getUserByUsername(String username);

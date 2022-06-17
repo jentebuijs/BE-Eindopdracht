@@ -4,9 +4,7 @@ import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.exceptions.AlreadyInUseException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
-import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.models.User;
-import nl.novi.eindopdracht.repositories.ProfileRepository;
 import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -15,33 +13,33 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
 
-    public UserServiceImpl(UserRepository userRepository, ProfileRepository profileRepository) {
+    public UserServiceImpl(UserRepository userRepository, ProfileService profileService) {
         this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
+        this.profileService = profileService;
     }
 
     //METHODS//
-    @Override
-    public User fromDtoToUser(UserInputDto userInputDto) {
+    private User fromDtoToUser(UserInputDto userInputDto) {
         User user = new User();
         user.setUsername(userInputDto.getUsername());
         user.setEmail(userInputDto.getEmail());
         user.setPassword(userInputDto.getPassword());
+        user.setIsStudent(userInputDto.getIsStudent());
         return user;
     }
 
-    @Override
-    public UserOutputDto fromUserToDto(User user) {
-        Optional<User> possibleUser = userRepository.findById(user.getUserId());
-        if (possibleUser.isEmpty()) {
-            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        }
+    private UserOutputDto fromUserToDto(User user) {
+//        Optional<User> possibleUser = userRepository.findById(user.getId());
+//        if (possibleUser.isEmpty()) {
+//            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
+//        }
         UserOutputDto userOutputDto = new UserOutputDto();
-        userOutputDto.setId(user.getUserId());
+        userOutputDto.setId(user.getId());
         userOutputDto.setUsername(user.getUsername());
         userOutputDto.setEmail(user.getEmail());
+        userOutputDto.setIsStudent(user.getIsStudent());
 
         return userOutputDto;
     }
@@ -60,15 +58,8 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userRepository.save(fromDtoToUser(userInputDto));
-        profileRepository.save(profileFromUser(user));
+        profileService.profileFromUser(user);
         return fromUserToDto(user);
-    }
-
-    private Profile profileFromUser(User user) {
-        Profile profile = new Profile();
-        profile.setUserId(user.getUserId());
-        profile.setStudent(user.getIsStudent());
-        return profile;
     }
 
     @Override

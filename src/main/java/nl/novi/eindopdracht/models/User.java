@@ -3,22 +3,24 @@ package nl.novi.eindopdracht.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "usertable")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+//    @Column(name = "id")
+    private Long id;
 
-    @OneToOne
-    private Profile profile;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    private Profile profile;
 
     private String username;
     private String password;
     private String email;
     private boolean isStudent;
 
-    public Long getUserId() { return userId; }
+    public Long getId() { return id; }
 
     public String getUsername() {
         return username;
@@ -42,5 +44,9 @@ public class User {
 
     public boolean getIsStudent() {
         return isStudent;
+    }
+
+    public void setIsStudent(boolean isStudent) {
+        this.isStudent = isStudent;
     }
 }

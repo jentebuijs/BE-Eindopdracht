@@ -6,16 +6,14 @@ import java.time.LocalDate;
 @Entity
 public class Profile {
 
-    @OneToOne
-    private User user;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long profileId;
+    private Long id;
 
-    private Long userId;
-    private String username;
-    private String email;
+//    @OneToOne
+//    @MapsId
+//    @JoinColumn(name = "user_id")
+//    private User user;
+
     private String firstName;
     private String lastName;
     private LocalDate dob;
@@ -24,8 +22,12 @@ public class Profile {
     private String aboutMe;
     private boolean isStudent;
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -80,7 +82,7 @@ public class Profile {
         return isStudent;
     }
 
-    public void setStudent(boolean student) {
-        isStudent = student;
+    public void setIsStudent(boolean isStudent) {
+        this.isStudent = isStudent;
     }
 }

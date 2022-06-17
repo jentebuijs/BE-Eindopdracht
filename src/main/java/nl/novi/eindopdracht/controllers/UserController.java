@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserOutputDto> addUser(@RequestBody UserInputDto userInputDto){
         UserOutputDto userOutputDto = userService.addUser(userInputDto);
-        URI location = URI.create("/users/" + userOutputDto.getUsername());
+        URI location = URI.create(userOutputDto.getUsername());
         return ResponseEntity.created(location).body(userOutputDto);
     }
 
