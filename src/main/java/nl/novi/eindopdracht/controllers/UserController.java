@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    //MAPPINGS: inloggen, registreren, verwijderen ==> accountgerelateerd
 
     @GetMapping
     public ResponseEntity<Object> getUserBy(@RequestParam(value = "email", required = false) String email,
@@ -37,7 +39,7 @@ public class UserController {
         return ResponseEntity.created(location).body(userOutputDto);
     }
 
-    @DeleteMapping("{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.notFound().build();
