@@ -4,15 +4,17 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "profiles")
 public class Profile {
 
     @Id
+    @Column(name = "user_id")
     private Long id;
 
-//    @OneToOne
-//    @MapsId
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String firstName;
     private String lastName;
