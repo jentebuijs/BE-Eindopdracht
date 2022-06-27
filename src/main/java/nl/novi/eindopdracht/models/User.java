@@ -11,8 +11,8 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    //    @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
     private Profile profile;
 
     private String username;
@@ -20,7 +20,9 @@ public class User {
     private String email;
     private boolean isStudent;
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     public String getUsername() {
         return username;

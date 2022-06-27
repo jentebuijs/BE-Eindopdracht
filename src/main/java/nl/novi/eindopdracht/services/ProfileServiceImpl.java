@@ -18,8 +18,9 @@ public class ProfileServiceImpl implements ProfileService {
     //aanmaken profiel (aangeroepen vanuit addUser() in userService)
     public void profileFromUser(User user) {
         Profile profile = new Profile();
-        profile.setId(user.getId());
+//        profile.setId(user.getId());
         profile.setIsStudent(user.getIsStudent());
+        profile.setUser(user);
         profileRepository.save(profile);
     }
 

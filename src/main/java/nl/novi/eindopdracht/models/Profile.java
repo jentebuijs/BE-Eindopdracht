@@ -8,12 +8,13 @@ import java.time.LocalDate;
 public class Profile {
 
     @Id
-    @Column(name = "user_id")
+    @GeneratedValue
     private Long id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
+
+    //    @MapsId
+//    @JoinColumn(name = "user_id")
+    @OneToOne/*(mappedBy = "profile", cascade = CascadeType.ALL)*/
     private User user;
 
     private String firstName;
@@ -86,5 +87,13 @@ public class Profile {
 
     public void setIsStudent(boolean isStudent) {
         this.isStudent = isStudent;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
