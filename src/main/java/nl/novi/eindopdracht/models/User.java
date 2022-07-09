@@ -1,6 +1,7 @@
 package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -14,6 +15,14 @@ public class User {
     //    @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
+
+    @ManyToMany
+    @JoinTable(
+            name="users_requests",
+            joinColumns = @JoinColumn(name="use_id"),
+            inverseJoinColumns = @JoinColumn(name=request_id)
+    )
+    private Set<Request> requests;
 
     private String username;
     private String password;
