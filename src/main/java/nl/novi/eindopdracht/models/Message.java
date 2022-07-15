@@ -13,8 +13,11 @@ public class Message {
 
     private String title;
     private String content;
+    private boolean forBuddy;
+    private boolean forStudent;
     private boolean approved;
 
+    //--- GETTERS & SETTERS
     public Long getId() {
         return id;
     }
@@ -33,6 +36,22 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isForBuddy() {
+        return forBuddy;
+    }
+
+    public void setForBuddy(boolean forBuddy) {
+        this.forBuddy = forBuddy;
+    }
+
+    public boolean isForStudent() {
+        return forStudent;
+    }
+
+    public void setForStudent(boolean forStudent) {
+        this.forStudent = forStudent;
     }
 
     public boolean isApproved() {
