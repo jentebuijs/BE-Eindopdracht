@@ -1,7 +1,7 @@
 package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
-import java.util.Set;
+
 
 @Entity
 @Table(name="requests")
@@ -11,41 +11,52 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany
-    private Set<User> users;
+    @ManyToOne
+    private User sender;
 
-    private String sender;
-    private String recipient;
+    @ManyToOne
+    private User recipient;
+
+    private String message;
     private boolean gotAccepted;
     private boolean gotCanceled;
 
-    public Request(String sender, String recipient) {
+    public Request(User sender, User recipient, String message) {
         this.sender = sender;
         this.recipient = recipient;
+        this.message = message;
     }
 
     public Request() {
-
     }
 
+    //--- GETTERS & SETTERS
     public Long getId() {
         return id;
     }
 
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public String getRecipient() {
+    public User getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(String recipient) {
+    public void setRecipient(User recipient) {
         this.recipient = recipient;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public boolean isGotAccepted() {

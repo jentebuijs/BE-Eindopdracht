@@ -1,7 +1,10 @@
 INSERT INTO users (username, password, email, is_student)
     VALUES('karel', 'appel', 'karelappel@gmail.com', false);
 
--- INSERT INTO profiles (id, is_student) VALUES (1, false);
+INSERT INTO users (username, password, email, is_student)
+VALUES('vincent', 'gogh', 'vincentvangogh@gmail.com', true);
 
-INSERT INTO messages (title, content, approved)
-    VALUES('titel', 'content', true);
+
+
+INSERT INTO messages (title, content, for_buddy, for_student, approved)
+    VALUES('titel', 'content', true, true, true);

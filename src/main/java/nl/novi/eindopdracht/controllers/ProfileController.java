@@ -19,9 +19,14 @@ public class ProfileController {
 
     //MAPPINGS: overview (+filteren/sorteren), specifiek profiel, update profiel, uploaden foto?, wijzigen foto?
 
-    @GetMapping
-    public ResponseEntity<List<Profile>> getProfiles() {
-        return ResponseEntity.ok().body(profileService.getProfiles());
+    @GetMapping("/buddies")
+    public ResponseEntity<List<Profile>> getBuddyProfiles() {
+        return ResponseEntity.ok().body(profileService.getBuddyProfiles());
+    }
+
+    @GetMapping("/students")
+    public ResponseEntity<List<Profile>> getStudentProfiles() {
+        return ResponseEntity.ok().body(profileService.getStudentProfiles());
     }
 
     @GetMapping("/{id}")
@@ -29,8 +34,9 @@ public class ProfileController {
         return ResponseEntity.ok().body(profileService.getProfile(id));
     }
 
-//    @PutMapping("/{username}")
-//    public ResponseEntity<HttpStatus> updateProfile(@RequestBody Profile profile) {
-//    }
+    @PutMapping("/{username}")
+    public ResponseEntity<HttpStatus> updateProfile(@RequestBody Profile profile) {
+        return ResponseEntity.ok().build();
+    }
 
 }

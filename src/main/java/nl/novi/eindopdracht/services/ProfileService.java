@@ -24,8 +24,14 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    public List<Profile> getProfiles() {
-        return profileRepository.findAll();
+    public void deleteProfileFromUserId(Long userId) {
+        profileRepository.deleteProfileByUserId(userId);
+    }
+
+    public List<Profile> getBuddyProfiles() { return profileRepository.getProfilesByIsStudentIsFalse(); }
+
+    public List<Profile> getStudentProfiles() {
+        return profileRepository.getProfilesByIsStudentIsTrue();
     }
 
     public Profile getProfile(Long id) {

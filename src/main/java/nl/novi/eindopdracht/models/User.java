@@ -12,23 +12,22 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    //    @PrimaryKeyJoinColumn
+    @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
 
-    @ManyToMany
-    @JoinTable(
-            name="users_requests",
-            joinColumns = @JoinColumn(name="use_id"),
-            inverseJoinColumns = @JoinColumn(name=request_id)
-    )
-    private Set<Request> requests;
+    @OneToMany(mappedBy = "recipient")
+    Set<Request> incomingRequests;
+
+    @OneToMany(mappedBy = "sender")
+    Set<Request> outgoingRequests;
 
     private String username;
     private String password;
     private String email;
     private boolean isStudent;
 
+    //--- GETTERS & SETTERS
     public Long getId() {
         return id;
     }

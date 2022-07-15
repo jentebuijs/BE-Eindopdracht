@@ -7,6 +7,7 @@ import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -79,9 +80,11 @@ public class UserService {
 
     public void deleteUser(Long userId) {
         Optional<User> possibleUser = userRepository.findById(userId);
-        if (possibleUser.isPresent()) {
-            userRepository.deleteById(userId);
-        } throw new RecordNotFoundException("Deze gebruiker is niet bekend");
+        if (possibleUser.isEmpty()) {
+            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
+        }
+        profileService.deleteProfileFromUserId(userId);
+        userRepository.deleteById(userId);
     }
 
     public List<User> getAllStudents() {

@@ -24,6 +24,14 @@ public class MessageService {
         return messageRepository.getById(id);
     }
 
+    public List<Message> getBuddyMessages() {
+        return messageRepository.getMessagesByForBuddyIsTrue();
+    }
+
+    public List<Message> getStudentMessages() {
+        return messageRepository.getMessagesByForStudentIsTrue();
+    }
+
     public void addMessage(Message message) {
         messageRepository.save(message);
     }
@@ -33,5 +41,14 @@ public class MessageService {
         if (possibleMessage.isPresent()) {
             messageRepository.deleteById(id);
         } throw new RecordNotFoundException("Dit bericht is niet bekend");
+    }
+
+    public void updateMessage(Long id, Message message) {
+        Optional<Message> possibleMessage = messageRepository.findById(id);
+        if (possibleMessage.isEmpty()) {
+            throw new RecordNotFoundException("Dit prikbordbericht is niet bekend");
+        } else {
+            messageRepository.save(message);
+        }
     }
 }
