@@ -22,6 +22,7 @@ public class Profile {
     private String level;
     private String contactIntensity;
     private String aboutMe;
+    private boolean isStudent;
 
     //--- GETTERS & SETTERS
     public Long getId() {
@@ -82,5 +83,13 @@ public class Profile {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
+    }
+
+    public boolean isStudent() {
+        return isStudent;
+    }
+
+    public void setIsStudent(boolean student) {
+        isStudent = student;
     }
 }

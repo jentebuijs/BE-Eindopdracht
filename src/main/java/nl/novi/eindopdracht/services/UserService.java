@@ -82,9 +82,7 @@ public class UserService {
         Optional<User> possibleUser = userRepository.findById(userId);
         if (possibleUser.isEmpty()) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        }
-        profileService.deleteProfileFromUserId(userId);
-        userRepository.deleteById(userId);
+        } userRepository.deleteById(userId);
     }
 
     public List<User> getAllStudents() {
