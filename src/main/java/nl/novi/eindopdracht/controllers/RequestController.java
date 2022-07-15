@@ -20,6 +20,7 @@ public class RequestController {
         this.requestService = requestService;
     }
 
+    //MAPPINGS
     @PostMapping("/new")
     public ResponseEntity<HttpStatus> makeRequest(@RequestParam User sender, @RequestParam User recipient, @RequestParam String message) {
         Request newRequest = requestService.addRequest(sender, recipient, message);

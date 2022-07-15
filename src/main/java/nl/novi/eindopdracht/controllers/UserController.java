@@ -18,7 +18,6 @@ public class UserController {
     }
 
     //MAPPINGS: inloggen, registreren, verwijderen ==> accountgerelateerd
-
     @GetMapping
     public ResponseEntity<Object> getUserBy(@RequestParam(value = "email", required = false) String email,
                                           @RequestParam(value = "username", required = false) String username) {

@@ -15,17 +15,11 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    //aanmaken profiel (aangeroepen vanuit addUser() in userService)
     public void profileFromUser(User user) {
         Profile profile = new Profile();
-//        profile.setId(user.getId());
-        profile.setIsStudent(user.getIsStudent());
         profile.setUser(user);
+        profile.setIsStudent(user.getIsStudent());
         profileRepository.save(profile);
-    }
-
-    public void deleteProfileFromUserId(Long userId) {
-        profileRepository.deleteProfileByUserId(userId);
     }
 
     public List<Profile> getBuddyProfiles() { return profileRepository.getProfilesByIsStudentIsFalse(); }

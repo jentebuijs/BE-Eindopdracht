@@ -8,5 +8,4 @@ import java.util.List;
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
     List<Profile> getProfilesByIsStudentIsFalse();
     List<Profile> getProfilesByIsStudentIsTrue();
-    void deleteProfileByUserId(Long userId);
 }

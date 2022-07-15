@@ -17,8 +17,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    //MAPPINGS: overview (+filteren/sorteren), specifiek profiel, update profiel, uploaden foto?, wijzigen foto?
-
+    //MAPPINGS
     @GetMapping("/buddies")
     public ResponseEntity<List<Profile>> getBuddyProfiles() {
         return ResponseEntity.ok().body(profileService.getBuddyProfiles());
