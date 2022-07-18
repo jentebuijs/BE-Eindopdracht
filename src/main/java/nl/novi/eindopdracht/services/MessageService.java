@@ -43,12 +43,4 @@ public class MessageService {
         } throw new RecordNotFoundException("Dit bericht is niet bekend");
     }
 
-    public void updateMessage(Long id, Message message) {
-        Optional<Message> possibleMessage = messageRepository.findById(id);
-        if (possibleMessage.isEmpty()) {
-            throw new RecordNotFoundException("Dit prikbordbericht is niet bekend");
-        } else {
-            messageRepository.save(message);
-        }
-    }
 }

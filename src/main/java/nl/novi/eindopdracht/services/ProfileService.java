@@ -1,5 +1,6 @@
 package nl.novi.eindopdracht.services;
 
+import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
@@ -22,10 +23,10 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    public List<Profile> getBuddyProfiles() { return profileRepository.getProfilesByIsStudentIsFalse(); }
+    public List<Profile> getBuddyProfiles() { return profileRepository.getAllByIsStudentIsFalse(); }
 
     public List<Profile> getStudentProfiles() {
-        return profileRepository.getProfilesByIsStudentIsTrue();
+        return profileRepository.getAllByIsStudentIsTrue();
     }
 
     public Profile getProfile(Long id) {

@@ -15,10 +15,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final ProfileService profileService;
+    private final RequestService requestService;
 
-    public UserService(UserRepository userRepository, ProfileService profileService) {
+    public UserService(UserRepository userRepository, ProfileService profileService, RequestService requestService) {
         this.userRepository = userRepository;
         this.profileService = profileService;
+        this.requestService = requestService;
     }
 
     //METHODS//
@@ -78,11 +80,22 @@ public class UserService {
         return fromUserToDto(userRepository.getUserByEmail(email));
     }
 
+    public UserOutputDto updateUser(Long userId, UserInputDto userInputDto) {
+        Optional<User> possibleUser = userRepository.findById(userId);
+        if (possibleUser.isEmpty()) {
+            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
+        } User updatedUser = fromDtoToUser(userInputDto);
+        updatedUser.setId(userId);
+        return fromUserToDto(userRepository.save(updatedUser));
+    }
+
     public void deleteUser(Long userId) {
         Optional<User> possibleUser = userRepository.findById(userId);
         if (possibleUser.isEmpty()) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        } userRepository.deleteById(userId);
+        }
+        requestService.deleteRequestsByUser(userId);
+        userRepository.deleteById(userId);
     }
 
     public List<User> getAllStudents() {

@@ -53,9 +53,4 @@ public class MessageController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateMessage(@PathVariable Long id, @RequestBody Message message) {
-        messageService.updateMessage(id, message);
-        return ResponseEntity.ok().build();
-    }
 }

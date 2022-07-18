@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
-    List<Request> getAllBySenderIs(String username);
-    List<Request> getAllByRecipientIs(String username);
+    List<Request> getAllBySenderId(Long id);
+    List<Request> getAllByRecipientId(Long id);
+    void deleteAllBySenderId(Long id);
+    void deleteAllByRecipientId(Long id);
 }

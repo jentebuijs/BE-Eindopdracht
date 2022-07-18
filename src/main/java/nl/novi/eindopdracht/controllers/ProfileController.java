@@ -28,13 +28,13 @@ public class ProfileController {
         return ResponseEntity.ok().body(profileService.getStudentProfiles());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{userId}")
     public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
         return ResponseEntity.ok().body(profileService.getProfile(id));
     }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<HttpStatus> updateProfile(@RequestBody Profile profile) {
+    @PutMapping("/{userId}")
+    public ResponseEntity<HttpStatus> updateProfile(@RequestBody Profile profileToUpdate) {
         return ResponseEntity.ok().build();
     }
 

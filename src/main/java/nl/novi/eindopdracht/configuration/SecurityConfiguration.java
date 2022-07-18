@@ -2,7 +2,6 @@ package nl.novi.eindopdracht.configuration;
 
 import nl.novi.eindopdracht.filters.JwtRequestFilter;
 import nl.novi.eindopdracht.services.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,8 +16,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    JwtService jwtService;
+    private final JwtService jwtService;
+
+    public SecurityConfiguration(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -46,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests().antMatchers(HttpMethod.GET, "/messages/{id}").permitAll()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
