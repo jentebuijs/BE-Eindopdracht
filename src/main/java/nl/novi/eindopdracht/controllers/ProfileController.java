@@ -28,14 +28,15 @@ public class ProfileController {
         return ResponseEntity.ok().body(profileService.getStudentProfiles());
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{id}")
     public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
         return ResponseEntity.ok().body(profileService.getProfile(id));
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<HttpStatus> updateProfile(@RequestBody Profile profileToUpdate) {
-        return ResponseEntity.ok().build();
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateProfile(@PathVariable Long id, @RequestBody Profile profileToUpdate) {
+        profileService.updateProfile(id, profileToUpdate);
+        return ResponseEntity.ok().body("Je wijzigingen zijn opgeslagen");
     }
 
 }

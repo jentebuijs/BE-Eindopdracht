@@ -48,9 +48,9 @@ public class MessageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteMessage(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteMessage(@PathVariable Long id) {
         messageService.deleteMessage(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Bericht succesvol verwijderd");
     }
 
 }

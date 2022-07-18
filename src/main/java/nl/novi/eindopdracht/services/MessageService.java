@@ -21,7 +21,12 @@ public class MessageService {
     }
 
     public Message getMessage(Long id) {
-        return messageRepository.getById(id);
+        Optional<Message> possibleMessage = messageRepository.findById(id);
+        if (possibleMessage.isEmpty()) {
+            throw new RecordNotFoundException("Dit bericht is niet bekend");
+        } else {
+            return possibleMessage.get();
+        }
     }
 
     public List<Message> getBuddyMessages() {
@@ -38,9 +43,11 @@ public class MessageService {
 
     public void deleteMessage(Long id) {
         Optional<Message> possibleMessage = messageRepository.findById(id);
-        if (possibleMessage.isPresent()) {
+        if (possibleMessage.isEmpty()) {
+            throw new RecordNotFoundException("Dit bericht is niet bekend");
+        } else {
             messageRepository.deleteById(id);
-        } throw new RecordNotFoundException("Dit bericht is niet bekend");
+        }
     }
 
 }
