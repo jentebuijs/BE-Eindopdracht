@@ -16,16 +16,21 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
 
-    @OneToMany(mappedBy = "recipient")
+    @OneToMany(mappedBy = "recipient",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     Set<Request> incomingRequests;
 
-    @OneToMany(mappedBy = "sender")
+    @OneToMany(mappedBy = "sender",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     Set<Request> outgoingRequests;
 
     private String username;
     private String password;
     private String email;
     private boolean isStudent;
+    private boolean enabled;
 
     //--- GETTERS & SETTERS
     public Long getId() {
@@ -60,5 +65,13 @@ public class User {
 
     public void setIsStudent(boolean isStudent) {
         this.isStudent = isStudent;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
