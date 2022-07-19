@@ -25,6 +25,8 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
+    public List<Profile> getAllProfiles() { return profileRepository.findAll(); }
+
     public List<Profile> getBuddyProfiles() { return profileRepository.getAllByIsStudentIsFalse(); }
 
     public List<Profile> getStudentProfiles() {

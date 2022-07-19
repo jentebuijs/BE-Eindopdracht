@@ -16,14 +16,21 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
 
-    @OneToMany(mappedBy = "recipient",
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "recipient",
+            cascade = CascadeType.ALL)
     Set<Request> incomingRequests;
 
     @OneToMany(mappedBy = "sender",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            cascade = CascadeType.ALL)
     Set<Request> outgoingRequests;
 
     private String username;

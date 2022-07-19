@@ -95,13 +95,4 @@ public class UserService {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
         } userRepository.deleteById(userId);
     }
-
-    public List<User> getAllStudents() {
-        return userRepository.getAllUsersByIsStudentIsTrue();
-    }
-
-    public List<User> getAllBuddies() {
-        return userRepository.getAllUsersByIsStudentIsFalse();
-    }
-
 }

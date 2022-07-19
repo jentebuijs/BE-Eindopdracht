@@ -18,6 +18,11 @@ public class ProfileController {
     }
 
     //MAPPINGS
+    @GetMapping
+    public ResponseEntity<List<Profile>> getAllProfiles() {
+        return ResponseEntity.ok().body(profileService.getAllProfiles());
+    }
+
     @GetMapping("/buddies")
     public ResponseEntity<List<Profile>> getBuddyProfiles() {
         return ResponseEntity.ok().body(profileService.getBuddyProfiles());
