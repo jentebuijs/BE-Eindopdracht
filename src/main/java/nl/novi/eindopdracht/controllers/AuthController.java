@@ -23,7 +23,7 @@ public class AuthController {
         this.jwtService = jwtService;
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/signin")
     public ResponseEntity<Object> signIn(@RequestBody AuthDto authDto) {
         UsernamePasswordAuthenticationToken upat =
                 new UsernamePasswordAuthenticationToken(authDto.getUsername(), authDto.getPassword());
@@ -33,6 +33,6 @@ public class AuthController {
         String token = jwtService.generateToken(userDetails);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .body("Token generated");
+                .body(token);
     }
 }
