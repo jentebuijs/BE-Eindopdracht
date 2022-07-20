@@ -6,6 +6,7 @@ import nl.novi.eindopdracht.exceptions.AlreadyInUseException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final ProfileService profileService;
     private final RequestService requestService;
+    private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, ProfileService profileService, RequestService requestService) {
+    public UserService(UserRepository userRepository, ProfileService profileService, RequestService requestService, JwtService jwtService) {
         this.userRepository = userRepository;
         this.profileService = profileService;
         this.requestService = requestService;
+        this.jwtService = jwtService;
     }
 
     //METHODS//
@@ -35,51 +38,47 @@ public class UserService {
     }
 
     private UserOutputDto fromUserToDto(User user) {
-//        Optional<User> possibleUser = userRepository.findById(user.getId());
-//        if (possibleUser.isEmpty()) {
-//            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-//        }
         UserOutputDto userOutputDto = new UserOutputDto();
         userOutputDto.setId(user.getId());
         userOutputDto.setUsername(user.getUsername());
         userOutputDto.setEmail(user.getEmail());
         userOutputDto.setIsStudent(user.getIsStudent());
-
         return userOutputDto;
     }
 
     public UserOutputDto addUser(UserInputDto userInputDto) {
-
         Optional<User> possibleUser = userRepository.findUserByUsername(userInputDto.getUsername());
         if (possibleUser.isPresent()) {
             throw new AlreadyInUseException("Deze gebruikersnaam is al in gebruik");
         }
-
         possibleUser = userRepository.findUserByEmail(userInputDto.getEmail());
         if (possibleUser.isPresent()) {
             throw new AlreadyInUseException("Dit emailadres is al in gebruik");
         }
-
         User user = userRepository.save(fromDtoToUser(userInputDto));
         profileService.profileFromUser(user);
         return fromUserToDto(user);
     }
 
-    public UserOutputDto getUserByUsername(String username) {
-        Optional<User> possibleUser = userRepository.findUserByUsername(username);
-        if (possibleUser.isEmpty()) {
-            throw new RecordNotFoundException("Deze gebruikersnaam is niet bekend");
-        }
-        return fromUserToDto(userRepository.getUserByUsername(username));
+    public String generateToken(UserDetails userDetails) {
+        return jwtService.generateToken(userDetails);
     }
 
-    public UserOutputDto getUserByEmail(String email) {
-        Optional<User> possibleUser = userRepository.findUserByEmail(email);
-        if (possibleUser.isEmpty()) {
-            throw new RecordNotFoundException("Dit emailadres is niet bekend");
-        }
-        return fromUserToDto(userRepository.getUserByEmail(email));
-    }
+//    public UserOutputDto getUserByUsername(String username) {
+//        Optional<User> possibleUser = userRepository.findUserByUsername(username);
+//        if (possibleUser.isEmpty()) {
+//            throw new RecordNotFoundException("Deze gebruikersnaam is niet bekend");
+//        }
+//        return fromUserToDto(userRepository.getUserByUsername(username));
+//    }
+//
+//    public UserOutputDto getUserByEmail(String email) {
+//        Optional<User> possibleUser = userRepository.findUserByEmail(email);
+//        if (possibleUser.isEmpty()) {
+//            throw new RecordNotFoundException("Dit emailadres is niet bekend");
+//        }
+//        return fromUserToDto(userRepository.getUserByEmail(email));
+//    }
 
     public UserOutputDto updateUser(Long userId, UserInputDto userInputDto) {
         Optional<User> possibleUser = userRepository.findById(userId);
