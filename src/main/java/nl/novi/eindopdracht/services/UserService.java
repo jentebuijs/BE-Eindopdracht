@@ -1,11 +1,15 @@
 package nl.novi.eindopdracht.services;
 
+import nl.novi.eindopdracht.dtos.AuthDto;
 import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.exceptions.AlreadyInUseException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.repositories.UserRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,12 +19,15 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final ProfileService profileService;
     private final RequestService requestService;
     private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository, ProfileService profileService, RequestService requestService, JwtService jwtService) {
+    public UserService(AuthenticationManager authenticationManager, UserRepository userRepository,
+                       ProfileService profileService, RequestService requestService, JwtService jwtService) {
+        this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.profileService = profileService;
         this.requestService = requestService;
@@ -33,6 +40,7 @@ public class UserService {
         user.setUsername(userInputDto.getUsername());
         user.setEmail(userInputDto.getEmail());
         user.setPassword(userInputDto.getPassword());
+        user.setEnabled(true);
         user.setIsStudent(userInputDto.getIsStudent());
         return user;
     }
@@ -42,6 +50,7 @@ public class UserService {
         userOutputDto.setId(user.getId());
         userOutputDto.setUsername(user.getUsername());
         userOutputDto.setEmail(user.getEmail());
+        userOutputDto.setEnabled(user.getEnabled());
         userOutputDto.setIsStudent(user.getIsStudent());
         return userOutputDto;
     }
@@ -60,7 +69,11 @@ public class UserService {
         return fromUserToDto(user);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String signIn(AuthDto authDto) {
+        UsernamePasswordAuthenticationToken upat =
+                new UsernamePasswordAuthenticationToken(authDto.getUsername(), authDto.getPassword());
+        Authentication authentication = authenticationManager.authenticate(upat);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return jwtService.generateToken(userDetails);
     }
 
@@ -89,10 +102,8 @@ public class UserService {
         return fromUserToDto(userRepository.save(updatedUser));
     }
 
-    public void deleteUser(Long userId) {
-        Optional<User> possibleUser = userRepository.findById(userId);
-        if (possibleUser.isEmpty()) {
-            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        } userRepository.deleteById(userId);
+    public void deleteUser(String username) {
+        User userToDelete = userRepository.getUserByUsername(username);
+        userRepository.delete(userToDelete);
     }
 }

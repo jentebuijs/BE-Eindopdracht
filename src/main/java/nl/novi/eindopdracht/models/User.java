@@ -36,8 +36,8 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private boolean isStudent;
     private boolean enabled;
+    private boolean isStudent;
 
     //--- GETTERS & SETTERS
     public Long getId() {
@@ -66,6 +66,14 @@ public class User {
         this.password = password;
     }
 
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public boolean getIsStudent() {
         return isStudent;
     }
@@ -74,11 +82,5 @@ public class User {
         this.isStudent = isStudent;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 }
