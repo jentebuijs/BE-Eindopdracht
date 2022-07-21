@@ -33,6 +33,9 @@ public class User {
             cascade = CascadeType.ALL)
     Set<Request> outgoingRequests;
 
+    @OneToOne (cascade = CascadeType.ALL)
+    FileUploadResponse fileUploadResponse;
+
     private String username;
     private String password;
     private String email;
@@ -45,6 +48,14 @@ public class User {
     }
 
     public void setId(Long id) { this.id = id; }
+
+    public FileUploadResponse getFileUploadResponse() {
+        return fileUploadResponse;
+    }
+
+    public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
+        this.fileUploadResponse = fileUploadResponse;
+    }
 
     public String getUsername() {
         return username;

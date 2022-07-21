@@ -5,7 +5,9 @@ import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.exceptions.AlreadyInUseException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
+import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.User;
+import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,14 +23,17 @@ import java.util.Optional;
 public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
+    private final FileUploadRepository fileUploadRepository;
     private final ProfileService profileService;
     private final RequestService requestService;
     private final JwtService jwtService;
 
     public UserService(AuthenticationManager authenticationManager, UserRepository userRepository,
-                       ProfileService profileService, RequestService requestService, JwtService jwtService) {
+                       FileUploadRepository fileUploadRepository, ProfileService profileService,
+                       RequestService requestService, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        this.fileUploadRepository = fileUploadRepository;
         this.profileService = profileService;
         this.requestService = requestService;
         this.jwtService = jwtService;
@@ -105,5 +110,25 @@ public class UserService {
     public void deleteUser(String username) {
         User userToDelete = userRepository.getUserByUsername(username);
         userRepository.delete(userToDelete);
+    }
+
+    public void assignPhotoToStudent(String name, Long id) {
+
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        Optional<FileUploadResponse> fileUploadResponse = fileUploadRepository.findByFileName(name);
+
+        if (optionalUser.isPresent() && fileUploadResponse.isPresent()) {
+
+            FileUploadResponse photo = fileUploadResponse.get();
+
+            User user = optionalUser.get();
+
+            user.setFile(photo);
+
+            userRepository.save(user);
+
+        }
+
     }
 }

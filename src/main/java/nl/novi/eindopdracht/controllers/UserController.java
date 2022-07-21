@@ -11,15 +11,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.net.URI;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final PhotoController photoController;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PhotoController photoController) {
         this.userService = userService;
+        this.photoController = photoController;
     }
 
     @PostMapping("/signup")
@@ -47,5 +51,12 @@ public class UserController {
     public ResponseEntity<Object> deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
         return ResponseEntity.ok().body("Gebruiker succesvol verwijderd");
+    }
+
+    @PostMapping("/{id}/photo")
+    public void assignPhotoToStudent(@PathVariable("id") Long studentNumber,
+                                     @RequestBody MultipartFile file) {
+        FileUploadResponse photo = photoController.singleFileUpload(file);
+        userService.assignPhotoToStudent(photo.getFileName(), studentNumber);
     }
 }
