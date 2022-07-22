@@ -124,7 +124,7 @@ public class UserService {
 
             User user = optionalUser.get();
 
-            user.setFile(photo);
+            user.setFileUploadResponse(photo);
 
             userRepository.save(user);
 

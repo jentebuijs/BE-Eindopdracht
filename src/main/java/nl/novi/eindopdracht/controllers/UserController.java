@@ -3,6 +3,7 @@ package nl.novi.eindopdracht.controllers;
 import nl.novi.eindopdracht.dtos.AuthDto;
 import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
+import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
