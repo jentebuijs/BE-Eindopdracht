@@ -38,26 +38,6 @@ public class UserService {
     }
 
     //METHODS//
-    private User fromDtoToUser(UserInputDto userInputDto) {
-        User user = new User();
-        user.setUsername(userInputDto.getUsername());
-        user.setEmail(userInputDto.getEmail());
-        user.setPassword(userInputDto.getPassword());
-        user.setEnabled(true);
-        user.setIsStudent(userInputDto.getIsStudent());
-        return user;
-    }
-
-    private UserOutputDto fromUserToDto(User user) {
-        UserOutputDto userOutputDto = new UserOutputDto();
-        userOutputDto.setId(user.getId());
-        userOutputDto.setUsername(user.getUsername());
-        userOutputDto.setEmail(user.getEmail());
-        userOutputDto.setEnabled(user.getEnabled());
-        userOutputDto.setIsStudent(user.getIsStudent());
-        return userOutputDto;
-    }
-
     public UserOutputDto signUp(UserInputDto userInputDto) {
         Optional<User> possibleUser = userRepository.findUserByUsername(userInputDto.getUsername());
         if (possibleUser.isPresent()) {
@@ -80,24 +60,8 @@ public class UserService {
         return jwtService.generateToken(userDetails);
     }
 
-//    public UserOutputDto getUserByUsername(String username) {
-//        Optional<User> possibleUser = userRepository.findUserByUsername(username);
-//        if (possibleUser.isEmpty()) {
-//            throw new RecordNotFoundException("Deze gebruikersnaam is niet bekend");
-//        }
-//        return fromUserToDto(userRepository.getUserByUsername(username));
-//    }
-//
-//    public UserOutputDto getUserByEmail(String email) {
-//        Optional<User> possibleUser = userRepository.findUserByEmail(email);
-//        if (possibleUser.isEmpty()) {
-//            throw new RecordNotFoundException("Dit emailadres is niet bekend");
-//        }
-//        return fromUserToDto(userRepository.getUserByEmail(email));
-//    }
-
-    public UserOutputDto getUser(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
+    public UserOutputDto getUser(String username) {
+        Optional<User> optionalUser = userRepository.findUserByUsername(username);
         if(optionalUser.isEmpty()) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
         } return fromUserToDto(optionalUser.get());
@@ -112,28 +76,42 @@ public class UserService {
         return fromUserToDto(userRepository.save(updatedUser));
     }
 
-    public void deleteUser(String username) {
-        User userToDelete = userRepository.getUserByUsername(username);
+    public void deleteUser(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()) {
+            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
+        } User userToDelete = optionalUser.get();
         userRepository.delete(userToDelete);
     }
 
-    public void assignPhotoToStudent(String name, Long id) {
-
+    public void assignPhotoToStudent(String fileName, Long id) {
         Optional<User> optionalUser = userRepository.findById(id);
-
-        Optional<FileUploadResponse> fileUploadResponse = fileUploadRepository.findByFileName(name);
-
+        Optional<FileUploadResponse> fileUploadResponse = fileUploadRepository.findByFileName(fileName);
         if (optionalUser.isPresent() && fileUploadResponse.isPresent()) {
-
             FileUploadResponse photo = fileUploadResponse.get();
-
             User user = optionalUser.get();
-
             user.setFileUploadResponse(photo);
-
             userRepository.save(user);
-
         }
+    }
 
+    private User fromDtoToUser(UserInputDto userInputDto) {
+        User user = new User();
+        user.setUsername(userInputDto.getUsername());
+        user.setEmail(userInputDto.getEmail());
+        user.setPassword(userInputDto.getPassword());
+        user.setEnabled(true);
+        user.setIsStudent(userInputDto.getIsStudent());
+        return user;
+    }
+
+    private UserOutputDto fromUserToDto(User user) {
+        UserOutputDto userOutputDto = new UserOutputDto();
+        userOutputDto.setId(user.getId());
+        userOutputDto.setUsername(user.getUsername());
+        userOutputDto.setEmail(user.getEmail());
+        userOutputDto.setEnabled(user.getEnabled());
+        userOutputDto.setIsStudent(user.getIsStudent());
+        return userOutputDto;
     }
 }

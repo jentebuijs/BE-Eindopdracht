@@ -24,7 +24,7 @@ public class PhotoController {
     }
 
     @PostMapping("/upload")
-    FileUploadResponse singleFileUpload(@RequestParam("file") MultipartFile file){
+    FileUploadResponse uploadFile(@RequestParam("file") MultipartFile file){
         String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
         String contentType = file.getContentType();
         String fileName = photoService.storeFile(file, url);
@@ -32,7 +32,7 @@ public class PhotoController {
     }
 
     @GetMapping("/download/{fileName}")
-    ResponseEntity<Resource> downLoadSingleFile(@PathVariable String fileName, HttpServletRequest request) {
+    ResponseEntity<Resource> downLoadFile(@PathVariable String fileName, HttpServletRequest request) {
         Resource resource = photoService.downLoadFile(fileName);
         String mimeType;
 
