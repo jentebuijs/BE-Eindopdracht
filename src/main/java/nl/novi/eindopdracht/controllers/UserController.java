@@ -7,10 +7,6 @@ import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +25,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserOutputDto> signUp(@RequestBody UserInputDto userInputDto){
-        UserOutputDto userOutputDto = userService.addUser(userInputDto);
+        UserOutputDto userOutputDto = userService.signUp(userInputDto);
         URI location = URI.create(userOutputDto.getUsername());
         return ResponseEntity.created(location).body(userOutputDto);
     }
@@ -40,6 +36,12 @@ public class UserController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(token);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserOutputDto> getUser(@PathVariable Long userId) {
+        UserOutputDto userOutputDto = userService.getUser(userId);
+        return ResponseEntity.ok().body(userOutputDto);
     }
 
     @PutMapping("/{userId}")

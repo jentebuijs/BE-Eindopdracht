@@ -13,10 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,7 +58,7 @@ public class UserService {
         return userOutputDto;
     }
 
-    public UserOutputDto addUser(UserInputDto userInputDto) {
+    public UserOutputDto signUp(UserInputDto userInputDto) {
         Optional<User> possibleUser = userRepository.findUserByUsername(userInputDto.getUsername());
         if (possibleUser.isPresent()) {
             throw new AlreadyInUseException("Deze gebruikersnaam is al in gebruik");
@@ -97,6 +95,13 @@ public class UserService {
 //        }
 //        return fromUserToDto(userRepository.getUserByEmail(email));
 //    }
+
+    public UserOutputDto getUser(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(optionalUser.isEmpty()) {
+            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
+        } return fromUserToDto(optionalUser.get());
+    }
 
     public UserOutputDto updateUser(Long userId, UserInputDto userInputDto) {
         Optional<User> possibleUser = userRepository.findById(userId);
