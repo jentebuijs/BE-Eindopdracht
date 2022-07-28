@@ -13,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -96,10 +98,12 @@ public class UserService {
     }
 
     private User fromDtoToUser(UserInputDto userInputDto) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User user = new User();
         user.setUsername(userInputDto.getUsername());
         user.setEmail(userInputDto.getEmail());
-        user.setPassword(userInputDto.getPassword());
+        String encryptedPassword = passwordEncoder.encode(userInputDto.getPassword());
+        user.setPassword(encryptedPassword);
         user.setEnabled(true);
         user.setIsStudent(userInputDto.getIsStudent());
         return user;
