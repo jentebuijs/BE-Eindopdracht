@@ -8,4 +8,5 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> getMessagesByForBuddyIsTrue();
     List<Message> getMessagesByForStudentIsTrue();
+    List<Message> getMessagesByForStudentIsTrueAndForBuddyIsTrue();
 }

@@ -14,4 +14,7 @@ INSERT INTO requests (id, got_accepted, got_canceled, message, sender_id, recipi
 VALUES (1, false, false, 'test1', 1, 2);
 
 INSERT INTO messages (title, content, for_buddy, for_student, approved)
-    VALUES('titel', 'content', true, true, true);
+    VALUES('titel', 'content', true, true, true),
+           ('titel2', 'content2', true, false, true),
+           ('titel3', 'content3', false, true, true),
+           ('titel4', 'content4', true, true, false);

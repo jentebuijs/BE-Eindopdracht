@@ -37,6 +37,10 @@ public class MessageService {
         return messageRepository.getMessagesByForStudentIsTrue();
     }
 
+    public List<Message> getMessagesForBothRoles() {
+        return messageRepository.getMessagesByForStudentIsTrueAndForBuddyIsTrue();
+    }
+
     public void addMessage(Message message) {
         messageRepository.save(message);
     }

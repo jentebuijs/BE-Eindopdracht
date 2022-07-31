@@ -35,6 +35,11 @@ public class MessageController {
         return ResponseEntity.ok().body(messageService.getStudentMessages());
     }
 
+    @GetMapping("/both-roles")
+    public ResponseEntity<List<Message>> getMessagesForBothRoles() {
+        return ResponseEntity.ok().body(messageService.getMessagesForBothRoles());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Message> getMessage(@PathVariable Long id) {
         return ResponseEntity.ok().body(messageService.getMessage(id));
