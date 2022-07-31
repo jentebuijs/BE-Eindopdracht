@@ -6,9 +6,9 @@ INSERT INTO authorities (username, authority)
     VALUES ('karel', 'USER'),
            ('vincent', 'ADMIN');
 
-INSERT INTO profiles (first_name, is_student, user_id)
-VALUES ('karel', false, 1),
-       ('vincent', true, 2);
+INSERT INTO profiles (first_name, last_name, dob, level, contact_intensity, about_me, is_student, user_id)
+VALUES ('karel', 'appel', '25-04-1921', 'beginner', 'never', 'niks te melden', false, 1),
+       ('vincent', 'gogh', '30-03-1853', 'gevorderd', 'soms', 'mijn oor is kapot', true, 2);
 
 INSERT INTO requests (id, got_accepted, got_canceled, message, sender_id, recipient_id)
 VALUES (1, false, false, 'test1', 1, 2);

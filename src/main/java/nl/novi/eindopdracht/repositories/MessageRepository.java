@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> getMessagesByForBuddyIsTrue();
-    List<Message> getMessagesByForStudentIsTrue();
-    List<Message> getMessagesByForStudentIsTrueAndForBuddyIsTrue();
+    List<Message> getAllByApprovedIsTrue();
+    List<Message> getAllByApprovedIsFalse();
+    List<Message> getAllByApprovedIsTrueAndForBuddyIsTrue();
+    List<Message> getAllByApprovedIsTrueAndForStudentIsTrue();
+    List<Message> getAllByApprovedIsTrueAndForStudentIsTrueAndForBuddyIsTrue();
 }

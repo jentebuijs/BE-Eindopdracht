@@ -39,8 +39,8 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateProfile(@PathVariable Long id, @RequestBody Profile profileToUpdate) {
-        profileService.updateProfile(id, profileToUpdate);
+    public ResponseEntity<Object> updateProfile(@PathVariable Long id, @RequestBody Profile newProfile) {
+        profileService.updateProfile(id, newProfile);
         return ResponseEntity.ok().body("Je wijzigingen zijn opgeslagen");
     }
 

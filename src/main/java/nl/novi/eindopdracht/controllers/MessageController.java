@@ -25,6 +25,11 @@ public class MessageController {
         return ResponseEntity.ok().body(messageService.getMessages());
     }
 
+    @GetMapping("/admin")
+    public ResponseEntity<List<Message>> getUnapprovedMessages() {
+        return ResponseEntity.ok().body(messageService.getUnapprovedMessages());
+    }
+
     @GetMapping("/buddies")
     public ResponseEntity<List<Message>> getMessagesForBuddies() {
         return ResponseEntity.ok().body(messageService.getBuddyMessages());

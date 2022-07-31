@@ -42,15 +42,20 @@ public class ProfileService {
         }
     }
 
-    public void updateProfile(Long id, Profile profileToUpdate) {
+    public void updateProfile(Long id, Profile newProfile) {
         Optional<Profile> possibleProfile = profileRepository.findById(id);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
-        } else {
-            Profile profileToDelete = possibleProfile.get();
-            profileRepository.delete(profileToDelete);
+        }   Profile profileToUpdate = possibleProfile.get();
+            profileToUpdate.setFirstName(newProfile.getFirstName());
+            profileToUpdate.setLastName(newProfile.getLastName());
+            profileToUpdate.setDob(newProfile.getDob());
+            profileToUpdate.setLevel(newProfile.getLevel());
+            profileToUpdate.setContactIntensity(newProfile.getContactIntensity());
+            profileToUpdate.setAboutMe(newProfile.getAboutMe());
+            profileToUpdate.setIsStudent(newProfile.isStudent());
             profileRepository.save(profileToUpdate);
         }
     }
 
-}
+
