@@ -18,6 +18,11 @@ public class ProfileController {
     }
 
     //MAPPINGS
+    @GetMapping
+    public ResponseEntity<List<Profile>> getAllProfiles() {
+        return ResponseEntity.ok().body(profileService.getAllProfiles());
+    }
+
     @GetMapping("/buddies")
     public ResponseEntity<List<Profile>> getBuddyProfiles() {
         return ResponseEntity.ok().body(profileService.getBuddyProfiles());
@@ -33,9 +38,10 @@ public class ProfileController {
         return ResponseEntity.ok().body(profileService.getProfile(id));
     }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<HttpStatus> updateProfile(@RequestBody Profile profile) {
-        return ResponseEntity.ok().build();
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateProfile(@PathVariable Long id, @RequestBody Profile newProfile) {
+        profileService.updateProfile(id, newProfile);
+        return ResponseEntity.ok().body("Je wijzigingen zijn opgeslagen");
     }
 
 }

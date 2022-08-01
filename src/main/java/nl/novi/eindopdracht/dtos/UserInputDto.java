@@ -4,6 +4,7 @@ public class UserInputDto {
     private String username;
     private String email;
     private String password;
+    private boolean enabled = true;
     private boolean isStudent;
 
     public String getUsername() {
@@ -28,6 +29,14 @@ public class UserInputDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public boolean getIsStudent() {

@@ -2,7 +2,6 @@ package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name="requests")
 public class Request {

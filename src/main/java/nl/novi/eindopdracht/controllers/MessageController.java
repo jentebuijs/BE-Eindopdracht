@@ -25,6 +25,11 @@ public class MessageController {
         return ResponseEntity.ok().body(messageService.getMessages());
     }
 
+    @GetMapping("/admin")
+    public ResponseEntity<List<Message>> getUnapprovedMessages() {
+        return ResponseEntity.ok().body(messageService.getUnapprovedMessages());
+    }
+
     @GetMapping("/buddies")
     public ResponseEntity<List<Message>> getMessagesForBuddies() {
         return ResponseEntity.ok().body(messageService.getBuddyMessages());
@@ -33,6 +38,11 @@ public class MessageController {
     @GetMapping("/students")
     public ResponseEntity<List<Message>> getMessagesForStudents() {
         return ResponseEntity.ok().body(messageService.getStudentMessages());
+    }
+
+    @GetMapping("/both-roles")
+    public ResponseEntity<List<Message>> getMessagesForBothRoles() {
+        return ResponseEntity.ok().body(messageService.getMessagesForBothRoles());
     }
 
     @GetMapping("/{id}")
@@ -48,14 +58,9 @@ public class MessageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteMessage(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteMessage(@PathVariable Long id) {
         messageService.deleteMessage(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Bericht succesvol verwijderd");
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> updateMessage(@PathVariable Long id, @RequestBody Message message) {
-        messageService.updateMessage(id, message);
-        return ResponseEntity.ok().build();
-    }
 }

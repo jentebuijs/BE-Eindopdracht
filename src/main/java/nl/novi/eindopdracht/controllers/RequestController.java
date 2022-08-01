@@ -29,13 +29,13 @@ public class RequestController {
     }
 
     @GetMapping("/outgoing")
-    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam String username) {
-        return ResponseEntity.ok().body(requestService.getBySender(username));
+    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam Long id) {
+        return ResponseEntity.ok().body(requestService.getBySender(id));
     }
 
     @GetMapping("/incoming")
-    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam String username) {
-        return ResponseEntity.ok().body(requestService.getByRecipient(username));
+    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam Long id) {
+        return ResponseEntity.ok().body(requestService.getByRecipient(id));
     }
 
 }

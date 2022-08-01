@@ -7,6 +7,7 @@ public class UserOutputDto {
     private Long id;
     private String username;
     private String email;
+    private boolean enabled;
     private boolean isStudent;
 
     public Long getId() {
@@ -31,6 +32,14 @@ public class UserOutputDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public boolean getIsStudent() {

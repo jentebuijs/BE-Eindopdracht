@@ -18,7 +18,7 @@ public class Profile {
 
     private String firstName;
     private String lastName;
-    private LocalDate dob;
+    private String dob;
     private String level;
     private String contactIntensity;
     private String aboutMe;
@@ -53,11 +53,11 @@ public class Profile {
         this.lastName = lastName;
     }
 
-    public LocalDate getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 

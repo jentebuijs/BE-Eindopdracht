@@ -16,20 +16,45 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile profile;
 
-    @OneToMany(mappedBy = "recipient")
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "recipient",
+            cascade = CascadeType.ALL)
     Set<Request> incomingRequests;
 
-    @OneToMany(mappedBy = "sender")
+    @OneToMany(mappedBy = "sender",
+            cascade = CascadeType.ALL)
     Set<Request> outgoingRequests;
+
+    @OneToOne (cascade = CascadeType.ALL)
+    FileUploadResponse fileUploadResponse;
 
     private String username;
     private String password;
     private String email;
+    private boolean enabled;
     private boolean isStudent;
 
     //--- GETTERS & SETTERS
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) { this.id = id; }
+
+    public FileUploadResponse getFileUploadResponse() {
+        return fileUploadResponse;
+    }
+
+    public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
+        this.fileUploadResponse = fileUploadResponse;
     }
 
     public String getUsername() {
@@ -52,6 +77,14 @@ public class User {
         this.password = password;
     }
 
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public boolean getIsStudent() {
         return isStudent;
     }
@@ -59,4 +92,6 @@ public class User {
     public void setIsStudent(boolean isStudent) {
         this.isStudent = isStudent;
     }
+
+
 }

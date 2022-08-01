@@ -21,11 +21,16 @@ public class RequestService {
         return requestRepository.save(newRequest);
     }
 
-    public List<Request> getBySender(String username) {
-        return requestRepository.getAllBySenderIs(username);
+    public List<Request> getBySender(Long id) {
+        return requestRepository.getAllBySenderId(id);
     }
 
-    public List<Request> getByRecipient(String username) {
-        return requestRepository.getAllByRecipientIs(username);
+    public List<Request> getByRecipient(Long id) {
+        return requestRepository.getAllByRecipientId(id);
+    }
+
+    public void deleteRequestsByUser(Long id) {
+        requestRepository.deleteAllByRecipientId(id);
+        requestRepository.deleteAllBySenderId(id);
     }
 }

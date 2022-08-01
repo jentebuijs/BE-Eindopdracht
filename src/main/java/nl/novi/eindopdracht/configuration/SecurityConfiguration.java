@@ -9,16 +9,27 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+import javax.sql.DataSource;
 
+@Configuration
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
-    JwtService jwtService;
+    private DataSource dataSource;
+
+    private final JwtService jwtService;
+
+    public SecurityConfiguration(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
 
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -31,10 +42,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Autowired
     protected void configure(AuthenticationManagerBuilder amb) throws Exception {
         amb
-                .inMemoryAuthentication()
-                .withUser("karel").password("{noop}appel").roles("ARTIST");
+                .jdbcAuthentication()
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select username, password, enabled from users where username=?")
+                .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
     }
 
     @Override
@@ -44,9 +59,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/auth").permitAll()
-                .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/signin").permitAll()
+                .antMatchers(HttpMethod.GET, "/messages/admin").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/profiles").hasAuthority("ADMIN")
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();

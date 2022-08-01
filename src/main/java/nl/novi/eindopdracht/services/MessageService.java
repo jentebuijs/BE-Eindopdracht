@@ -1,5 +1,6 @@
 package nl.novi.eindopdracht.services;
 
+import nl.novi.eindopdracht.exceptions.NotAllowedException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.Message;
 import nl.novi.eindopdracht.repositories.MessageRepository;
@@ -17,19 +18,33 @@ public class MessageService {
     }
 
     public List<Message> getMessages() {
-        return messageRepository.findAll();
+        return messageRepository.getAllByApprovedIsTrue();
     }
 
+    public List<Message> getUnapprovedMessages() { return messageRepository.getAllByApprovedIsFalse(); }
+
     public Message getMessage(Long id) {
-        return messageRepository.getById(id);
+        Optional<Message> possibleMessage = messageRepository.findById(id);
+        if (possibleMessage.isEmpty()) {
+            throw new RecordNotFoundException("Dit bericht is niet bekend");
+        } else {
+            Message message = possibleMessage.get();
+            if (message.isApproved() == false) {
+                throw new NotAllowedException("U bent niet bevoegd om dit bericht te lezen");
+            } return message;
+        }
     }
 
     public List<Message> getBuddyMessages() {
-        return messageRepository.getMessagesByForBuddyIsTrue();
+        return messageRepository.getAllByApprovedIsTrueAndForBuddyIsTrue();
     }
 
     public List<Message> getStudentMessages() {
-        return messageRepository.getMessagesByForStudentIsTrue();
+        return messageRepository.getAllByApprovedIsTrueAndForStudentIsTrue();
+    }
+
+    public List<Message> getMessagesForBothRoles() {
+        return messageRepository.getAllByApprovedIsTrueAndForStudentIsTrueAndForBuddyIsTrue();
     }
 
     public void addMessage(Message message) {
@@ -38,17 +53,11 @@ public class MessageService {
 
     public void deleteMessage(Long id) {
         Optional<Message> possibleMessage = messageRepository.findById(id);
-        if (possibleMessage.isPresent()) {
-            messageRepository.deleteById(id);
-        } throw new RecordNotFoundException("Dit bericht is niet bekend");
-    }
-
-    public void updateMessage(Long id, Message message) {
-        Optional<Message> possibleMessage = messageRepository.findById(id);
         if (possibleMessage.isEmpty()) {
-            throw new RecordNotFoundException("Dit prikbordbericht is niet bekend");
+            throw new RecordNotFoundException("Dit bericht is niet bekend");
         } else {
-            messageRepository.save(message);
+            messageRepository.deleteById(id);
         }
     }
+
 }
