@@ -1,5 +1,7 @@
 package nl.novi.eindopdracht.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -8,9 +10,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(nullable = false)
+    private String username;
 
     @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -36,18 +37,19 @@ public class User {
     @OneToOne (cascade = CascadeType.ALL)
     FileUploadResponse fileUploadResponse;
 
-    private String username;
     private String password;
     private String email;
     private boolean enabled;
     private boolean isStudent;
 
     //--- GETTERS & SETTERS
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Long id) { this.id = id; }
+    public void setUsername(String userName) {
+        this.username = userName;
+    }
 
     public FileUploadResponse getFileUploadResponse() {
         return fileUploadResponse;
@@ -55,14 +57,6 @@ public class User {
 
     public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
         this.fileUploadResponse = fileUploadResponse;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String userName) {
-        this.username = userName;
     }
 
     public String getEmail() {
@@ -92,6 +86,5 @@ public class User {
     public void setIsStudent(boolean isStudent) {
         this.isStudent = isStudent;
     }
-
 
 }

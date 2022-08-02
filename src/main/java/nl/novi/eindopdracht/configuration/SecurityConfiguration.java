@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.sql.DataSource;
@@ -22,12 +21,11 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private DataSource dataSource;
-
+    private final DataSource dataSource;
     private final JwtService jwtService;
 
-    public SecurityConfiguration(JwtService jwtService) {
+    public SecurityConfiguration(DataSource dataSource, JwtService jwtService) {
+        this.dataSource = dataSource;
         this.jwtService = jwtService;
     }
 

@@ -1,6 +1,5 @@
 package nl.novi.eindopdracht.services;
 
-import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.models.User;
@@ -20,7 +19,7 @@ public class ProfileService {
 
     public void profileFromUser(User user) {
         Profile profile = new Profile();
-        profile.setUser(user);
+        profile.setUsername(user.getUsername());
         profile.setIsStudent(user.getIsStudent());
         profileRepository.save(profile);
     }
@@ -33,8 +32,8 @@ public class ProfileService {
         return profileRepository.getAllByIsStudentIsTrue();
     }
 
-    public Profile getProfile(Long id) {
-        Optional<Profile> possibleProfile = profileRepository.findById(id);
+    public Profile getProfile(String username) {
+        Optional<Profile> possibleProfile = profileRepository.findProfileByUsername(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         } else {
@@ -42,8 +41,8 @@ public class ProfileService {
         }
     }
 
-    public void updateProfile(Long id, Profile newProfile) {
-        Optional<Profile> possibleProfile = profileRepository.findById(id);
+    public void updateProfile(String username, Profile newProfile) {
+        Optional<Profile> possibleProfile = profileRepository.findProfileByUsername(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         }   Profile profileToUpdate = possibleProfile.get();

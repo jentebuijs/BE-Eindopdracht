@@ -16,10 +16,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
@@ -69,25 +71,26 @@ public class UserService {
         } return fromUserToDto(optionalUser.get());
     }
 
-    public UserOutputDto updateUser(Long userId, UserInputDto userInputDto) {
-        Optional<User> possibleUser = userRepository.findById(userId);
+    public UserOutputDto updateUser(String username, UserInputDto userInputDto) {
+        Optional<User> possibleUser = userRepository.findUserByUsername(username);
         if (possibleUser.isEmpty()) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        } User updatedUser = fromDtoToUser(userInputDto);
-        updatedUser.setId(userId);
+        } User updatedUser = possibleUser.get();
+        updatedUser.setEmail(userInputDto.getEmail());
+        updatedUser.setEnabled(userInputDto.isEnabled());
+        updatedUser.setIsStudent(userInputDto.getIsStudent());
         return fromUserToDto(userRepository.save(updatedUser));
     }
 
-    public void deleteUser(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isEmpty()) {
+    public void deleteUser(String username) {
+        boolean userExists = userRepository.existsByUsername(username);
+        if(userExists == false) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        } User userToDelete = optionalUser.get();
-        userRepository.delete(userToDelete);
+        } userRepository.deleteUserByUsername(username);
     }
 
-    public void assignPhotoToStudent(String fileName, Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
+    public void assignPhotoToStudent(String fileName, String username) {
+        Optional<User> optionalUser = userRepository.findUserByUsername(username);
         Optional<FileUploadResponse> fileUploadResponse = fileUploadRepository.findByFileName(fileName);
         if (optionalUser.isPresent() && fileUploadResponse.isPresent()) {
             FileUploadResponse photo = fileUploadResponse.get();
@@ -111,7 +114,6 @@ public class UserService {
 
     private UserOutputDto fromUserToDto(User user) {
         UserOutputDto userOutputDto = new UserOutputDto();
-        userOutputDto.setId(user.getId());
         userOutputDto.setUsername(user.getUsername());
         userOutputDto.setEmail(user.getEmail());
         userOutputDto.setEnabled(user.getEnabled());

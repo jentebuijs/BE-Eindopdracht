@@ -33,14 +33,14 @@ public class ProfileController {
         return ResponseEntity.ok().body(profileService.getStudentProfiles());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
-        return ResponseEntity.ok().body(profileService.getProfile(id));
+    @GetMapping("/{username}")
+    public ResponseEntity<Profile> getProfile(@PathVariable String username) {
+        return ResponseEntity.ok().body(profileService.getProfile(username));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateProfile(@PathVariable Long id, @RequestBody Profile newProfile) {
-        profileService.updateProfile(id, newProfile);
+    @PutMapping("/{username}")
+    public ResponseEntity<Object> updateProfile(@PathVariable String username, @RequestBody Profile newProfile) {
+        profileService.updateProfile(username, newProfile);
         return ResponseEntity.ok().body("Je wijzigingen zijn opgeslagen");
     }
 

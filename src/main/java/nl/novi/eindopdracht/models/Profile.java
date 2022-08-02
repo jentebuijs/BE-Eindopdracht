@@ -1,18 +1,16 @@
 package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "profiles")
 public class Profile {
 
     @Id
-    @Column(name = "user_id")
-    private Long id;
+    private String username;
 
     @MapsId
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "username")
     @OneToOne
     private User user;
 
@@ -25,17 +23,21 @@ public class Profile {
     private boolean isStudent;
 
     //--- GETTERS & SETTERS
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public User getUser() {
-        return user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    //    public User getUser() {
+//        return user;
+//    }
+
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public String getFirstName() {
         return firstName;

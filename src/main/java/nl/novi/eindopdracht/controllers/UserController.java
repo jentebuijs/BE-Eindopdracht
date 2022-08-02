@@ -44,22 +44,22 @@ public class UserController {
         return ResponseEntity.ok().body(userOutputDto);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<UserOutputDto> updateUser(@PathVariable Long userId, @RequestBody UserInputDto userInputDto) {
-        UserOutputDto userOutputDto = userService.updateUser(userId, userInputDto);
+    @PutMapping("/{username}")
+    public ResponseEntity<UserOutputDto> updateUser(@PathVariable String username, @RequestBody UserInputDto userInputDto) {
+        UserOutputDto userOutputDto = userService.updateUser(username, userInputDto);
         return ResponseEntity.ok().body(userOutputDto);
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
         return ResponseEntity.ok().body("Gebruiker succesvol verwijderd");
     }
 
-    @PostMapping("/{id}/photo")
-    public void assignPhotoToStudent(@PathVariable("id") Long studentNumber,
+    @PostMapping("/{username}/photo")
+    public void assignPhotoToStudent(@PathVariable String username,
                                      @RequestBody MultipartFile file) {
         FileUploadResponse photo = photoController.uploadFile(file);
-        userService.assignPhotoToStudent(photo.getFileName(), studentNumber);
+        userService.assignPhotoToStudent(photo.getFileName(), username);
     }
 }

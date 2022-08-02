@@ -1,6 +1,5 @@
 package nl.novi.eindopdracht.controllers;
 
-
 import nl.novi.eindopdracht.models.Request;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.services.RequestService;
@@ -29,13 +28,13 @@ public class RequestController {
     }
 
     @GetMapping("/outgoing")
-    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam Long id) {
-        return ResponseEntity.ok().body(requestService.getBySender(id));
+    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam String username) {
+        return ResponseEntity.ok().body(requestService.getBySender(username));
     }
 
     @GetMapping("/incoming")
-    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam Long id) {
-        return ResponseEntity.ok().body(requestService.getByRecipient(id));
+    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam String username) {
+        return ResponseEntity.ok().body(requestService.getByRecipient(username));
     }
 
 }
