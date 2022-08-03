@@ -1,30 +1,35 @@
 package nl.novi.eindopdracht.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "authorities")
 public class Authority implements Serializable {
     @Id
-    private String username;
-    private String authority;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-    public String getUsername() {
-        return username;
+    @Enumerated(EnumType.STRING)
+    private EAuthority name;
+
+    public Authority(EAuthority name) {
+        this.name = name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public Authority() {
     }
 
-    public String getAuthority() {
-        return authority;
+    public Long getId() {
+        return id;
     }
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public EAuthority getName() {
+        return name;
+    }
+
+    public void setName(EAuthority name) {
+        this.name = name;
     }
 }

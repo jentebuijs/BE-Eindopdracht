@@ -9,18 +9,25 @@ public class Profile {
     @Id
     private String username;
 
-    @MapsId
-    @JoinColumn(name = "username")
-    @OneToOne
-    private User user;
-
     private String firstName;
     private String lastName;
     private String dob;
     private String level;
     private String contactIntensity;
     private String aboutMe;
-    private boolean isStudent;
+
+    public Profile(String username, String firstName, String lastName, String dob,
+                   String contactIntensity, String aboutMe) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.contactIntensity = contactIntensity;
+        this.aboutMe = aboutMe;
+    }
+
+    public Profile() {
+    }
 
     //--- GETTERS & SETTERS
     public String getUsername() {
@@ -30,14 +37,6 @@ public class Profile {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    //    public User getUser() {
-//        return user;
-//    }
-
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
 
     public String getFirstName() {
         return firstName;
@@ -87,11 +86,4 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
-    public boolean isStudent() {
-        return isStudent;
-    }
-
-    public void setIsStudent(boolean student) {
-        isStudent = student;
-    }
 }

@@ -1,5 +1,6 @@
 package nl.novi.eindopdracht.controllers;
 
+import nl.novi.eindopdracht.dtos.RequestDto;
 import nl.novi.eindopdracht.models.Request;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.services.RequestService;
@@ -21,8 +22,8 @@ public class RequestController {
 
     //MAPPINGS
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> makeRequest(@RequestParam User sender, @RequestParam User recipient, @RequestParam String message) {
-        Request newRequest = requestService.addRequest(sender, recipient, message);
+    public ResponseEntity<HttpStatus> makeRequest(@RequestBody RequestDto requestDto) {
+        Request newRequest = requestService.addRequest(requestDto);
         URI location = URI.create(newRequest.getId().toString());
         return ResponseEntity.created(location).build();
     }

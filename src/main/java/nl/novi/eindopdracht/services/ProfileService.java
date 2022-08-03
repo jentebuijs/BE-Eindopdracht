@@ -17,23 +17,23 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    public void profileFromUser(User user) {
-        Profile profile = new Profile();
-        profile.setUsername(user.getUsername());
-        profile.setIsStudent(user.getIsStudent());
-        profileRepository.save(profile);
-    }
+//    public void createProfileFromUser(User user) {
+//        Profile profile = new Profile();
+//        profile.setUser(user);
+//        profile.setIsStudent(user.getIsStudent());
+//        profileRepository.save(profile);
+//    }
 
     public List<Profile> getAllProfiles() { return profileRepository.findAll(); }
 
-    public List<Profile> getBuddyProfiles() { return profileRepository.getAllByIsStudentIsFalse(); }
-
-    public List<Profile> getStudentProfiles() {
-        return profileRepository.getAllByIsStudentIsTrue();
-    }
+//    public List<Profile> getBuddyProfiles() { return profileRepository.getAllByIsStudentIsFalse(); }
+//
+//    public List<Profile> getStudentProfiles() {
+//        return profileRepository.getAllByIsStudentIsTrue();
+//    }
 
     public Profile getProfile(String username) {
-        Optional<Profile> possibleProfile = profileRepository.findProfileByUsername(username);
+        Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         } else {
@@ -42,7 +42,7 @@ public class ProfileService {
     }
 
     public void updateProfile(String username, Profile newProfile) {
-        Optional<Profile> possibleProfile = profileRepository.findProfileByUsername(username);
+        Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         }   Profile profileToUpdate = possibleProfile.get();
@@ -52,7 +52,6 @@ public class ProfileService {
             profileToUpdate.setLevel(newProfile.getLevel());
             profileToUpdate.setContactIntensity(newProfile.getContactIntensity());
             profileToUpdate.setAboutMe(newProfile.getAboutMe());
-            profileToUpdate.setIsStudent(newProfile.isStudent());
             profileRepository.save(profileToUpdate);
         }
     }

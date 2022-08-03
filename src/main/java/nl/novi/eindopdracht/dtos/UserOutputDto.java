@@ -7,7 +7,6 @@ public class UserOutputDto {
     private String username;
     private String email;
     private boolean enabled;
-    private boolean isStudent;
 
     public String getUsername() {
         return username;
@@ -31,15 +30,6 @@ public class UserOutputDto {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public boolean getIsStudent() {
-        return isStudent;
-    }
-
-    public void setIsStudent(boolean isStudent) {
-
-        this.isStudent = isStudent;
     }
 
 }

@@ -1,8 +1,7 @@
 package nl.novi.eindopdracht.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,21 +9,24 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(nullable = false)
+    @Column(name = "username")
     private String username;
 
-    @PrimaryKeyJoinColumn
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_profile")
     private Profile profile;
 
-    @OneToMany(
-            targetEntity = Authority.class,
-            mappedBy = "username",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private Set<Authority> authorities;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable( name = "user_authorities",
+            joinColumns = @JoinColumn(name = "user_username"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    private Set<Authority> authorities = new HashSet<>();
+
+//            targetEntity = Authority.class,
+//            mappedBy = "username",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true,
+//            fetch = FetchType.LAZY
 
     @OneToMany(mappedBy = "recipient",
             cascade = CascadeType.ALL)
@@ -40,7 +42,14 @@ public class User {
     private String password;
     private String email;
     private boolean enabled;
-    private boolean isStudent;
+
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+
+    public User() {
+    }
 
     //--- GETTERS & SETTERS
     public String getUsername() {
@@ -57,6 +66,14 @@ public class User {
 
     public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
         this.fileUploadResponse = fileUploadResponse;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public String getEmail() {
@@ -79,12 +96,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public boolean getIsStudent() {
-        return isStudent;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setIsStudent(boolean isStudent) {
-        this.isStudent = isStudent;
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
-
 }
