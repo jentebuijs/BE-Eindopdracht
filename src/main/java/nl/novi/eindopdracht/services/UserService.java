@@ -16,12 +16,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
-@Transactional
+
 public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
@@ -86,7 +85,7 @@ public class UserService {
         boolean userExists = userRepository.existsByUsername(username);
         if(userExists == false) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        } userRepository.deleteUserByUsername(username);
+        } userRepository.deleteById(username);
     }
 
     public void assignPhotoToStudent(String fileName, String username) {
