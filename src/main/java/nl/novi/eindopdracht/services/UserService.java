@@ -8,7 +8,6 @@ import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.*;
 import nl.novi.eindopdracht.repositories.AuthorityRepository;
 import nl.novi.eindopdracht.repositories.FileUploadRepository;
-import nl.novi.eindopdracht.repositories.ProfileRepository;
 import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,8 +49,8 @@ public class UserService {
         if (possibleUser.isPresent()) {
             throw new AlreadyInUseException("Deze gebruikersnaam is al in gebruik");
         }
-        possibleUser = userRepository.findUserByEmail(userInputDto.getEmail());
-        if (possibleUser.isPresent()) {
+        Optional<User> optionalUser = userRepository.findUserByEmail(userInputDto.getEmail());
+        if (optionalUser.isPresent()) {
             throw new AlreadyInUseException("Dit emailadres is al in gebruik");
         }
 

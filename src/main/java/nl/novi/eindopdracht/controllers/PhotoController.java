@@ -25,23 +25,14 @@ public class PhotoController {
 
     @PostMapping("/upload")
     FileUploadResponse uploadFile(@RequestParam("file") MultipartFile file){
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/").path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
-        String contentType = file.getContentType();
-        String fileName = photoService.storeFile(file, url);
-        return new FileUploadResponse(fileName, contentType, url );
+        return photoService.storeFile(file);
     }
 
     @GetMapping("/download/{fileName}")
-    ResponseEntity<Resource> downLoadFile(@PathVariable String fileName, HttpServletRequest request) {
-        Resource resource = photoService.downLoadFile(fileName);
-        String mimeType;
-
-        try{
-            mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException e) {
-            mimeType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
-        }
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + resource.getFilename()).body(resource);
+    ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        Resource resource = photoService.createResource(fileName);
+        String mimeType = photoService.createMimeType(resource, request);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + fileName).body(resource);
 
 //        for download attachment use next line
 //        return ResponseEntity.ok().contentType(contentType).header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + resource.getFilename()).body(resource);

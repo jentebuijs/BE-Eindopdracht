@@ -9,7 +9,6 @@ public class FileUploadResponse {
     private String fileName;
 
     private String contentType;
-
     private String url;
 
     public FileUploadResponse(String fileName, String contentType, String url) {

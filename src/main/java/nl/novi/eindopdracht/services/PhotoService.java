@@ -5,10 +5,17 @@ import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeType;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -21,14 +28,13 @@ import java.util.Objects;
 public class PhotoService {
     @Value("${my.upload_location}")
     private Path fileStoragePath;
-    private final String fileStorageLocation;
+
 
     private final FileUploadRepository fileUploadRepository;
 
-    public PhotoService(@Value("${my.upload_location}") String fileStorageLocation, FileUploadRepository fileUploadRepository) {
-        fileStoragePath = Paths.get(fileStorageLocation).toAbsolutePath().normalize();
+    public PhotoService(FileUploadRepository fileUploadRepository) {
+        fileStoragePath = Paths.get("${my.upload_location}").toAbsolutePath().normalize();
 
-        this.fileStorageLocation = fileStorageLocation;
         this.fileUploadRepository = fileUploadRepository;
 
         try {
@@ -39,8 +45,9 @@ public class PhotoService {
 
     }
 
-    public String storeFile(MultipartFile file, String url) {
-
+    public FileUploadResponse storeFile(MultipartFile file) {
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/")
+                .path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
         Path filePath = Paths.get(fileStoragePath + "\\" + fileName);
@@ -51,27 +58,35 @@ public class PhotoService {
             throw new RuntimeException("Issue in storing the file", e);
         }
 
-        fileUploadRepository.save(new FileUploadResponse(fileName, file.getContentType(), url));
 
-        return fileName;
+        return fileUploadRepository.save(new FileUploadResponse(fileName, file.getContentType(), url));
     }
 
-    public Resource downLoadFile(String fileName) {
-
-        Path path = Paths.get(fileStorageLocation).toAbsolutePath().resolve(fileName);
-
+    public Resource createResource(String fileName) {
+        Path path = Paths.get("${my.upload_location}").toAbsolutePath().resolve(fileName);
         Resource resource;
-
         try {
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
             throw new RuntimeException("Issue in reading the file", e);
         }
-
-        if(resource.exists()&& resource.isReadable()) {
+        if (resource.exists() && resource.isReadable()) {
             return resource;
         } else {
-            throw new RuntimeException("the file doesn't exist or not readable");
+            throw new RuntimeException("the file doesn't exist or is not a readable format");
         }
     }
+
+    public String createMimeType(Resource resource, HttpServletRequest request) {
+        String mimeType;
+        try {
+            mimeType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException e) {
+            mimeType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        }
+        return mimeType;
+    }
 }
+
+
+
