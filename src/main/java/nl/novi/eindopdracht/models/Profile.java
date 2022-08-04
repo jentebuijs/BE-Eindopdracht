@@ -13,16 +13,16 @@ public class Profile {
     private String lastName;
     private String dob;
     private String level;
-    private String contactIntensity;
+    private Frequency frequency;
     private String aboutMe;
 
-    public Profile(String username, String firstName, String lastName, String dob, String level, String contactIntensity, String aboutMe) {
+    public Profile(String username, String firstName, String lastName, String dob, String level, Frequency frequency, String aboutMe) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
         this.level = level;
-        this.contactIntensity = contactIntensity;
+        this.frequency = frequency;
         this.aboutMe = aboutMe;
     }
 
@@ -70,12 +70,12 @@ public class Profile {
         this.level = level;
     }
 
-    public String getContactIntensity() {
-        return contactIntensity;
+    public Frequency getFrequency() {
+        return frequency;
     }
 
-    public void setContactIntensity(String contactIntensity) {
-        this.contactIntensity = contactIntensity;
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
     }
 
     public String getAboutMe() {

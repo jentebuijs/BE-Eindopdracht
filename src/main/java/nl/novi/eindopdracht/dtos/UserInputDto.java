@@ -1,5 +1,7 @@
 package nl.novi.eindopdracht.dtos;
 
+import nl.novi.eindopdracht.models.Frequency;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +13,7 @@ public class UserInputDto {
     private String lastName;
     private String dob;
     private String level;
-    private String contactIntensity;
+    private Frequency frequency;
     private String aboutMe;
     private Set<String> authorities = new HashSet<>();
 
@@ -71,12 +73,12 @@ public class UserInputDto {
         this.level = level;
     }
 
-    public String getContactIntensity() {
-        return contactIntensity;
+    public Frequency getFrequency() {
+        return frequency;
     }
 
-    public void setContactIntensity(String contactIntensity) {
-        this.contactIntensity = contactIntensity;
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
     }
 
     public String getAboutMe() {

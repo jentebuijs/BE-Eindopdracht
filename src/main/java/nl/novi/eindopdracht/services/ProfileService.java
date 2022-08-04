@@ -41,7 +41,7 @@ public class ProfileService {
                 userInputDto.getLastName(),
                 userInputDto.getDob(),
                 userInputDto.getLevel(),
-                userInputDto.getContactIntensity(),
+                userInputDto.getFrequency(),
                 userInputDto.getAboutMe());
     }
 
@@ -54,7 +54,7 @@ public class ProfileService {
             profileToUpdate.setLastName(newProfile.getLastName());
             profileToUpdate.setDob(newProfile.getDob());
             profileToUpdate.setLevel(newProfile.getLevel());
-            profileToUpdate.setContactIntensity(newProfile.getContactIntensity());
+            profileToUpdate.setFrequency(newProfile.getFrequency());
             profileToUpdate.setAboutMe(newProfile.getAboutMe());
             profileRepository.save(profileToUpdate);
         }
