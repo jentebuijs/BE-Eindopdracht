@@ -1,7 +1,5 @@
 package nl.novi.eindopdracht.dtos;
 
-import nl.novi.eindopdracht.models.Authority;
-
 import java.util.HashSet;
 import java.util.Set;
 

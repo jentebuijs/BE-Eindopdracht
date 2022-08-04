@@ -16,12 +16,12 @@ public class Profile {
     private String contactIntensity;
     private String aboutMe;
 
-    public Profile(String username, String firstName, String lastName, String dob,
-                   String contactIntensity, String aboutMe) {
+    public Profile(String username, String firstName, String lastName, String dob, String level, String contactIntensity, String aboutMe) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
+        this.level = level;
         this.contactIntensity = contactIntensity;
         this.aboutMe = aboutMe;
     }

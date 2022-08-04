@@ -1,8 +1,8 @@
 package nl.novi.eindopdracht.services;
 
+import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.Profile;
-import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,6 @@ public class ProfileService {
     public ProfileService(ProfileRepository profileRepository) {
         this.profileRepository = profileRepository;
     }
-
-//    public void createProfileFromUser(User user) {
-//        Profile profile = new Profile();
-//        profile.setUser(user);
-//        profile.setIsStudent(user.getIsStudent());
-//        profileRepository.save(profile);
-//    }
 
     public List<Profile> getAllProfiles() { return profileRepository.findAll(); }
 
@@ -39,6 +32,17 @@ public class ProfileService {
         } else {
             return possibleProfile.get();
         }
+    }
+
+    public Profile createProfile(UserInputDto userInputDto) {
+        return new Profile(
+                userInputDto.getUsername(),
+                userInputDto.getFirstName(),
+                userInputDto.getLastName(),
+                userInputDto.getDob(),
+                userInputDto.getLevel(),
+                userInputDto.getContactIntensity(),
+                userInputDto.getAboutMe());
     }
 
     public void updateProfile(String username, Profile newProfile) {

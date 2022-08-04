@@ -28,18 +28,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final FileUploadRepository fileUploadRepository;
     private final AuthorityRepository authorityRepository;
-    private final ProfileRepository profileRepository;
+    private final ProfileService profileService;
     private final RequestService requestService;
     private final JwtService jwtService;
 
     public UserService(AuthenticationManager authenticationManager, UserRepository userRepository,
                        FileUploadRepository fileUploadRepository, AuthorityRepository authorityRepository,
-                       ProfileRepository profileRepository, RequestService requestService, JwtService jwtService) {
+                       ProfileService profileService, RequestService requestService, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.fileUploadRepository = fileUploadRepository;
         this.authorityRepository = authorityRepository;
-        this.profileRepository = profileRepository;
+        this.profileService = profileService;
         this.requestService = requestService;
         this.jwtService = jwtService;
     }
@@ -58,15 +58,7 @@ public class UserService {
         User user = new User(
                 userInputDto.getUsername(),
                 userInputDto.getEmail());
-        Profile profile = new Profile(
-                userInputDto.getUsername(),
-                userInputDto.getFirstName(),
-                userInputDto.getLastName(),
-                userInputDto.getDob(),
-                userInputDto.getLevel(),
-                userInputDto.getContactIntensity(),
-                userInputDto.getAboutMe());
-
+        Profile profile = profileService.createProfile(userInputDto);
         user.setProfile(profile);
         Set<String> strAuthorities = userInputDto.getAuthorities();
         Set<Authority> authorities = new HashSet<>();
