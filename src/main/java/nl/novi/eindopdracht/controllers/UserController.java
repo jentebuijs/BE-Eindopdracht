@@ -4,6 +4,7 @@ import nl.novi.eindopdracht.dtos.AuthDto;
 import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.models.FileUploadResponse;
+import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,10 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserOutputDto> signUp(@RequestBody UserInputDto userInputDto){
-        UserOutputDto userOutputDto = userService.signUp(userInputDto);
-        URI location = URI.create(userOutputDto.getUsername());
-        return ResponseEntity.created(location).body(userOutputDto);
+    public ResponseEntity<User> signUp(@RequestBody UserInputDto userInputDto){
+        User user = userService.signUp(userInputDto);
+        URI location = URI.create(user.getUsername());
+        return ResponseEntity.created(location).body(user);
     }
 
     @PostMapping("/signin")

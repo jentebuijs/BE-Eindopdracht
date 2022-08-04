@@ -7,10 +7,6 @@ import java.io.Serializable;
 @Table(name = "authorities")
 public class Authority implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
     @Enumerated(EnumType.STRING)
     private EAuthority name;
 
@@ -19,10 +15,6 @@ public class Authority implements Serializable {
     }
 
     public Authority() {
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public EAuthority getName() {

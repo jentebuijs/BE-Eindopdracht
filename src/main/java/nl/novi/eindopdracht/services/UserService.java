@@ -45,7 +45,7 @@ public class UserService {
     }
 
     //METHODS//
-    public UserOutputDto signUp(UserInputDto userInputDto) {
+    public User signUp(UserInputDto userInputDto) {
         Optional<User> possibleUser = userRepository.findById(userInputDto.getUsername());
         if (possibleUser.isPresent()) {
             throw new AlreadyInUseException("Deze gebruikersnaam is al in gebruik");
@@ -62,33 +62,18 @@ public class UserService {
         user.setProfile(profile);
         Set<String> strAuthorities = userInputDto.getAuthorities();
         Set<Authority> authorities = new HashSet<>();
-        if (strAuthorities != null) {
-            strAuthorities.forEach(authority -> {switch (authority) {
-                    case "ADMIN" -> {
-                        Authority adminRole = authorityRepository.findByName(EAuthority.ROLE_ADMIN)
-                                .orElseThrow(() ->
-                                        new RuntimeException("Error: Role is not found."));
-                        authorities.add(adminRole);
-                    }
-                    case "BUDDY" -> {
-                        Authority buddyRole = authorityRepository.findByName(EAuthority.ROLE_BUDDY)
-                                .orElseThrow(() ->
-                                        new RuntimeException("Error: Role is not found."));
-                        authorities.add(buddyRole);
-                    }
-                    case "STUDENT" -> {
-                        Authority studentRole = authorityRepository.findByName(EAuthority.ROLE_STUDENT)
-                                .orElseThrow(() ->
-                                        new RuntimeException("Error: Role is not found."));
-                        authorities.add(studentRole);
-                    }
-                }
-            });
+        for(String authority :strAuthorities) {
+            switch(authority) {
+                case "Admin" : authorities.add(authorityRepository.getByName(EAuthority.ROLE_ADMIN));
+                case "Buddy" : authorities.add(authorityRepository.getByName(EAuthority.ROLE_BUDDY));
+                case "Student" : authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT));
+            }
         }
         user.setAuthorities(authorities);
         user.setEnabled(true);
-        return fromUserToDto(userRepository.save(user));
-}
+        return userRepository.save(user);
+    }
+
 
     public String signIn(AuthDto authDto) {
         UsernamePasswordAuthenticationToken upat =

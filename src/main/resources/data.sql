@@ -22,6 +22,6 @@
 --
 
 INSERT INTO authorities(name)
-VALUES ('ROLE_ADMIN'),
-       ('ROLE_BUDDY'),
+VALUES ('ROLE_BUDDY'),
+       ('ROLE_ADMIN'),
        ('ROLE_STUDENT');
