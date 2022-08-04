@@ -40,9 +40,9 @@ public class ProfileService {
                 userInputDto.getFirstName(),
                 userInputDto.getLastName(),
                 userInputDto.getDob(),
-                userInputDto.getLevel(),
                 userInputDto.getFrequency(),
-                userInputDto.getAboutMe());
+                userInputDto.getAboutMe(),
+                userInputDto.getLevel());
     }
 
     public void updateProfile(String username, Profile newProfile) {

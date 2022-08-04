@@ -12,18 +12,18 @@ public class Profile {
     private String firstName;
     private String lastName;
     private String dob;
-    private String level;
     private Frequency frequency;
     private String aboutMe;
+    private Level level;
 
-    public Profile(String username, String firstName, String lastName, String dob, String level, Frequency frequency, String aboutMe) {
+    public Profile(String username, String firstName, String lastName, String dob, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
-        this.level = level;
         this.frequency = frequency;
         this.aboutMe = aboutMe;
+        this.level = level;
     }
 
     public Profile() {
@@ -62,11 +62,11 @@ public class Profile {
         this.dob = dob;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 

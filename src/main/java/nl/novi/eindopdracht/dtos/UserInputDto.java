@@ -1,6 +1,7 @@
 package nl.novi.eindopdracht.dtos;
 
 import nl.novi.eindopdracht.models.Frequency;
+import nl.novi.eindopdracht.models.Level;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +13,7 @@ public class UserInputDto {
     private String firstName;
     private String lastName;
     private String dob;
-    private String level;
+    private Level level;
     private Frequency frequency;
     private String aboutMe;
     private Set<String> authorities = new HashSet<>();
@@ -65,11 +66,11 @@ public class UserInputDto {
         this.dob = dob;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 
