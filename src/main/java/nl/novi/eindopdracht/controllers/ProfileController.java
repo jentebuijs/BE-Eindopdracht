@@ -22,17 +22,7 @@ public class ProfileController {
     public ResponseEntity<List<Profile>> getAllProfiles() {
         return ResponseEntity.ok().body(profileService.getAllProfiles());
     }
-
-//    @GetMapping("/buddies")
-//    public ResponseEntity<List<Profile>> getBuddyProfiles() {
-//        return ResponseEntity.ok().body(profileService.getBuddyProfiles());
-//    }
-//
-//    @GetMapping("/students")
-//    public ResponseEntity<List<Profile>> getStudentProfiles() {
-//        return ResponseEntity.ok().body(profileService.getStudentProfiles());
-//    }
-
+    
     @GetMapping("/{username}")
     public ResponseEntity<Profile> getProfile(@PathVariable String username) {
         return ResponseEntity.ok().body(profileService.getProfile(username));

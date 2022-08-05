@@ -1,5 +1,6 @@
 package nl.novi.eindopdracht.controllers;
 
+import nl.novi.eindopdracht.dtos.FileInfoDto;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.services.PhotoService;
 import org.springframework.core.io.Resource;
@@ -8,11 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/photos")
@@ -30,12 +28,8 @@ public class PhotoController {
 
     @GetMapping("/download/{fileName}")
     ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-        Resource resource = photoService.createResource(fileName);
-        String mimeType = photoService.createMimeType(resource, request);
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mimeType)).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + fileName).body(resource);
-
-//        for download attachment use next line
-//        return ResponseEntity.ok().contentType(contentType).header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + resource.getFilename()).body(resource);
-
+        FileInfoDto fileInfo = photoService.downloadFile(fileName, request);
+        Resource resource = fileInfo.getResource();
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(fileInfo.getMimeType())).header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + resource.getFilename()).body(resource);
     }
 }
