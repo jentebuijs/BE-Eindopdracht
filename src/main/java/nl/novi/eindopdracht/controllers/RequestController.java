@@ -22,10 +22,10 @@ public class RequestController {
 
     //MAPPINGS
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> makeRequest(@RequestBody RequestDto requestDto) {
+    public ResponseEntity<String> makeRequest(@RequestBody RequestDto requestDto) {
         Request newRequest = requestService.addRequest(requestDto);
         URI location = URI.create(newRequest.getId().toString());
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body("Het verzoek is verstuurd");
     }
 
     @GetMapping("/outgoing")

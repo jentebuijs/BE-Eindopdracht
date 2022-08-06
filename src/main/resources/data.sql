@@ -1,11 +1,16 @@
--- INSERT INTO users (username, password, email, is_student, enabled)
---     VALUES ('karel', '$2y$10$ZGU6vt6yoRqDvao7Nelxe.9x7mH4sunzgJSFVIEFO/i5Kci6x8ta6', 'karelappel@gmail.com', false, true),
---            ('vincent', '$2y$10$o6uZsxhnP2//MTSAICYUGuthde9LioKWaEKR7OTd17w6nf3q.2zpu', 'vincentvangogh@gmail.com', true, true);
---
--- INSERT INTO authorities (username, authority)
---     VALUES ('karel', 'USER'),
---            ('vincent', 'ADMIN');
---
+INSERT INTO users (username, password, email, enabled)
+    VALUES ('karel', '$2y$10$ZGU6vt6yoRqDvao7Nelxe.9x7mH4sunzgJSFVIEFO/i5Kci6x8ta6', 'karelappel@gmail.com', true),
+           ('vincent', '$2y$10$o6uZsxhnP2//MTSAICYUGuthde9LioKWaEKR7OTd17w6nf3q.2zpu', 'vincentvangogh@gmail.com', true);
+
+INSERT INTO authorities(name)
+VALUES ('ROLE_BUDDY'),
+       ('ROLE_ADMIN'),
+       ('ROLE_STUDENT');
+
+INSERT INTO user_authorities (user_username, authority_id)
+    VALUES ('karel', 'ROLE_STUDENT'),
+           ('vincent', 'ROLE_ADMIN');
+
 -- INSERT INTO profiles (first_name, last_name, dob, level, contact_intensity, about_me, is_student, username)
 -- VALUES ('karel', 'appel', '25-04-1921', 'beginner', 'never', 'niks te melden', false, 'karel'),
 --        ('vincent', 'gogh', '30-03-1853', 'gevorderd', 'soms', 'mijn oor is kapot', true, 'vincent');
@@ -21,7 +26,3 @@
 --            ('titel4', 'content4', true, true, false);
 --
 
-INSERT INTO authorities(name)
-VALUES ('ROLE_BUDDY'),
-       ('ROLE_ADMIN'),
-       ('ROLE_STUDENT');

@@ -17,13 +17,9 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
-    public List<Profile> getAllProfiles() { return profileRepository.findAll(); }
-
-//    public List<Profile> getBuddyProfiles() { return profileRepository.getAllByIsStudentIsFalse(); }
-//
-//    public List<Profile> getStudentProfiles() {
-//        return profileRepository.getAllByIsStudentIsTrue();
-//    }
+    public List<Profile> getProfiles() {
+        return profileRepository.findAll();
+    }
 
     public Profile getProfile(String username) {
         Optional<Profile> possibleProfile = profileRepository.findById(username);

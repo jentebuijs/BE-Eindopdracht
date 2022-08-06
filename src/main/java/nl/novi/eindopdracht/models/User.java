@@ -22,12 +22,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private Set<Authority> authorities = new HashSet<>();
 
-//            targetEntity = Authority.class,
-//            mappedBy = "username",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.LAZY
-
     @OneToMany(mappedBy = "recipient",
             cascade = CascadeType.ALL)
     Set<Request> incomingRequests;
@@ -43,8 +37,9 @@ public class User {
     private String email;
     private boolean enabled;
 
-    public User(String username, String email) {
+    public User(String username, String password, String email) {
         this.username = username;
+        this.password = password;
         this.email = email;
     }
 

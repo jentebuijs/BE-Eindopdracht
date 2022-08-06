@@ -19,8 +19,8 @@ public class ProfileController {
 
     //MAPPINGS
     @GetMapping
-    public ResponseEntity<List<Profile>> getAllProfiles() {
-        return ResponseEntity.ok().body(profileService.getAllProfiles());
+    public ResponseEntity<List<Profile>> getProfiles() {
+        return ResponseEntity.ok().body(profileService.getProfiles());
     }
     
     @GetMapping("/{username}")

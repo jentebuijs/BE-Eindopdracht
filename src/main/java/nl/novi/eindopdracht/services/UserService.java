@@ -54,25 +54,28 @@ public class UserService {
             throw new AlreadyInUseException("Dit emailadres is al in gebruik");
         }
 
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encryptedPassword = passwordEncoder.encode(userInputDto.getPassword());
+
         User user = new User(
                 userInputDto.getUsername(),
+                encryptedPassword,
                 userInputDto.getEmail());
         Profile profile = profileService.createProfile(userInputDto);
         user.setProfile(profile);
         Set<String> strAuthorities = userInputDto.getAuthorities();
         Set<Authority> authorities = new HashSet<>();
-        for(String authority :strAuthorities) {
+        strAuthorities.forEach(authority -> {
             switch(authority) {
-                case "Admin" : authorities.add(authorityRepository.getByName(EAuthority.ROLE_ADMIN));
-                case "Buddy" : authorities.add(authorityRepository.getByName(EAuthority.ROLE_BUDDY));
-                case "Student" : authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT));
+                case "Admin" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_ADMIN)); }
+                case "Buddy" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_BUDDY)); }
+                case "Student" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT)); }
             }
-        }
+        });
         user.setAuthorities(authorities);
         user.setEnabled(true);
         return userRepository.save(user);
     }
-
 
     public String signIn(AuthDto authDto) {
         UsernamePasswordAuthenticationToken upat =
@@ -120,16 +123,6 @@ public class UserService {
         }
     }
 
-    private User fromDtoToUser(UserInputDto userInputDto) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        User user = new User();
-        user.setUsername(userInputDto.getUsername());
-        user.setEmail(userInputDto.getEmail());
-        String encryptedPassword = passwordEncoder.encode(userInputDto.getPassword());
-        user.setPassword(encryptedPassword);
-        user.setEnabled(true);
-        return user;
-    }
 
     private UserOutputDto fromUserToDto(User user) {
         UserOutputDto userOutputDto = new UserOutputDto();
