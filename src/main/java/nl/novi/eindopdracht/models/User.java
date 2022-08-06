@@ -1,5 +1,7 @@
 package nl.novi.eindopdracht.models;
 
+import nl.novi.eindopdracht.dtos.UserInputDto;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,11 +39,15 @@ public class User {
     private String email;
     private boolean enabled;
 
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    public User (UserInputDto userInputDto) {
+        username = userInputDto.getUsername();
+        email = userInputDto.getEmail();
+        password = userInputDto.getPassword();
+        profile = new Profile(userInputDto.getUsername(), userInputDto.getFirstName(), userInputDto.getLastName(), userInputDto.getDob(),
+                userInputDto.getFrequency(), userInputDto.getAboutMe(), userInputDto.getLevel());
     }
+
+
 
     public User() {
     }

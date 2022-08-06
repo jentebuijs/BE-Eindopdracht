@@ -30,17 +30,6 @@ public class ProfileService {
         }
     }
 
-    public Profile createProfile(UserInputDto userInputDto) {
-        return new Profile(
-                userInputDto.getUsername(),
-                userInputDto.getFirstName(),
-                userInputDto.getLastName(),
-                userInputDto.getDob(),
-                userInputDto.getFrequency(),
-                userInputDto.getAboutMe(),
-                userInputDto.getLevel());
-    }
-
     public void updateProfile(String username, Profile newProfile) {
         Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {

@@ -7,22 +7,22 @@ VALUES ('ROLE_BUDDY'),
        ('ROLE_ADMIN'),
        ('ROLE_STUDENT');
 
-INSERT INTO user_authorities (user_username, authority_id)
-    VALUES ('karel', 'ROLE_STUDENT'),
-           ('vincent', 'ROLE_ADMIN');
-
--- INSERT INTO profiles (first_name, last_name, dob, level, contact_intensity, about_me, is_student, username)
--- VALUES ('karel', 'appel', '25-04-1921', 'beginner', 'never', 'niks te melden', false, 'karel'),
---        ('vincent', 'gogh', '30-03-1853', 'gevorderd', 'soms', 'mijn oor is kapot', true, 'vincent');
+-- INSERT INTO user_authorities (user_username, authority_id)
+--     VALUES ('karel', 'ROLE_STUDENT'),
+--            ('vincent', 'ROLE_ADMIN');
 --
--- -- INSERT INTO requests (id, got_accepted, got_canceled, message, sender_username, recipient_username)
--- -- VALUES (1, false, false, 'test1', 'karel', 'vincent'),
--- -- --        (2, false, false, 'test2', 'vincent', 'karel');
--- --
+-- INSERT INTO profiles (first_name, last_name, dob, level, frequency, about_me, username)
+-- VALUES ('karel', 'appel', '25-04-1921', 'ROOKIE', 'ONCE_A_MONTH', 'niks te melden', false, 'karel'),
+--        ('vincent', 'gogh', '30-03-1853', 'HEADSHOT', 'ONCE_A_WEEK', 'mijn oor is kapot', true, 'vincent');
+--
+-- INSERT INTO requests (id, got_accepted, got_canceled, message, sender_username, recipient_username)
+-- VALUES (1, false, false, 'test1', 'karel', 'vincent'),
+--        (2, false, false, 'test2', 'vincent', 'karel');
+--
 -- INSERT INTO messages (title, content, for_buddy, for_student, approved)
 --     VALUES('titel', 'content', true, true, true),
 --            ('titel2', 'content2', true, false, true),
 --            ('titel3', 'content3', false, true, true),
 --            ('titel4', 'content4', true, true, false);
---
+
 

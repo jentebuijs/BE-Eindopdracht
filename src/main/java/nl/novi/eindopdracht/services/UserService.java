@@ -27,18 +27,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final FileUploadRepository fileUploadRepository;
     private final AuthorityRepository authorityRepository;
-    private final ProfileService profileService;
     private final RequestService requestService;
     private final JwtService jwtService;
 
     public UserService(AuthenticationManager authenticationManager, UserRepository userRepository,
                        FileUploadRepository fileUploadRepository, AuthorityRepository authorityRepository,
-                       ProfileService profileService, RequestService requestService, JwtService jwtService) {
+                       RequestService requestService, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.fileUploadRepository = fileUploadRepository;
         this.authorityRepository = authorityRepository;
-        this.profileService = profileService;
         this.requestService = requestService;
         this.jwtService = jwtService;
     }
@@ -56,13 +54,8 @@ public class UserService {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encryptedPassword = passwordEncoder.encode(userInputDto.getPassword());
-
-        User user = new User(
-                userInputDto.getUsername(),
-                encryptedPassword,
-                userInputDto.getEmail());
-        Profile profile = profileService.createProfile(userInputDto);
-        user.setProfile(profile);
+        userInputDto.setPassword(encryptedPassword);
+        User user = new User(userInputDto);
         Set<String> strAuthorities = userInputDto.getAuthorities();
         Set<Authority> authorities = new HashSet<>();
         strAuthorities.forEach(authority -> {
