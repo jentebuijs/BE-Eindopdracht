@@ -12,8 +12,12 @@ public class Profile {
     private String firstName;
     private String lastName;
     private String dob;
+
+    @Enumerated(EnumType.STRING)
     private Frequency frequency;
     private String aboutMe;
+
+    @Enumerated(EnumType.STRING)
     private Level level;
 
     public Profile(String username, String firstName, String lastName, String dob, Frequency frequency, String aboutMe, Level level) {

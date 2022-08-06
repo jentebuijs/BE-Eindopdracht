@@ -53,8 +53,7 @@ public class UserService {
         }
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encryptedPassword = passwordEncoder.encode(userInputDto.getPassword());
-        userInputDto.setPassword(encryptedPassword);
+        userInputDto.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
         User user = new User(userInputDto);
         Set<String> strAuthorities = userInputDto.getAuthorities();
         Set<Authority> authorities = new HashSet<>();

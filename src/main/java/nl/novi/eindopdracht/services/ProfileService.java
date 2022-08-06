@@ -1,6 +1,5 @@
 package nl.novi.eindopdracht.services;
 
-import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
