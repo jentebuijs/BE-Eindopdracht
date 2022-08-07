@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.controllers;
 
-
+import nl.novi.eindopdracht.dtos.RequestDto;
 import nl.novi.eindopdracht.models.Request;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.services.RequestService;
@@ -22,20 +22,20 @@ public class RequestController {
 
     //MAPPINGS
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> makeRequest(@RequestParam User sender, @RequestParam User recipient, @RequestParam String message) {
-        Request newRequest = requestService.addRequest(sender, recipient, message);
+    public ResponseEntity<String> makeRequest(@RequestBody RequestDto requestDto) {
+        Request newRequest = requestService.addRequest(requestDto);
         URI location = URI.create(newRequest.getId().toString());
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body("Het verzoek is verstuurd");
     }
 
     @GetMapping("/outgoing")
-    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam Long id) {
-        return ResponseEntity.ok().body(requestService.getBySender(id));
+    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam String username) {
+        return ResponseEntity.ok().body(requestService.getBySender(username));
     }
 
     @GetMapping("/incoming")
-    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam Long id) {
-        return ResponseEntity.ok().body(requestService.getByRecipient(id));
+    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam String username) {
+        return ResponseEntity.ok().body(requestService.getByRecipient(username));
     }
 
 }

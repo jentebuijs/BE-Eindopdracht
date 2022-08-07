@@ -40,7 +40,7 @@ public class MessageController {
         return ResponseEntity.ok().body(messageService.getStudentMessages());
     }
 
-    @GetMapping("/both-roles")
+    @GetMapping("/both")
     public ResponseEntity<List<Message>> getMessagesForBothRoles() {
         return ResponseEntity.ok().body(messageService.getMessagesForBothRoles());
     }
@@ -51,10 +51,10 @@ public class MessageController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> addMessage(@RequestBody Message message) {
+    public ResponseEntity<String> addMessage(@RequestBody Message message) {
         messageService.addMessage(message);
         URI location = URI.create(message.getId().toString());
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body("Het bericht met id " + message.getId() + " is toegevoegd");
     }
 
     @DeleteMapping("/{id}")

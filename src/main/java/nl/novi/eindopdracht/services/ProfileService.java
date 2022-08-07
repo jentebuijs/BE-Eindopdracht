@@ -1,9 +1,10 @@
 package nl.novi.eindopdracht.services;
 
-import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
+import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.models.User;
+import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +14,19 @@ import java.util.Optional;
 @Service
 public class ProfileService {
     private final ProfileRepository profileRepository;
+    private final FileUploadRepository fileUploadRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepository profileRepository, FileUploadRepository fileUploadRepository) {
         this.profileRepository = profileRepository;
+        this.fileUploadRepository = fileUploadRepository;
     }
 
-    public void profileFromUser(User user) {
-        Profile profile = new Profile();
-        profile.setUser(user);
-        profile.setIsStudent(user.getIsStudent());
-        profileRepository.save(profile);
+    public List<Profile> getProfiles() {
+        return profileRepository.findAll();
     }
 
-    public List<Profile> getAllProfiles() { return profileRepository.findAll(); }
-
-    public List<Profile> getBuddyProfiles() { return profileRepository.getAllByIsStudentIsFalse(); }
-
-    public List<Profile> getStudentProfiles() {
-        return profileRepository.getAllByIsStudentIsTrue();
-    }
-
-    public Profile getProfile(Long id) {
-        Optional<Profile> possibleProfile = profileRepository.findById(id);
+    public Profile getProfile(String username) {
+        Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         } else {
@@ -42,8 +34,8 @@ public class ProfileService {
         }
     }
 
-    public void updateProfile(Long id, Profile newProfile) {
-        Optional<Profile> possibleProfile = profileRepository.findById(id);
+    public void updateProfile(String username, Profile newProfile) {
+        Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         }   Profile profileToUpdate = possibleProfile.get();
@@ -51,11 +43,21 @@ public class ProfileService {
             profileToUpdate.setLastName(newProfile.getLastName());
             profileToUpdate.setDob(newProfile.getDob());
             profileToUpdate.setLevel(newProfile.getLevel());
-            profileToUpdate.setContactIntensity(newProfile.getContactIntensity());
+            profileToUpdate.setFrequency(newProfile.getFrequency());
             profileToUpdate.setAboutMe(newProfile.getAboutMe());
-            profileToUpdate.setIsStudent(newProfile.isStudent());
             profileRepository.save(profileToUpdate);
         }
+
+    public void assignPhotoToProfile(String fileName, String username) {
+        Optional<Profile> optionalProfile = profileRepository.findById(username);
+        Optional<FileUploadResponse> fileUploadResponse = fileUploadRepository.findByFileName(fileName);
+        if (optionalProfile.isPresent() && fileUploadResponse.isPresent()) {
+            FileUploadResponse photo = fileUploadResponse.get();
+            Profile profile = optionalProfile.get();
+            profile.setFileUploadResponse(photo);
+            profileRepository.save(profile);
+        }
+    }
     }
 
 

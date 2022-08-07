@@ -1,11 +1,22 @@
 package nl.novi.eindopdracht.dtos;
 
+import nl.novi.eindopdracht.models.Frequency;
+import nl.novi.eindopdracht.models.Level;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class UserInputDto {
     private String username;
     private String email;
     private String password;
-    private boolean enabled = true;
-    private boolean isStudent;
+    private String firstName;
+    private String lastName;
+    private String dob;
+    private Level level;
+    private Frequency frequency;
+    private String aboutMe;
+    private Set<String> authorities = new HashSet<>();
 
     public String getUsername() {
         return username;
@@ -31,19 +42,60 @@ public class UserInputDto {
         this.password = password;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public boolean getIsStudent() {
-        return isStudent;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setIsStudent(boolean student) {
-        isStudent = student;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public Frequency getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    public Set<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
     }
 }
+

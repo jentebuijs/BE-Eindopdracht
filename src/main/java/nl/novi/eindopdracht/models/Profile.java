@@ -1,40 +1,48 @@
 package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "profiles")
 public class Profile {
 
     @Id
-    @Column(name = "user_id")
-    private Long id;
-
-    @MapsId
-    @JoinColumn(name = "user_id")
-    @OneToOne
-    private User user;
+    private String username;
 
     private String firstName;
     private String lastName;
     private String dob;
-    private String level;
-    private String contactIntensity;
+
+    @Enumerated(EnumType.STRING)
+    private Frequency frequency;
     private String aboutMe;
-    private boolean isStudent;
+
+    @Enumerated(EnumType.STRING)
+    private Level level;
+
+    @OneToOne (cascade = CascadeType.ALL)
+    FileUploadResponse fileUploadResponse;
+
+    public Profile(String username, String firstName, String lastName, String dob, Frequency frequency, String aboutMe, Level level) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dob = dob;
+        this.frequency = frequency;
+        this.aboutMe = aboutMe;
+        this.level = level;
+    }
+
+    public Profile() {
+    }
 
     //--- GETTERS & SETTERS
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -61,20 +69,12 @@ public class Profile {
         this.dob = dob;
     }
 
-    public String getLevel() {
-        return level;
+    public Frequency getFrequency() {
+        return frequency;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public String getContactIntensity() {
-        return contactIntensity;
-    }
-
-    public void setContactIntensity(String contactIntensity) {
-        this.contactIntensity = contactIntensity;
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
     }
 
     public String getAboutMe() {
@@ -85,11 +85,19 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
-    public boolean isStudent() {
-        return isStudent;
+    public Level getLevel() {
+        return level;
     }
 
-    public void setIsStudent(boolean student) {
-        isStudent = student;
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public FileUploadResponse getFileUploadResponse() {
+        return fileUploadResponse;
+    }
+
+    public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
+        this.fileUploadResponse = fileUploadResponse;
     }
 }

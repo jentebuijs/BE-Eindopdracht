@@ -1,6 +1,9 @@
 package nl.novi.eindopdracht.models;
 
+import nl.novi.eindopdracht.dtos.UserInputDto;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -8,22 +11,18 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "username")
+    private String username;
 
-    @PrimaryKeyJoinColumn
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_profile")
     private Profile profile;
 
-    @OneToMany(
-            targetEntity = Authority.class,
-            mappedBy = "username",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private Set<Authority> authorities;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable( name = "user_authorities",
+            joinColumns = @JoinColumn(name = "user_username"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
+    private Set<Authority> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "recipient",
             cascade = CascadeType.ALL)
@@ -33,36 +32,38 @@ public class User {
             cascade = CascadeType.ALL)
     Set<Request> outgoingRequests;
 
-    @OneToOne (cascade = CascadeType.ALL)
-    FileUploadResponse fileUploadResponse;
-
-    private String username;
     private String password;
     private String email;
     private boolean enabled;
-    private boolean isStudent;
+
+    public User (UserInputDto userInputDto) {
+        username = userInputDto.getUsername();
+        email = userInputDto.getEmail();
+        password = userInputDto.getPassword();
+        profile = new Profile(userInputDto.getUsername(), userInputDto.getFirstName(), userInputDto.getLastName(), userInputDto.getDob(),
+                userInputDto.getFrequency(), userInputDto.getAboutMe(), userInputDto.getLevel());
+    }
+
+
+
+    public User() {
+    }
 
     //--- GETTERS & SETTERS
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) { this.id = id; }
-
-    public FileUploadResponse getFileUploadResponse() {
-        return fileUploadResponse;
-    }
-
-    public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
-        this.fileUploadResponse = fileUploadResponse;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String userName) {
         this.username = userName;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public String getEmail() {
@@ -85,13 +86,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public boolean getIsStudent() {
-        return isStudent;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setIsStudent(boolean isStudent) {
-        this.isStudent = isStudent;
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
-
-
 }

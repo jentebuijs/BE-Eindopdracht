@@ -4,6 +4,7 @@ import nl.novi.eindopdracht.dtos.AuthDto;
 import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
 import nl.novi.eindopdracht.models.FileUploadResponse;
+import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,10 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserOutputDto> signUp(@RequestBody UserInputDto userInputDto){
-        UserOutputDto userOutputDto = userService.signUp(userInputDto);
-        URI location = URI.create(userOutputDto.getUsername());
-        return ResponseEntity.created(location).body(userOutputDto);
+    public ResponseEntity<User> signUp(@RequestBody UserInputDto userInputDto){
+        User user = userService.signUp(userInputDto);
+        URI location = URI.create(user.getUsername());
+        return ResponseEntity.created(location).body(user);
     }
 
     @PostMapping("/signin")
@@ -44,22 +45,15 @@ public class UserController {
         return ResponseEntity.ok().body(userOutputDto);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<UserOutputDto> updateUser(@PathVariable Long userId, @RequestBody UserInputDto userInputDto) {
-        UserOutputDto userOutputDto = userService.updateUser(userId, userInputDto);
+    @PutMapping("/{username}")
+    public ResponseEntity<UserOutputDto> updateUser(@PathVariable String username, @RequestBody UserInputDto userInputDto) {
+        UserOutputDto userOutputDto = userService.updateUser(username, userInputDto);
         return ResponseEntity.ok().body(userOutputDto);
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
         return ResponseEntity.ok().body("Gebruiker succesvol verwijderd");
-    }
-
-    @PostMapping("/{id}/photo")
-    public void assignPhotoToStudent(@PathVariable("id") Long studentNumber,
-                                     @RequestBody MultipartFile file) {
-        FileUploadResponse photo = photoController.uploadFile(file);
-        userService.assignPhotoToStudent(photo.getFileName(), studentNumber);
     }
 }

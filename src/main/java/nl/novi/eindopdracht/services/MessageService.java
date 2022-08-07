@@ -52,12 +52,10 @@ public class MessageService {
     }
 
     public void deleteMessage(Long id) {
-        Optional<Message> possibleMessage = messageRepository.findById(id);
-        if (possibleMessage.isEmpty()) {
+        boolean messageExists = messageRepository.existsById(id);
+        if (messageExists == false) {
             throw new RecordNotFoundException("Dit bericht is niet bekend");
-        } else {
-            messageRepository.deleteById(id);
+        } messageRepository.deleteById(id);
         }
-    }
 
 }
