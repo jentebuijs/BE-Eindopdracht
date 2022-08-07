@@ -20,6 +20,9 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private Level level;
 
+    @OneToOne (cascade = CascadeType.ALL)
+    FileUploadResponse fileUploadResponse;
+
     public Profile(String username, String firstName, String lastName, String dob, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
         this.firstName = firstName;
@@ -66,14 +69,6 @@ public class Profile {
         this.dob = dob;
     }
 
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
     public Frequency getFrequency() {
         return frequency;
     }
@@ -90,4 +85,19 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public FileUploadResponse getFileUploadResponse() {
+        return fileUploadResponse;
+    }
+
+    public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
+        this.fileUploadResponse = fileUploadResponse;
+    }
 }

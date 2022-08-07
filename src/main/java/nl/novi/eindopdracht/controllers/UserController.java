@@ -56,11 +56,4 @@ public class UserController {
         userService.deleteUser(username);
         return ResponseEntity.ok().body("Gebruiker succesvol verwijderd");
     }
-
-    @PostMapping("/{username}/photo")
-    public void assignPhotoToStudent(@PathVariable String username,
-                                     @RequestBody MultipartFile file) {
-        FileUploadResponse photo = photoController.uploadFile(file);
-        userService.assignPhotoToStudent(photo.getFileName(), username);
-    }
 }

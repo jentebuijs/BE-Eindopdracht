@@ -25,17 +25,15 @@ import java.util.Set;
 public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    private final FileUploadRepository fileUploadRepository;
     private final AuthorityRepository authorityRepository;
     private final RequestService requestService;
     private final JwtService jwtService;
 
     public UserService(AuthenticationManager authenticationManager, UserRepository userRepository,
-                       FileUploadRepository fileUploadRepository, AuthorityRepository authorityRepository,
+                       AuthorityRepository authorityRepository,
                        RequestService requestService, JwtService jwtService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
-        this.fileUploadRepository = fileUploadRepository;
         this.authorityRepository = authorityRepository;
         this.requestService = requestService;
         this.jwtService = jwtService;
@@ -103,18 +101,6 @@ public class UserService {
         }
         userRepository.deleteById(username);
     }
-
-    public void assignPhotoToStudent(String fileName, String username) {
-        Optional<User> optionalUser = userRepository.findById(username);
-        Optional<FileUploadResponse> fileUploadResponse = fileUploadRepository.findByFileName(fileName);
-        if (optionalUser.isPresent() && fileUploadResponse.isPresent()) {
-            FileUploadResponse photo = fileUploadResponse.get();
-            User user = optionalUser.get();
-            user.setFileUploadResponse(photo);
-            userRepository.save(user);
-        }
-    }
-
 
     private UserOutputDto fromUserToDto(User user) {
         UserOutputDto userOutputDto = new UserOutputDto();

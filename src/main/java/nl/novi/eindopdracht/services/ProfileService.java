@@ -1,7 +1,10 @@
 package nl.novi.eindopdracht.services;
 
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
+import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Profile;
+import nl.novi.eindopdracht.models.User;
+import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +14,11 @@ import java.util.Optional;
 @Service
 public class ProfileService {
     private final ProfileRepository profileRepository;
+    private final FileUploadRepository fileUploadRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepository profileRepository, FileUploadRepository fileUploadRepository) {
         this.profileRepository = profileRepository;
+        this.fileUploadRepository = fileUploadRepository;
     }
 
     public List<Profile> getProfiles() {
@@ -42,6 +47,17 @@ public class ProfileService {
             profileToUpdate.setAboutMe(newProfile.getAboutMe());
             profileRepository.save(profileToUpdate);
         }
+
+    public void assignPhotoToProfile(String fileName, String username) {
+        Optional<Profile> optionalProfile = profileRepository.findById(username);
+        Optional<FileUploadResponse> fileUploadResponse = fileUploadRepository.findByFileName(fileName);
+        if (optionalProfile.isPresent() && fileUploadResponse.isPresent()) {
+            FileUploadResponse photo = fileUploadResponse.get();
+            Profile profile = optionalProfile.get();
+            profile.setFileUploadResponse(photo);
+            profileRepository.save(profile);
+        }
+    }
     }
 
 
