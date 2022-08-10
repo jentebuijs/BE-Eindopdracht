@@ -12,14 +12,14 @@ import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -82,6 +82,32 @@ public class UserService {
         }
         return fromUserToDto(optionalUser.get());
     }
+
+    public List<Profile> filterByAuthorities() {
+        List<String> strings = new ArrayList<>();
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach((authority) -> {
+            strings.add(authority.toString());
+        });
+        List<Profile> profileList = new ArrayList<>();
+        List<User> userList = userRepository.findAll();
+        strings.forEach(authority -> {
+            switch (authority) {
+                case "ROLE_ADMIN" -> {
+                    userList.forEach(user -> profileList.add(user.getProfile()));
+                }
+                case "ROLE_BUDDY" -> {
+                    userList.stream().filter(user -> user.getAuthorities().contains("BUDDY"))
+                            .forEach(user -> profileList.add(user.getProfile()));
+                }
+                case "ROLE_STUDENT" -> {
+                    userList.stream().filter(user -> user.getAuthorities().contains("STUDENT"))
+                            .forEach(user -> profileList.add(user.getProfile()));
+                }
+            }
+        });
+        return profileList;
+    }
+
 
     public UserOutputDto updateUser(String username, UserInputDto userInputDto) {
         Optional<User> possibleUser = userRepository.findById(username);

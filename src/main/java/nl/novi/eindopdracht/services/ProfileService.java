@@ -3,7 +3,6 @@ package nl.novi.eindopdracht.services;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Profile;
-import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
 import org.springframework.stereotype.Service;
@@ -15,14 +14,16 @@ import java.util.Optional;
 public class ProfileService {
     private final ProfileRepository profileRepository;
     private final FileUploadRepository fileUploadRepository;
+    private final UserService userService;
 
-    public ProfileService(ProfileRepository profileRepository, FileUploadRepository fileUploadRepository) {
+    public ProfileService(ProfileRepository profileRepository, FileUploadRepository fileUploadRepository, UserService userService) {
         this.profileRepository = profileRepository;
         this.fileUploadRepository = fileUploadRepository;
+        this.userService = userService;
     }
 
     public List<Profile> getProfiles() {
-        return profileRepository.findAll();
+        return userService.filterByAuthorities();
     }
 
     public Profile getProfile(String username) {
