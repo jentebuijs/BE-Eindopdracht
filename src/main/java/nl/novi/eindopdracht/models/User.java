@@ -44,8 +44,6 @@ public class User {
                 userInputDto.getFrequency(), userInputDto.getAboutMe(), userInputDto.getLevel());
     }
 
-
-
     public User() {
     }
 

@@ -3,7 +3,6 @@ package nl.novi.eindopdracht.dtos;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class UserInputDto {
@@ -16,7 +15,7 @@ public class UserInputDto {
     private Level level;
     private Frequency frequency;
     private String aboutMe;
-    private Set<String> authorities = new HashSet<>();
+    private Set<String> authorities;
 
     public String getUsername() {
         return username;
