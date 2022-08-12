@@ -3,8 +3,6 @@ package nl.novi.eindopdracht.dtos;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
 
-import java.util.Set;
-
 public class UserInputDto {
     private String username;
     private String email;
@@ -15,7 +13,8 @@ public class UserInputDto {
     private Level level;
     private Frequency frequency;
     private String aboutMe;
-    private Set<String> authorities;
+    private String authority;
+    private boolean enabled;
 
     public String getUsername() {
         return username;
@@ -89,12 +88,20 @@ public class UserInputDto {
         this.aboutMe = aboutMe;
     }
 
-    public Set<String> getAuthorities() {
-        return authorities;
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setAuthorities(Set<String> authorities) {
-        this.authorities = authorities;
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
 

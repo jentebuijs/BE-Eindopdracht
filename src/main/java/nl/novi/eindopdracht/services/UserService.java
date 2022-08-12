@@ -7,12 +7,10 @@ import nl.novi.eindopdracht.exceptions.AlreadyInUseException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.*;
 import nl.novi.eindopdracht.repositories.AuthorityRepository;
-import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,23 +43,20 @@ public class UserService {
         if (possibleUser.isPresent()) {
             throw new AlreadyInUseException("Deze gebruikersnaam is al in gebruik");
         }
-        Optional<User> optionalUser = userRepository.findUserByEmail(userInputDto.getEmail());
-        if (optionalUser.isPresent()) {
-            throw new AlreadyInUseException("Dit emailadres is al in gebruik");
-        }
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         userInputDto.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
         User user = new User(userInputDto);
-        Set<String> strAuthorities = userInputDto.getAuthorities();
+        String authority = userInputDto.getAuthority();
         Set<Authority> authorities = new HashSet<>();
-        strAuthorities.forEach(authority -> {
-            switch(authority) {
-                case "Admin" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_ADMIN)); }
-                case "Buddy" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_BUDDY)); }
-                case "Student" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT)); }
+        switch (authority) {
+            case "Buddy" -> {
+                authorities.add(authorityRepository.getByName(EAuthority.ROLE_BUDDY));
             }
-        });
+            case "Student" -> {
+                authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT));
+            }
+        }
         user.setAuthorities(authorities);
         user.setEnabled(true);
         return userRepository.save(user);
@@ -115,8 +110,7 @@ public class UserService {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
         }
         User updatedUser = possibleUser.get();
-        updatedUser.setEmail(userInputDto.getEmail());
-//        updatedUser.setEnabled(userInputDto.isEnabled());
+        updatedUser.setEnabled(userInputDto.getEnabled());
         return fromUserToDto(userRepository.save(updatedUser));
     }
 
@@ -131,7 +125,6 @@ public class UserService {
     private UserOutputDto fromUserToDto(User user) {
         UserOutputDto userOutputDto = new UserOutputDto();
         userOutputDto.setUsername(user.getUsername());
-        userOutputDto.setEmail(user.getEmail());
         userOutputDto.setEnabled(user.getEnabled());
         return userOutputDto;
     }

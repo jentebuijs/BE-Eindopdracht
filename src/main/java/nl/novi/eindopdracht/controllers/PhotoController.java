@@ -3,6 +3,7 @@ package nl.novi.eindopdracht.controllers;
 import nl.novi.eindopdracht.dtos.FileInfoDto;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.services.PhotoService;
+import nl.novi.eindopdracht.services.ProfileService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,14 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/photos")
 public class PhotoController {
     private final PhotoService photoService;
+    private final ProfileService profileService;
 
-    public PhotoController(PhotoService photoService) {
+    public PhotoController(PhotoService photoService, ProfileService profileService) {
         this.photoService = photoService;
+        this.profileService = profileService;
     }
 
-    @PostMapping("/upload")
-    FileUploadResponse uploadFile(@RequestParam("file") MultipartFile file){
-        return photoService.storeFile(file);
+    @PostMapping("/upload/{username}")
+    FileUploadResponse uploadFile(@PathVariable String username, @RequestParam("file") MultipartFile file){
+        return photoService.storeFile(file, username);
     }
 
     @GetMapping("/download/{fileName}")

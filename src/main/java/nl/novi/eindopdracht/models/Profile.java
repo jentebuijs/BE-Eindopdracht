@@ -12,6 +12,7 @@ public class Profile {
     private String firstName;
     private String lastName;
     private String dob;
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
@@ -23,11 +24,12 @@ public class Profile {
     @OneToOne (cascade = CascadeType.ALL)
     FileUploadResponse fileUploadResponse;
 
-    public Profile(String username, String firstName, String lastName, String dob, Frequency frequency, String aboutMe, Level level) {
+    public Profile(String username, String firstName, String lastName, String dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
+        this.email = email;
         this.frequency = frequency;
         this.aboutMe = aboutMe;
         this.level = level;
@@ -67,6 +69,14 @@ public class Profile {
 
     public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Frequency getFrequency() {

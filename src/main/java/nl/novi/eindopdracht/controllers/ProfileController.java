@@ -2,6 +2,7 @@ package nl.novi.eindopdracht.controllers;
 
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Profile;
+import nl.novi.eindopdracht.services.PhotoService;
 import nl.novi.eindopdracht.services.ProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,11 @@ import java.util.List;
 @RequestMapping("/profiles")
 public class ProfileController {
     private final ProfileService profileService;
-    private final PhotoController photoController;
+    private final PhotoService photoService;
 
-    public ProfileController(ProfileService profileService, PhotoController photoController) {
+    public ProfileController(ProfileService profileService, PhotoService photoService) {
         this.profileService = profileService;
-        this.photoController = photoController;
+        this.photoService = photoService;
     }
 
     //MAPPINGS
@@ -38,11 +39,12 @@ public class ProfileController {
         return ResponseEntity.ok().body("Je wijzigingen zijn opgeslagen");
     }
 
-    @PostMapping("/{username}/photo")
-    public void assignPhotoToStudent(@PathVariable String username,
-                                     @RequestBody MultipartFile file) {
-        FileUploadResponse photo = photoController.uploadFile(file);
-        profileService.assignPhotoToProfile(photo.getFileName(), username);
-    }
+//    @PostMapping("/photo/{username}")
+//    public ResponseEntity<HttpStatus> assignPhotoToStudent(@PathVariable String username,
+//                                     @RequestBody MultipartFile file) {
+//        FileUploadResponse fur = photoService.storeFile(file);
+//        profileService.assignPhotoToProfile(fur.getFileName(), username);
+//        return ResponseEntity.ok().build();
+//    }
 
 }

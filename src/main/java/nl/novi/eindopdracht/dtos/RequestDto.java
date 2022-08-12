@@ -2,9 +2,15 @@ package nl.novi.eindopdracht.dtos;
 
 public class RequestDto {
     private String sender;
-    private String recipient;
+    private String receiver;
     private String message;
+    public String getMessage() {
+        return message;
+    }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
     public String getSender() {
         return sender;
     }
@@ -13,19 +19,13 @@ public class RequestDto {
         this.sender = sender;
     }
 
-    public String getRecipient() {
-        return recipient;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
-    public String getMessage() {
-        return message;
-    }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

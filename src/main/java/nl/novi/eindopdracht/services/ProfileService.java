@@ -39,15 +39,24 @@ public class ProfileService {
         Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
-        }   Profile profileToUpdate = possibleProfile.get();
-            profileToUpdate.setFirstName(newProfile.getFirstName());
-            profileToUpdate.setLastName(newProfile.getLastName());
-            profileToUpdate.setDob(newProfile.getDob());
-            profileToUpdate.setLevel(newProfile.getLevel());
-            profileToUpdate.setFrequency(newProfile.getFrequency());
-            profileToUpdate.setAboutMe(newProfile.getAboutMe());
-            profileRepository.save(profileToUpdate);
         }
+        Profile profileToUpdate = possibleProfile.get();
+        if (!newProfile.getFirstName().isEmpty()) {
+            profileToUpdate.setFirstName(newProfile.getFirstName());
+        }
+        if (!newProfile.getLastName().isEmpty()) {
+            profileToUpdate.setLastName(newProfile.getLastName());
+        }
+        if (!newProfile.getDob().isEmpty()) {
+            profileToUpdate.setDob(newProfile.getDob());
+        }
+        profileToUpdate.setLevel(newProfile.getLevel());
+        profileToUpdate.setFrequency(newProfile.getFrequency());
+        if (!newProfile.getAboutMe().isEmpty()) {
+            profileToUpdate.setAboutMe(newProfile.getAboutMe());
+        }
+        profileRepository.save(profileToUpdate);
+    }
 
     public void assignPhotoToProfile(String fileName, String username) {
         Optional<Profile> optionalProfile = profileRepository.findById(username);
@@ -59,6 +68,6 @@ public class ProfileService {
             profileRepository.save(profile);
         }
     }
-    }
+}
 
 

@@ -28,14 +28,19 @@ public class RequestController {
         return ResponseEntity.created(location).body("Het verzoek is verstuurd");
     }
 
-    @GetMapping("/outgoing")
-    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam String username) {
-        return ResponseEntity.ok().body(requestService.getBySender(username));
+    @GetMapping("/{username}")
+    public ResponseEntity<List<Request>> getRequests(@PathVariable String username) {
+        return ResponseEntity.ok().body(requestService.getByUsername(username));
     }
 
-    @GetMapping("/incoming")
-    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam String username) {
-        return ResponseEntity.ok().body(requestService.getByRecipient(username));
-    }
+//    @GetMapping("/outgoing")
+//    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam String username) {
+//        return ResponseEntity.ok().body(requestService.getBySenderUsername(username));
+//    }
+//
+//    @GetMapping("/incoming")
+//    public ResponseEntity<List<Request>> getIncomingRequests(@RequestParam String username) {
+//        return ResponseEntity.ok().body(requestService.getByReceiverUsername(username));
+//    }
 
 }

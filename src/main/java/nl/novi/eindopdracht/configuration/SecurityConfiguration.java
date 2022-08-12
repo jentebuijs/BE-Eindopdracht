@@ -59,7 +59,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/signin").permitAll()
                 .antMatchers(HttpMethod.GET, "/messages/admin").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.GET, "/profiles").hasAuthority("ROLE_ADMIN")
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();
