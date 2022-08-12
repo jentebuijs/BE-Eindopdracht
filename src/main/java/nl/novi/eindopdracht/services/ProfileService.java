@@ -47,7 +47,7 @@ public class ProfileService {
         if (!newProfile.getLastName().isEmpty()) {
             profileToUpdate.setLastName(newProfile.getLastName());
         }
-        if (!newProfile.getDob().isEmpty()) {
+        if (newProfile.getDob() != null) {
             profileToUpdate.setDob(newProfile.getDob());
         }
         profileToUpdate.setLevel(newProfile.getLevel());

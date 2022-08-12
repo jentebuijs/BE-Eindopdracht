@@ -1,6 +1,8 @@
 package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 @Table(name = "profiles")
@@ -11,7 +13,8 @@ public class Profile {
 
     private String firstName;
     private String lastName;
-    private String dob;
+    private LocalDate dob;
+    private int age;
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -24,11 +27,12 @@ public class Profile {
     @OneToOne (cascade = CascadeType.ALL)
     FileUploadResponse fileUploadResponse;
 
-    public Profile(String username, String firstName, String lastName, String dob, String email, Frequency frequency, String aboutMe, Level level) {
+    public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
+        this.age = Period.between(dob, LocalDate.now()).getYears();
         this.email = email;
         this.frequency = frequency;
         this.aboutMe = aboutMe;
@@ -63,12 +67,16 @@ public class Profile {
         this.lastName = lastName;
     }
 
-    public String getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     public String getEmail() {

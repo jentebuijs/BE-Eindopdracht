@@ -1,6 +1,6 @@
-INSERT INTO profiles (username, first_name, last_name, dob, email, frequency, about_me, level)
-VALUES ('karel', 'karel', 'appel', '25-04-1921', 'karelappel@gmail.com','ONCE_A_MONTH', 'niks te melden', 'BEGINNER'),
-       ('vincent', 'vincent', 'gogh', '30-03-1853', 'vincentvangogh@gmail.com','ONCE_A_WEEK', 'mijn oor is kapot', 'PROFICIENT');
+INSERT INTO profiles (username, first_name, last_name, dob, age, email, frequency, about_me, level)
+VALUES ('karel', 'karel', 'appel', '25-04-1921', 101, 'karelappel@gmail.com','ONCE_A_MONTH', 'niks te melden', 'BEGINNER'),
+       ('vincent', 'vincent', 'gogh', '30-03-1853', 169, 'vincentvangogh@gmail.com','ONCE_A_WEEK', 'mijn oor is kapot', 'PROFICIENT');
 
 INSERT INTO users (username, password, enabled, user_profile)
     VALUES ('karel', '$2y$10$ZGU6vt6yoRqDvao7Nelxe.9x7mH4sunzgJSFVIEFO/i5Kci6x8ta6',  true, 'karel'),

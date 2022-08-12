@@ -3,13 +3,15 @@ package nl.novi.eindopdracht.dtos;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
 
+import java.time.LocalDate;
+
 public class UserInputDto {
     private String username;
     private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private String dob;
+    private LocalDate dob;
     private Level level;
     private Frequency frequency;
     private String aboutMe;
@@ -56,11 +58,11 @@ public class UserInputDto {
         this.lastName = lastName;
     }
 
-    public String getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
