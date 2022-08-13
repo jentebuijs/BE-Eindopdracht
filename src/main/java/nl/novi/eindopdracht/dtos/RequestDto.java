@@ -4,6 +4,8 @@ public class RequestDto {
     private String sender;
     private String receiver;
     private String message;
+
+    //GETTERS & SETTERS
     public String getMessage() {
         return message;
     }
@@ -11,6 +13,7 @@ public class RequestDto {
     public void setMessage(String message) {
         this.message = message;
     }
+
     public String getSender() {
         return sender;
     }
