@@ -1,11 +1,11 @@
 package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.`1LocalDate;
 import java.time.Period;
 
 @Entity
-@Table(name = "profiles")
+@Table(name = "23profiles")
 public class Profile {
 
     @Id

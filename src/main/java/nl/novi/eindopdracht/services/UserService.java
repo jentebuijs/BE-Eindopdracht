@@ -91,12 +91,11 @@ public class UserService {
                     userList.forEach(user -> profileList.add(user.getProfile()));
                 }
                 case "ROLE_BUDDY" -> {
-                    userList.stream().filter(user -> user.getAuthorities().contains("BUDDY"))
+                    userList.stream().filter(user -> user.getAuthorities().toString().equals("ROLE_STUDENT"))
                             .forEach(user -> profileList.add(user.getProfile()));
                 }
                 case "ROLE_STUDENT" -> {
-                    userList.stream().filter(user -> user.getAuthorities().contains("STUDENT"))
-                            .forEach(user -> profileList.add(user.getProfile()));
+                    userList.stream().filter(user -> user.getAuthorities().contains("ROLE_BUDDY")).forEach(user -> profileList.add(user.getProfile()));
                 }
             }
         });
