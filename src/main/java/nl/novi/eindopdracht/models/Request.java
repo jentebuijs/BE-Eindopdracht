@@ -17,14 +17,15 @@ public class Request {
     private User receiver;
 
     private String message;
-    private boolean gotAccepted;
-    private boolean gotDeclined;
-    private boolean gotCanceled;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     public Request(User sender, User receiver, String message) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+        this.status = Status.PENDING;
     }
 
     public Request() {
@@ -59,27 +60,11 @@ public class Request {
         this.message = message;
     }
 
-    public boolean isGotAccepted() {
-        return gotAccepted;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setGotAccepted(boolean gotAccepted) {
-        this.gotAccepted = gotAccepted;
-    }
-
-    public boolean isGotDeclined() {
-        return gotDeclined;
-    }
-
-    public void setGotDeclined(boolean gotDeclined) {
-        this.gotDeclined = gotDeclined;
-    }
-
-    public boolean isGotCanceled() {
-        return gotCanceled;
-    }
-
-    public void setGotCanceled(boolean gotCanceled) {
-        this.gotCanceled = gotCanceled;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

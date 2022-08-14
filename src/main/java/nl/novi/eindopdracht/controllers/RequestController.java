@@ -33,6 +33,11 @@ public class RequestController {
         return ResponseEntity.ok().body(requestService.getByUsername(username));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateRequest(@PathVariable Long id, @RequestParam String status) {
+        return ResponseEntity.ok().body(requestService.updateRequestStatus(id, status));
+    }
+
 //    @GetMapping("/outgoing")
 //    public ResponseEntity<List<Request>> getOutgoingRequests(@RequestParam String username) {
 //        return ResponseEntity.ok().body(requestService.getBySenderUsername(username));

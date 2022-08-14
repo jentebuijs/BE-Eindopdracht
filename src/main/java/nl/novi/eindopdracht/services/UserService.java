@@ -11,6 +11,7 @@ import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,11 +48,13 @@ public class UserService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         userInputDto.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
         User user = new User(userInputDto);
-        String authority = userInputDto.getAuthority();
+        String authority = userInputDto.getAuthority().toString();
         Set<Authority> authorities = new HashSet<>();
         switch (authority) {
             case "Buddy" -> {
-                authorities.add(authorityRepository.getByName(EAuthority.ROLE_BUDDY));
+                Authority authority1 = authorityRepository.getByName(EAuthority.ROLE_BUDDY);
+                authorities.add(authority1);
+                user.getProfile().setRole(authority1.getName());
             }
             case "Student" -> {
                 authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT));
@@ -78,29 +81,29 @@ public class UserService {
         return fromUserToDto(optionalUser.get());
     }
 
-    public List<Profile> filterByAuthorities() {
-        List<String> strings = new ArrayList<>();
-        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach((authority) -> {
-            strings.add(authority.toString());
-        });
-        List<Profile> profileList = new ArrayList<>();
-        List<User> userList = userRepository.findAll();
-        strings.forEach(authority -> {
-            switch (authority) {
-                case "ROLE_ADMIN" -> {
-                    userList.forEach(user -> profileList.add(user.getProfile()));
-                }
-                case "ROLE_BUDDY" -> {
-                    userList.stream().filter(user -> user.getAuthorities().toString().equals("ROLE_STUDENT"))
-                            .forEach(user -> profileList.add(user.getProfile()));
-                }
-                case "ROLE_STUDENT" -> {
-                    userList.stream().filter(user -> user.getAuthorities().contains("ROLE_BUDDY")).forEach(user -> profileList.add(user.getProfile()));
-                }
-            }
-        });
-        return profileList;
-    }
+//    public List<Profile> filterByAuthorities() {
+//        List<String> strings = new ArrayList<>();
+//        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach((authority) -> {
+//            strings.add(authority.toString());
+//        });
+//        List<Profile> profileList = new ArrayList<>();
+//        List<User> userList = userRepository.findAll();
+//        strings.forEach(authority -> {
+//            switch (authority) {
+//                case "ROLE_ADMIN" -> {
+//                    userList.forEach(user -> profileList.add(user.getProfile()));
+//                }
+//                case "ROLE_BUDDY" -> {
+//                    userList.stream().filter(user -> user.getAuthorities().toString().equals("ROLE_STUDENT"))
+//                            .forEach(user -> profileList.add(user.getProfile()));
+//                }
+//                case "ROLE_STUDENT" -> {
+//                    userList.stream().filter(user -> user.getAuthorities().contains("ROLE_BUDDY")).forEach(user -> profileList.add(user.getProfile()));
+//                }
+//            }
+//        });
+//        return profileList;
+//    }
 
 
     public UserOutputDto updateUser(String username, UserInputDto userInputDto) {
@@ -126,5 +129,9 @@ public class UserService {
         userOutputDto.setUsername(user.getUsername());
         userOutputDto.setEnabled(user.getEnabled());
         return userOutputDto;
+    }
+
+    public String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

@@ -43,7 +43,7 @@ public class PhotoService {
     }
 
     public FileUploadResponse storeFile(MultipartFile file, String username) {
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/")
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/photos/download/")
                 .path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));

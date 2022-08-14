@@ -1,5 +1,6 @@
 package nl.novi.eindopdracht.dtos;
 
+import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
 

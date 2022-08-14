@@ -1,11 +1,11 @@
 package nl.novi.eindopdracht.models;
 
 import javax.persistence.*;
-import java.time.`1LocalDate;
+import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
-@Table(name = "23profiles")
+@Table(name = "profiles")
 public class Profile {
 
     @Id
@@ -18,6 +18,9 @@ public class Profile {
     private String email;
 
     @Enumerated(EnumType.STRING)
+    private EAuthority role;
+
+    @Enumerated(EnumType.STRING)
     private Frequency frequency;
     private String aboutMe;
 
@@ -25,7 +28,7 @@ public class Profile {
     private Level level;
 
     @OneToOne (cascade = CascadeType.ALL)
-    FileUploadResponse fileUploadResponse;
+    FileUploadResponse photo;
 
     public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
@@ -87,6 +90,14 @@ public class Profile {
         this.email = email;
     }
 
+    public EAuthority getRole() {
+        return role;
+    }
+
+    public void setRole(EAuthority role) {
+        this.role = role;
+    }
+
     public Frequency getFrequency() {
         return frequency;
     }
@@ -111,11 +122,11 @@ public class Profile {
         this.level = level;
     }
 
-    public FileUploadResponse getFileUploadResponse() {
-        return fileUploadResponse;
+    public FileUploadResponse getPhoto() {
+        return photo;
     }
 
-    public void setFileUploadResponse(FileUploadResponse fileUploadResponse) {
-        this.fileUploadResponse = fileUploadResponse;
+    public void setPhoto(FileUploadResponse photo) {
+        this.photo = photo;
     }
 }

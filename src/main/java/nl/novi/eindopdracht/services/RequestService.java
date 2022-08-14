@@ -3,6 +3,7 @@ package nl.novi.eindopdracht.services;
 import nl.novi.eindopdracht.dtos.RequestDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.Request;
+import nl.novi.eindopdracht.models.Status;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.repositories.RequestRepository;
 import nl.novi.eindopdracht.repositories.UserRepository;
@@ -25,13 +26,15 @@ public class RequestService {
     public Request addRequest(RequestDto requestDto) {
         Request newRequest = new Request();
         Optional<User> optionalSender = userRepository.findById(requestDto.getSender());
-        if(optionalSender.isEmpty()) {
+        if (optionalSender.isEmpty()) {
             throw new RecordNotFoundException("De afzender van dit verzoek is niet bekend");
-        } newRequest.setSender(optionalSender.get());
+        }
+        newRequest.setSender(optionalSender.get());
         Optional<User> optionalRecipient = userRepository.findById(requestDto.getReceiver());
-        if(optionalRecipient.isEmpty()) {
+        if (optionalRecipient.isEmpty()) {
             throw new RecordNotFoundException("De ontvanger van dit verzoek is niet bekend");
-        } newRequest.setReceiver(optionalRecipient.get());
+        }
+        newRequest.setReceiver(optionalRecipient.get());
         newRequest.setMessage(requestDto.getMessage());
         return requestRepository.save(newRequest);
     }
@@ -43,5 +46,19 @@ public class RequestService {
         totalRequests.addAll(outgoingRequests);
         totalRequests.addAll(incomingRequests);
         return totalRequests;
+    }
+
+    public String updateRequestStatus(Long id, String status) {
+        if (!requestRepository.existsById(id)) {
+            throw new RecordNotFoundException("Dit verzoek is niet bekend");
+        } else {
+            Request request = requestRepository.findById(id).get();
+            switch (status) {
+                case ("accepted") -> request.setStatus(Status.ACCEPTED);
+                case ("declined") -> request.setStatus(Status.DECLINED);
+                case ("cancelled") -> request.setStatus(Status.CANCELLED);
+            }
+            return status;
+        }
     }
 }
