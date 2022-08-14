@@ -34,7 +34,7 @@ public class RequestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateRequest(@PathVariable Long id, @RequestParam String status) {
+    public ResponseEntity<String> updateRequest(@PathVariable Long id, @RequestBody String status) {
         return ResponseEntity.ok().body(requestService.updateRequestStatus(id, status));
     }
 
