@@ -42,8 +42,9 @@ public class RequestService {
 
     public RequestOutputDto getByUsername(String username) {
         RequestOutputDto requestOutputDto = new RequestOutputDto();
-        requestOutputDto.setOutgoing(requestRepository.getAllBySenderUsernameAndStatusIs(username, Status.PENDING));
-        requestOutputDto.setIncoming(requestRepository.getAllByReceiverUsernameAndStatusIs(username, Status.PENDING));
+        List<Request> pendingRequests = requestRepository.getAllBySenderUsernameAndStatusIs(username, Status.PENDING);
+        pendingRequests.addAll(requestRepository.getAllByReceiverUsernameAndStatusIs(username, Status.PENDING));
+        requestOutputDto.setPending(pendingRequests);
         List<Request> acceptedRequests = requestRepository.getAllBySenderUsernameAndStatusIs(username, Status.ACCEPTED);
         acceptedRequests.addAll(requestRepository.getAllByReceiverUsernameAndStatusIs(username, Status.ACCEPTED));
         requestOutputDto.setAccepted(acceptedRequests);

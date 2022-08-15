@@ -5,26 +5,17 @@ import nl.novi.eindopdracht.models.Request;
 import java.util.List;
 
 public class RequestOutputDto {
-    private List<Request> incoming;
-    private List<Request> outgoing;
+    private List<Request> pending;
     private List<Request> accepted;
     private List<Request> declined;
     private List<Request> cancelled;
 
-    public List<Request> getIncoming() {
-        return incoming;
+    public List<Request> getPending() {
+        return pending;
     }
 
-    public void setIncoming(List<Request> incoming) {
-        this.incoming = incoming;
-    }
-
-    public List<Request> getOutgoing() {
-        return outgoing;
-    }
-
-    public void setOutgoing(List<Request> outgoing) {
-        this.outgoing = outgoing;
+    public void setPending(List<Request> pending) {
+        this.pending = pending;
     }
 
     public List<Request> getAccepted() {
