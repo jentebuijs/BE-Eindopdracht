@@ -22,30 +22,14 @@ public class MessageController {
 
     //MAPPINGS
     @GetMapping
-    public ResponseEntity<?> getMessages(@RequestParam(value = "type", required = false) Optional<String> type) {
-        if (type.isPresent()) {
-            switch (type.get()) {
-                case "admin" -> {
-                    return ResponseEntity.ok().body(messageService.getUnapprovedMessages());
-                }
-                case "buddies" -> {
-                    return ResponseEntity.ok().body(messageService.getBuddyMessages());
-                }
-                case "students" -> {
-                    return ResponseEntity.ok().body(messageService.getStudentMessages());
-                }
-                case "both" -> {
-                    return ResponseEntity.ok().body(messageService.getMessagesForBothRoles());
-                }
-            }
+    public ResponseEntity<?> getMessages(@RequestParam(value = "type", required = false) Optional<String> type,
+                                         @RequestParam(value = "id", required = false) Optional<Long> id) {
+        if (id.isPresent()) {
+            return ResponseEntity.ok().body(messageService.getMessage(id.get()));
+        } else if (type.isPresent()) {
+            return ResponseEntity.ok().body(messageService.getUnapprovedMessages());
         }
         return ResponseEntity.ok().body(messageService.getMessages());
-    }
-
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Message> getMessage(@PathVariable Long id) {
-        return ResponseEntity.ok().body(messageService.getMessage(id));
     }
 
     @PostMapping("/new")
