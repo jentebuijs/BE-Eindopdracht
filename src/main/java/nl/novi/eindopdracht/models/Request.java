@@ -11,17 +11,17 @@ public class Request {
     private Long id;
 
     @ManyToOne
-    private User sender;
+    private Profile sender;
 
     @ManyToOne
-    private User receiver;
+    private Profile receiver;
 
     private String message;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public Request(User sender, User receiver, String message) {
+    public Request(Profile sender, Profile receiver, String message) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
@@ -36,20 +36,20 @@ public class Request {
         return id;
     }
 
-    public User getSender() {
+    public Profile getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(Profile sender) {
         this.sender = sender;
     }
 
-    public User getReceiver() {
+    public Profile getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User recipient) {
-        this.receiver = recipient;
+    public void setReceiver(Profile receiver) {
+        this.receiver = receiver;
     }
 
     public String getMessage() {

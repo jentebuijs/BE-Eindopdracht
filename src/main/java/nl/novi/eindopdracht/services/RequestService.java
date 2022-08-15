@@ -1,12 +1,13 @@
 package nl.novi.eindopdracht.services;
 
-import nl.novi.eindopdracht.dtos.RequestDto;
+import nl.novi.eindopdracht.dtos.RequestInputDto;
+import nl.novi.eindopdracht.dtos.RequestOutputDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
+import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.models.Request;
 import nl.novi.eindopdracht.models.Status;
-import nl.novi.eindopdracht.models.User;
+import nl.novi.eindopdracht.repositories.ProfileRepository;
 import nl.novi.eindopdracht.repositories.RequestRepository;
-import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,37 +17,41 @@ import java.util.Optional;
 @Service
 public class RequestService {
     private final RequestRepository requestRepository;
-    private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
-    public RequestService(RequestRepository requestRepository, UserRepository userRepository) {
+    public RequestService(RequestRepository requestRepository, ProfileRepository profileRepository) {
         this.requestRepository = requestRepository;
-        this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
 
-    public Request addRequest(RequestDto requestDto) {
+    public Request addRequest(RequestInputDto requestDto) {
         Request newRequest = new Request();
-        Optional<User> optionalSender = userRepository.findById(requestDto.getSender());
+        Optional<Profile> optionalSender = profileRepository.findById(requestDto.getSender());
         if (optionalSender.isEmpty()) {
             throw new RecordNotFoundException("De afzender van dit verzoek is niet bekend");
         }
         newRequest.setSender(optionalSender.get());
-        Optional<User> optionalRecipient = userRepository.findById(requestDto.getReceiver());
-        if (optionalRecipient.isEmpty()) {
+        Optional<Profile> optionalReceiver = profileRepository.findById(requestDto.getReceiver());
+        if (optionalReceiver.isEmpty()) {
             throw new RecordNotFoundException("De ontvanger van dit verzoek is niet bekend");
         }
-        newRequest.setReceiver(optionalRecipient.get());
+        newRequest.setReceiver(optionalReceiver.get());
         newRequest.setMessage(requestDto.getMessage());
         return requestRepository.save(newRequest);
     }
 
-    public List<Request> getByUsername(String username) {
-        List<Request> outgoingRequests = requestRepository.getAllBySenderUsername(username);
-        List<Request> incomingRequests = requestRepository.getAllByReceiverUsername(username);
-        List<Request> totalRequests = new ArrayList<>();
-        totalRequests.addAll(outgoingRequests);
-        totalRequests.addAll(incomingRequests);
-        return totalRequests;
+    public RequestOutputDto getByUsername(String username) {
+        RequestOutputDto requestOutputDto = new RequestOutputDto();
+        requestOutputDto.setOutgoing(requestRepository.getAllBySenderUsernameAndStatusIs(username, Status.PENDING));
+        requestOutputDto.setIncoming(requestRepository.getAllByReceiverUsernameAndStatusIs(username, Status.PENDING));
+        List<Request> acceptedRequests = requestRepository.getAllBySenderUsernameAndStatusIs(username, Status.ACCEPTED);
+        acceptedRequests.addAll(requestRepository.getAllByReceiverUsernameAndStatusIs(username, Status.ACCEPTED));
+        requestOutputDto.setAccepted(acceptedRequests);
+        requestOutputDto.setDeclined(requestRepository.getAllByReceiverUsernameAndStatusIs(username, Status.DECLINED));
+        requestOutputDto.setCancelled(requestRepository.getAllBySenderUsernameAndStatusIs(username, Status.CANCELLED));
+        return requestOutputDto;
     }
+
 
     public String updateRequestStatus(Long id, String status) {
         if (!requestRepository.existsById(id)) {
@@ -58,6 +63,7 @@ public class RequestService {
                 case ("declined") -> request.setStatus(Status.DECLINED);
                 case ("cancelled") -> request.setStatus(Status.CANCELLED);
             }
+            requestRepository.save(request);
             return status;
         }
     }

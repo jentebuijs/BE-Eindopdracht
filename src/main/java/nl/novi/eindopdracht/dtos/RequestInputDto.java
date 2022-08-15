@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.dtos;
 
-public class RequestDto {
+public class RequestInputDto {
     private String sender;
     private String receiver;
     private String message;
