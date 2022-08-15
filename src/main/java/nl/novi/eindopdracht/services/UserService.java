@@ -7,19 +7,18 @@ import nl.novi.eindopdracht.exceptions.AlreadyInUseException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.*;
 import nl.novi.eindopdracht.repositories.AuthorityRepository;
-import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -45,23 +44,22 @@ public class UserService {
         if (possibleUser.isPresent()) {
             throw new AlreadyInUseException("Deze gebruikersnaam is al in gebruik");
         }
-        Optional<User> optionalUser = userRepository.findUserByEmail(userInputDto.getEmail());
-        if (optionalUser.isPresent()) {
-            throw new AlreadyInUseException("Dit emailadres is al in gebruik");
-        }
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         userInputDto.setPassword(passwordEncoder.encode(userInputDto.getPassword()));
         User user = new User(userInputDto);
-        Set<String> strAuthorities = userInputDto.getAuthorities();
+        String authority = userInputDto.getAuthority().toString();
         Set<Authority> authorities = new HashSet<>();
-        strAuthorities.forEach(authority -> {
-            switch(authority) {
-                case "Admin" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_ADMIN)); }
-                case "Buddy" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_BUDDY)); }
-                case "Student" -> { authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT)); }
+        switch (authority) {
+            case "Buddy" -> {
+                Authority authority1 = authorityRepository.getByName(EAuthority.ROLE_BUDDY);
+                authorities.add(authority1);
+                user.getProfile().setRole(authority1.getName());
             }
-        });
+            case "Student" -> {
+                authorities.add(authorityRepository.getByName(EAuthority.ROLE_STUDENT));
+            }
+        }
         user.setAuthorities(authorities);
         user.setEnabled(true);
         return userRepository.save(user);
@@ -83,14 +81,38 @@ public class UserService {
         return fromUserToDto(optionalUser.get());
     }
 
+//    public List<Profile> filterByAuthorities() {
+//        List<String> strings = new ArrayList<>();
+//        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach((authority) -> {
+//            strings.add(authority.toString());
+//        });
+//        List<Profile> profileList = new ArrayList<>();
+//        List<User> userList = userRepository.findAll();
+//        strings.forEach(authority -> {
+//            switch (authority) {
+//                case "ROLE_ADMIN" -> {
+//                    userList.forEach(user -> profileList.add(user.getProfile()));
+//                }
+//                case "ROLE_BUDDY" -> {
+//                    userList.stream().filter(user -> user.getAuthorities().toString().equals("ROLE_STUDENT"))
+//                            .forEach(user -> profileList.add(user.getProfile()));
+//                }
+//                case "ROLE_STUDENT" -> {
+//                    userList.stream().filter(user -> user.getAuthorities().contains("ROLE_BUDDY")).forEach(user -> profileList.add(user.getProfile()));
+//                }
+//            }
+//        });
+//        return profileList;
+//    }
+
+
     public UserOutputDto updateUser(String username, UserInputDto userInputDto) {
         Optional<User> possibleUser = userRepository.findById(username);
         if (possibleUser.isEmpty()) {
             throw new RecordNotFoundException("Deze gebruiker is niet bekend");
         }
         User updatedUser = possibleUser.get();
-        updatedUser.setEmail(userInputDto.getEmail());
-//        updatedUser.setEnabled(userInputDto.isEnabled());
+        updatedUser.setEnabled(userInputDto.getEnabled());
         return fromUserToDto(userRepository.save(updatedUser));
     }
 
@@ -105,8 +127,11 @@ public class UserService {
     private UserOutputDto fromUserToDto(User user) {
         UserOutputDto userOutputDto = new UserOutputDto();
         userOutputDto.setUsername(user.getUsername());
-        userOutputDto.setEmail(user.getEmail());
         userOutputDto.setEnabled(user.getEnabled());
         return userOutputDto;
+    }
+
+    public String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

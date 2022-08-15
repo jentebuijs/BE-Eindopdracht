@@ -24,7 +24,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToMany(mappedBy = "recipient",
+    @OneToMany(mappedBy = "receiver",
             cascade = CascadeType.ALL)
     Set<Request> incomingRequests;
 
@@ -33,18 +33,14 @@ public class User {
     Set<Request> outgoingRequests;
 
     private String password;
-    private String email;
     private boolean enabled;
 
     public User (UserInputDto userInputDto) {
         username = userInputDto.getUsername();
-        email = userInputDto.getEmail();
         password = userInputDto.getPassword();
-        profile = new Profile(userInputDto.getUsername(), userInputDto.getFirstName(), userInputDto.getLastName(), userInputDto.getDob(),
-                userInputDto.getFrequency(), userInputDto.getAboutMe(), userInputDto.getLevel());
+        profile = new Profile(userInputDto.getUsername(), userInputDto.getFirstName(), userInputDto.getLastName(),
+                userInputDto.getDob(), userInputDto.getEmail(), userInputDto.getFrequency(), userInputDto.getAboutMe(), userInputDto.getLevel());
     }
-
-
 
     public User() {
     }
@@ -64,14 +60,6 @@ public class User {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setPassword(String password) {

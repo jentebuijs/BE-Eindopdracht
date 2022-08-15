@@ -29,7 +29,7 @@ public class MessageService {
             throw new RecordNotFoundException("Dit bericht is niet bekend");
         } else {
             Message message = possibleMessage.get();
-            if (message.isApproved() == false) {
+            if (!message.isApproved()) {
                 throw new NotAllowedException("U bent niet bevoegd om dit bericht te lezen");
             } return message;
         }
@@ -53,7 +53,7 @@ public class MessageService {
 
     public void deleteMessage(Long id) {
         boolean messageExists = messageRepository.existsById(id);
-        if (messageExists == false) {
+        if (!messageExists) {
             throw new RecordNotFoundException("Dit bericht is niet bekend");
         } messageRepository.deleteById(id);
         }

@@ -1,10 +1,16 @@
 package nl.novi.eindopdracht.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
 public class UserInputDto {
     private String username;
@@ -12,11 +18,17 @@ public class UserInputDto {
     private String password;
     private String firstName;
     private String lastName;
-    private String dob;
+
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+//    @JsonDeserialize(using = LocalDateDeserializer.class)
+//    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate dob;
+
     private Level level;
     private Frequency frequency;
     private String aboutMe;
-    private Set<String> authorities = new HashSet<>();
+    private String authority;
+    private boolean enabled;
 
     public String getUsername() {
         return username;
@@ -58,11 +70,11 @@ public class UserInputDto {
         this.lastName = lastName;
     }
 
-    public String getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
@@ -90,12 +102,20 @@ public class UserInputDto {
         this.aboutMe = aboutMe;
     }
 
-    public Set<String> getAuthorities() {
-        return authorities;
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setAuthorities(Set<String> authorities) {
-        this.authorities = authorities;
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
 

@@ -26,11 +26,14 @@ public class PhotoService {
     private Path fileStoragePath;
     private final String fileStorageLocation;
     private final FileUploadRepository fileUploadRepository;
+    private final ProfileService profileService;
 
-    public PhotoService(@Value("${my.upload_location}") String fileStorageLocation, FileUploadRepository fileUploadRepository) {
+    public PhotoService(@Value("${my.upload_location}") String fileStorageLocation,
+                        FileUploadRepository fileUploadRepository, ProfileService profileService) {
         fileStoragePath = Paths.get(fileStorageLocation).toAbsolutePath().normalize();
         this.fileStorageLocation = fileStorageLocation;
         this.fileUploadRepository = fileUploadRepository;
+        this.profileService = profileService;
 
         try {
             Files.createDirectories(fileStoragePath);
@@ -39,8 +42,8 @@ public class PhotoService {
         }
     }
 
-    public FileUploadResponse storeFile(MultipartFile file) {
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/download/")
+    public FileUploadResponse storeFile(MultipartFile file, String username) {
+        String url = ServletUriComponentsBuilder.fromCurrentContextPath().path("/photos/download/")
                 .path(Objects.requireNonNull(file.getOriginalFilename())).toUriString();
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
@@ -53,7 +56,9 @@ public class PhotoService {
             throw new RuntimeException("Issue in storing the file", e);
         }
 
-        return fileUploadRepository.save(new FileUploadResponse(fileName, file.getContentType(), url));
+        FileUploadResponse fur = fileUploadRepository.save(new FileUploadResponse(fileName, file.getContentType(), url));
+        profileService.assignPhotoToProfile(fur.getFileName(), username);
+        return fur;
     }
 
     public FileInfoDto downloadFile(String fileName, HttpServletRequest request) {

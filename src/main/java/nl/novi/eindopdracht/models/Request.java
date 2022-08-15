@@ -7,23 +7,25 @@ import javax.persistence.*;
 public class Request {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private User sender;
+    private Profile sender;
 
     @ManyToOne
-    private User recipient;
+    private Profile receiver;
 
     private String message;
-    private boolean gotAccepted;
-    private boolean gotCanceled;
 
-    public Request(User sender, User recipient, String message) {
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    public Request(Profile sender, Profile receiver, String message) {
         this.sender = sender;
-        this.recipient = recipient;
+        this.receiver = receiver;
         this.message = message;
+        this.status = Status.PENDING;
     }
 
     public Request() {
@@ -34,20 +36,20 @@ public class Request {
         return id;
     }
 
-    public User getSender() {
+    public Profile getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(Profile sender) {
         this.sender = sender;
     }
 
-    public User getRecipient() {
-        return recipient;
+    public Profile getReceiver() {
+        return receiver;
     }
 
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
+    public void setReceiver(Profile receiver) {
+        this.receiver = receiver;
     }
 
     public String getMessage() {
@@ -58,19 +60,11 @@ public class Request {
         this.message = message;
     }
 
-    public boolean isGotAccepted() {
-        return gotAccepted;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setGotAccepted(boolean gotAccepted) {
-        this.gotAccepted = gotAccepted;
-    }
-
-    public boolean isGotCanceled() {
-        return gotCanceled;
-    }
-
-    public void setGotCanceled(boolean gotCanceled) {
-        this.gotCanceled = gotCanceled;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }
