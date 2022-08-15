@@ -5,8 +5,8 @@ import nl.novi.eindopdracht.models.Request;
 import java.util.List;
 
 public class RequestOutputDto {
-    private List<Request> pending;
     private List<Request> accepted;
+    private List<Request> pending;
     private List<Request> declined;
     private List<Request> cancelled;
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/messages")
@@ -21,29 +22,26 @@ public class MessageController {
 
     //MAPPINGS
     @GetMapping
-    public ResponseEntity<List<Message>> getMessages() {
+    public ResponseEntity<?> getMessages(@RequestParam(value = "type", required = false) Optional<String> type) {
+        if (type.isPresent()) {
+            switch (type.get()) {
+                case "admin" -> {
+                    return ResponseEntity.ok().body(messageService.getUnapprovedMessages());
+                }
+                case "buddies" -> {
+                    return ResponseEntity.ok().body(messageService.getBuddyMessages());
+                }
+                case "students" -> {
+                    return ResponseEntity.ok().body(messageService.getStudentMessages());
+                }
+                case "both" -> {
+                    return ResponseEntity.ok().body(messageService.getMessagesForBothRoles());
+                }
+            }
+        }
         return ResponseEntity.ok().body(messageService.getMessages());
     }
 
-    @GetMapping("/admin")
-    public ResponseEntity<List<Message>> getUnapprovedMessages() {
-        return ResponseEntity.ok().body(messageService.getUnapprovedMessages());
-    }
-
-    @GetMapping("/buddies")
-    public ResponseEntity<List<Message>> getMessagesForBuddies() {
-        return ResponseEntity.ok().body(messageService.getBuddyMessages());
-    }
-
-    @GetMapping("/students")
-    public ResponseEntity<List<Message>> getMessagesForStudents() {
-        return ResponseEntity.ok().body(messageService.getStudentMessages());
-    }
-
-    @GetMapping("/both")
-    public ResponseEntity<List<Message>> getMessagesForBothRoles() {
-        return ResponseEntity.ok().body(messageService.getMessagesForBothRoles());
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Message> getMessage(@PathVariable Long id) {

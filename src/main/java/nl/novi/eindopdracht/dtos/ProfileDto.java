@@ -1,20 +1,20 @@
-package nl.novi.eindopdracht.models;
+package nl.novi.eindopdracht.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import nl.novi.eindopdracht.models.EAuthority;
+import nl.novi.eindopdracht.models.FileUploadResponse;
+import nl.novi.eindopdracht.models.Frequency;
+import nl.novi.eindopdracht.models.Level;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.Period;
 
-@Entity
-@Table(name = "profiles")
-public class Profile {
-
+public class ProfileDto {
     @Id
     private String username;
 
@@ -28,36 +28,14 @@ public class Profile {
 
     private int age;
     private String email;
-
-    @Enumerated(EnumType.STRING)
-    private EAuthority role;
-
-    @Enumerated(EnumType.STRING)
-    private Frequency frequency;
     private String aboutMe;
+    private String role;
+    private String frequency;
+    private String level;
 
-    @Enumerated(EnumType.STRING)
-    private Level level;
-
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     FileUploadResponse photo;
 
-    public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dob = dob;
-        this.age = Period.between(dob, LocalDate.now()).getYears();
-        this.email = email;
-        this.frequency = frequency;
-        this.aboutMe = aboutMe;
-        this.level = level;
-    }
-
-    public Profile() {
-    }
-
-    //--- GETTERS & SETTERS
     public String getUsername() {
         return username;
     }
@@ -94,28 +72,16 @@ public class Profile {
         return age;
     }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public EAuthority getRole() {
-        return role;
-    }
-
-    public void setRole(EAuthority role) {
-        this.role = role;
-    }
-
-    public Frequency getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(Frequency frequency) {
-        this.frequency = frequency;
     }
 
     public String getAboutMe() {
@@ -126,11 +92,27 @@ public class Profile {
         this.aboutMe = aboutMe;
     }
 
-    public Level getLevel() {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
+    }
+
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(Level level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 

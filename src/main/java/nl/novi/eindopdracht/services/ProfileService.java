@@ -1,17 +1,15 @@
 package nl.novi.eindopdracht.services;
 
+import nl.novi.eindopdracht.dtos.ProfileDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
-import nl.novi.eindopdracht.models.Authority;
 import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Profile;
 import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,27 +25,24 @@ public class ProfileService {
         this.userService = userService;
     }
 
-    public List<Profile> getProfiles() {
+    public List<ProfileDto> getProfiles() {
         String username = userService.getCurrentUsername();
         Optional<Profile> optionalProfile = profileRepository.findById(username);
         EAuthority role = optionalProfile.get().getRole();
-        return profileRepository.getProfilesByRoleIsNot(role);
-
-
-//        if (authorityList.size() > 1) {
-//            return profileRepository.findAll();
-//        } else {
-//            Object[] authorityArray = authorityList.toArray();
-//            return profileRepository.getProfilesByRoleContaining(authorityArray[0]toString());
-//        }
+        List<Profile> profileList = profileRepository.getProfilesByRoleIsNot(role);
+        List<ProfileDto> profileDtoList = new ArrayList<>();
+        for (Profile profile : profileList) {
+            profileDtoList.add(profileToDto(profile));
+        }
+        return profileDtoList;
     }
 
-    public Profile getProfile(String username) {
+    public ProfileDto getProfile(String username) {
         Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         } else {
-            return possibleProfile.get();
+            return profileToDto(possibleProfile.get());
         }
     }
 
@@ -83,6 +78,21 @@ public class ProfileService {
             profile.setPhoto(photo);
             profileRepository.save(profile);
         }
+    }
+
+    public ProfileDto profileToDto(Profile profile) {
+        ProfileDto profileDto = new ProfileDto();
+        profileDto.setUsername(profile.getUsername());
+        profileDto.setFirstName(profile.getFirstName());
+        profileDto.setLastName(profile.getLastName());
+        profileDto.setDob(profile.getDob());
+        profileDto.setAge(profile.getAge());
+        profileDto.setEmail(profile.getEmail());
+        profileDto.setAboutMe(profile.getAboutMe());
+        profileDto.setRole(profile.getRole().getString());
+        profileDto.setFrequency(profile.getFrequency().getString());
+        profileDto.setLevel(profile.getLevel().getString());
+        return profileDto;
     }
 }
 
