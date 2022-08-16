@@ -24,14 +24,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToMany(mappedBy = "receiver",
-            cascade = CascadeType.ALL)
-    Set<Request> incomingRequests;
-
-    @OneToMany(mappedBy = "sender",
-            cascade = CascadeType.ALL)
-    Set<Request> outgoingRequests;
-
     private String password;
     private boolean enabled;
 

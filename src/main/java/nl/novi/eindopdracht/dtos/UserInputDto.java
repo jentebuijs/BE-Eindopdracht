@@ -18,12 +18,7 @@ public class UserInputDto {
     private String password;
     private String firstName;
     private String lastName;
-
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
-//    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dob;
-
     private Level level;
     private Frequency frequency;
     private String aboutMe;

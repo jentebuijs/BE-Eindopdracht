@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
@@ -29,8 +30,15 @@ public class ProfileService {
         String username = userService.getCurrentUsername();
         Optional<Profile> optionalProfile = profileRepository.findById(username);
         EAuthority role = optionalProfile.get().getRole();
-        List<Profile> profileList = profileRepository.getProfilesByRoleIsNot(role);
         List<ProfileDto> profileDtoList = new ArrayList<>();
+        List<Profile> profileList;
+        if((role.getString().equals("Admin"))) {
+            profileList = profileRepository.findAll();
+        } else {
+            profileList = profileRepository.getProfilesByActiveIsTrueAndRoleIsNot(role);
+            profileList = profileList.stream().filter(profile -> !profile.getRole().getString().equals("Admin"))
+                    .collect(Collectors.toList());
+        }
         for (Profile profile : profileList) {
             profileDtoList.add(profileToDto(profile));
         }
@@ -61,7 +69,10 @@ public class ProfileService {
         if (newProfile.getDob() != null) {
             profileToUpdate.setDob(newProfile.getDob());
         }
-        profileToUpdate.setLevel(newProfile.getLevel());
+        if (newProfile.getLevel() != null) {
+            profileToUpdate.setLevel(newProfile.getLevel());
+        }
+
         profileToUpdate.setFrequency(newProfile.getFrequency());
         if (!newProfile.getAboutMe().isEmpty()) {
             profileToUpdate.setAboutMe(newProfile.getAboutMe());

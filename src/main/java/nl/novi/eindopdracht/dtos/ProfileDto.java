@@ -22,8 +22,6 @@ public class ProfileDto {
     private String lastName;
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
-//    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dob;
 
     private int age;

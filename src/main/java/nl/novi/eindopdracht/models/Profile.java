@@ -1,11 +1,6 @@
 package nl.novi.eindopdracht.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,12 +13,11 @@ public class Profile {
     @Id
     private String username;
 
+    private boolean active;
     private String firstName;
     private String lastName;
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
-//    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dob;
 
     private int age;
@@ -44,6 +38,7 @@ public class Profile {
 
     public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
+        this.active = true;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
@@ -64,6 +59,14 @@ public class Profile {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getFirstName() {

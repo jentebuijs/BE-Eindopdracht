@@ -26,10 +26,10 @@ public class MessageController {
                                          @RequestParam(value = "id", required = false) Optional<Long> id) {
         if (id.isPresent()) {
             return ResponseEntity.ok().body(messageService.getMessage(id.get()));
-        } else if (type.isPresent()) {
+        } else if (type.isPresent() && type.get().equals("admin")) {
             return ResponseEntity.ok().body(messageService.getUnapprovedMessages());
         }
-        return ResponseEntity.ok().body(messageService.getMessages());
+        return ResponseEntity.ok().body(messageService.getApprovedMessages());
     }
 
     @PostMapping("/new")
@@ -37,6 +37,11 @@ public class MessageController {
         messageService.addMessage(message);
         URI location = URI.create(message.getId().toString());
         return ResponseEntity.created(location).body("Het bericht met id " + message.getId() + " is toegevoegd");
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<?> updateMessage(@PathVariable Long id, @RequestParam String status) {
+        return ResponseEntity.ok().body(messageService.updateMessageStatus(id, status));
     }
 
     @DeleteMapping("/{id}")
