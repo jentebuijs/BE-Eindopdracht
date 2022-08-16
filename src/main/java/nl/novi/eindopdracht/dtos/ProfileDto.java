@@ -28,10 +28,9 @@ public class ProfileDto {
     private String email;
     private String aboutMe;
     private String role;
-    private String frequency;
-    private String level;
+    private Frequency frequency;
+    private Level level;
 
-    @OneToOne(cascade = CascadeType.ALL)
     FileUploadResponse photo;
 
     public String getUsername() {
@@ -98,19 +97,19 @@ public class ProfileDto {
         this.role = role;
     }
 
-    public String getFrequency() {
+    public Frequency getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(String frequency) {
+    public void setFrequency(Frequency frequency) {
         this.frequency = frequency;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 

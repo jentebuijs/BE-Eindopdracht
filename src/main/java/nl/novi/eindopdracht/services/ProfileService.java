@@ -32,7 +32,7 @@ public class ProfileService {
         EAuthority role = optionalProfile.get().getRole();
         List<ProfileDto> profileDtoList = new ArrayList<>();
         List<Profile> profileList;
-        if((role.getString().equals("Admin"))) {
+        if ((role.getString().equals("Admin"))) {
             profileList = profileRepository.findAll();
         } else {
             profileList = profileRepository.getProfilesByActiveIsTrueAndRoleIsNot(role);
@@ -60,23 +60,11 @@ public class ProfileService {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         }
         Profile profileToUpdate = possibleProfile.get();
-        if (!newProfile.getFirstName().isEmpty()) {
-            profileToUpdate.setFirstName(newProfile.getFirstName());
-        }
-        if (!newProfile.getLastName().isEmpty()) {
-            profileToUpdate.setLastName(newProfile.getLastName());
-        }
-        if (newProfile.getDob() != null) {
-            profileToUpdate.setDob(newProfile.getDob());
-        }
-        if (newProfile.getLevel() != null) {
-            profileToUpdate.setLevel(newProfile.getLevel());
-        }
-
-        profileToUpdate.setFrequency(newProfile.getFrequency());
-        if (!newProfile.getAboutMe().isEmpty()) {
-            profileToUpdate.setAboutMe(newProfile.getAboutMe());
-        }
+        profileToUpdate.setFirstName(newProfile.getFirstName());
+        profileToUpdate.setLastName(newProfile.getLastName());
+        profileToUpdate.setLevel(newProfile.getLevel());
+//        profileToUpdate.setFrequency(newProfile.getFrequency());
+        profileToUpdate.setAboutMe(newProfile.getAboutMe());
         profileRepository.save(profileToUpdate);
     }
 
@@ -101,9 +89,16 @@ public class ProfileService {
         profileDto.setEmail(profile.getEmail());
         profileDto.setAboutMe(profile.getAboutMe());
         profileDto.setRole(profile.getRole().getString());
-        profileDto.setFrequency(profile.getFrequency().getString());
-        profileDto.setLevel(profile.getLevel().getString());
+        profileDto.setFrequency(profile.getFrequency());
+        profileDto.setLevel(profile.getLevel());
+        profileDto.setPhoto(profile.getPhoto());
         return profileDto;
+    }
+
+    public void updateProfileStatus(String username, Boolean active) {
+        Profile updatedProfile = profileRepository.findById(username).get();
+        updatedProfile.setActive(active);
+        profileRepository.save(updatedProfile);
     }
 }
 

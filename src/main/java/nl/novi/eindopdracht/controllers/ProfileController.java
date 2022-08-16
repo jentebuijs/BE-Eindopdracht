@@ -34,8 +34,14 @@ public class ProfileController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<Object> updateProfile(@PathVariable String username, @RequestBody Profile newProfile) {
-        profileService.updateProfile(username, newProfile);
+    public ResponseEntity<Object> updateProfile(@PathVariable String username,
+                                                @RequestBody(required = false) Optional<Profile> newProfile,
+                                                @RequestParam(value = "active", required = false) Optional<Boolean> active) {
+        if (newProfile.isPresent()) {
+            profileService.updateProfile(username, newProfile.get());
+        } else {
+            profileService.updateProfileStatus(username, active.get());
+        }
         return ResponseEntity.ok().body("Je wijzigingen zijn opgeslagen");
     }
 
