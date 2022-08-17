@@ -13,7 +13,8 @@ public class Profile {
     @Id
     private String username;
 
-    private boolean active;
+    private Boolean isActivated;
+
     private String firstName;
     private String lastName;
 
@@ -38,7 +39,7 @@ public class Profile {
 
     public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
-        this.active = true;
+        this.isActivated = true;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
@@ -61,12 +62,12 @@ public class Profile {
         this.username = username;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isActivated() {
+        return isActivated;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setIsActivated(Boolean isActivated) {
+        this.isActivated = isActivated;
     }
 
     public String getFirstName() {

@@ -1,4 +1,4 @@
-INSERT INTO profiles (username, active, first_name, last_name, dob, age, email, role, frequency, about_me, level)
+INSERT INTO profiles (username, is_activated, first_name, last_name, dob, age, email, role, frequency, about_me, level)
 VALUES ('karel', true, 'karel', 'appel', '25-04-1921', 101, 'karelappel@gmail.com', 'ROLE_STUDENT', 'ONCE_A_MONTH',
         'niks te melden', 'BEGINNER'),
        ('vincent', true, 'vincent', 'gogh', '30-03-1853', 169, 'vincentvangogh@gmail.com', 'ROLE_ADMIN', 'ONCE_A_WEEK',

@@ -1,28 +1,20 @@
 package nl.novi.eindopdracht.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
-public class ProfileDto {
+public class ProfileOutputDto {
     @Id
     private String username;
 
     private String firstName;
     private String lastName;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-    private LocalDate dob;
+    private Boolean isActivated;
 
     private int age;
     private String email;
@@ -57,12 +49,12 @@ public class ProfileDto {
         this.lastName = lastName;
     }
 
-    public LocalDate getDob() {
-        return dob;
+    public Boolean getActivated() {
+        return isActivated;
     }
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
+    public void setActivated(Boolean activated) {
+        isActivated = activated;
     }
 
     public int getAge() {

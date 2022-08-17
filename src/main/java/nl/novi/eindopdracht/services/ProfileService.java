@@ -1,6 +1,6 @@
 package nl.novi.eindopdracht.services;
 
-import nl.novi.eindopdracht.dtos.ProfileDto;
+import nl.novi.eindopdracht.dtos.ProfileOutputDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.FileUploadResponse;
@@ -26,16 +26,16 @@ public class ProfileService {
         this.userService = userService;
     }
 
-    public List<ProfileDto> getProfiles() {
+    public List<ProfileOutputDto> getProfiles() {
         String username = userService.getCurrentUsername();
         Optional<Profile> optionalProfile = profileRepository.findById(username);
         EAuthority role = optionalProfile.get().getRole();
-        List<ProfileDto> profileDtoList = new ArrayList<>();
+        List<ProfileOutputDto> profileDtoList = new ArrayList<>();
         List<Profile> profileList;
         if ((role.getString().equals("Admin"))) {
             profileList = profileRepository.findAll();
         } else {
-            profileList = profileRepository.getProfilesByActiveIsTrueAndRoleIsNot(role);
+            profileList = profileRepository.getProfilesByIsActivatedIsTrueAndRoleIsNot(role);
             profileList = profileList.stream().filter(profile -> !profile.getRole().getString().equals("Admin"))
                     .collect(Collectors.toList());
         }
@@ -45,7 +45,7 @@ public class ProfileService {
         return profileDtoList;
     }
 
-    public ProfileDto getProfile(String username) {
+    public ProfileOutputDto getProfile(String username) {
         Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
@@ -54,7 +54,7 @@ public class ProfileService {
         }
     }
 
-    public void updateProfile(String username, Profile newProfile) {
+    public ProfileOutputDto updateProfile(String username, Profile newProfile) {
         Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
@@ -63,9 +63,11 @@ public class ProfileService {
         profileToUpdate.setFirstName(newProfile.getFirstName());
         profileToUpdate.setLastName(newProfile.getLastName());
         profileToUpdate.setLevel(newProfile.getLevel());
-//        profileToUpdate.setFrequency(newProfile.getFrequency());
+        profileToUpdate.setFrequency(newProfile.getFrequency());
         profileToUpdate.setAboutMe(newProfile.getAboutMe());
+        profileToUpdate.setIsActivated(newProfile.isActivated());
         profileRepository.save(profileToUpdate);
+        return profileToDto(profileToUpdate);
     }
 
     public void assignPhotoToProfile(String fileName, String username) {
@@ -79,12 +81,11 @@ public class ProfileService {
         }
     }
 
-    public ProfileDto profileToDto(Profile profile) {
-        ProfileDto profileDto = new ProfileDto();
+    public ProfileOutputDto profileToDto(Profile profile) {
+        ProfileOutputDto profileDto = new ProfileOutputDto();
         profileDto.setUsername(profile.getUsername());
         profileDto.setFirstName(profile.getFirstName());
         profileDto.setLastName(profile.getLastName());
-        profileDto.setDob(profile.getDob());
         profileDto.setAge(profile.getAge());
         profileDto.setEmail(profile.getEmail());
         profileDto.setAboutMe(profile.getAboutMe());
@@ -92,13 +93,8 @@ public class ProfileService {
         profileDto.setFrequency(profile.getFrequency());
         profileDto.setLevel(profile.getLevel());
         profileDto.setPhoto(profile.getPhoto());
+        profileDto.setActivated(profile.isActivated());
         return profileDto;
-    }
-
-    public void updateProfileStatus(String username, Boolean active) {
-        Profile updatedProfile = profileRepository.findById(username).get();
-        updatedProfile.setActive(active);
-        profileRepository.save(updatedProfile);
     }
 }
 
