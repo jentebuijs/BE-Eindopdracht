@@ -13,7 +13,7 @@ public class Profile {
     @Id
     private String username;
 
-    private Boolean isActivated;
+    private boolean isActivated;
 
     private String firstName;
     private String lastName;
@@ -66,8 +66,8 @@ public class Profile {
         return isActivated;
     }
 
-    public void setIsActivated(Boolean isActivated) {
-        this.isActivated = isActivated;
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 
     public String getFirstName() {

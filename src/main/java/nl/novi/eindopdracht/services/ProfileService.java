@@ -65,7 +65,7 @@ public class ProfileService {
         profileToUpdate.setLevel(newProfile.getLevel());
         profileToUpdate.setFrequency(newProfile.getFrequency());
         profileToUpdate.setAboutMe(newProfile.getAboutMe());
-        profileToUpdate.setIsActivated(newProfile.isActivated());
+        profileToUpdate.setActivated(newProfile.isActivated());
         profileRepository.save(profileToUpdate);
         return profileToDto(profileToUpdate);
     }

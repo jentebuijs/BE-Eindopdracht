@@ -3,11 +3,11 @@ VALUES ('karel', true, 'karel', 'appel', '25-04-1921', 101, 'karelappel@gmail.co
         'niks te melden', 'BEGINNER'),
        ('vincent', true, 'vincent', 'gogh', '30-03-1853', 169, 'vincentvangogh@gmail.com', 'ROLE_ADMIN', 'ONCE_A_WEEK',
         'mijn oor is kapot', 'PROFICIENT'),
-       ('japie', false, 'japie', 'krekel', '25-04-1981', 10, 'japiekrekel@gmail.com', 'ROLE_STUDENT', 'EVERY_DAY',
+       ('japie', true, 'japie', 'krekel', '25-04-1981', 10, 'japiekrekel@gmail.com', 'ROLE_STUDENT', 'EVERY_DAY',
         'about japie', 'ELEMENTARY'),
-       ('boris', false, 'boris', 'johnson', '25-04-1521', 11, 'borisjohnson@gmail.com', 'ROLE_BUDDY', 'FEW_TIMES_A_MONTH',
+       ('boris', true, 'boris', 'johnson', '25-04-1521', 11, 'borisjohnson@gmail.com', 'ROLE_BUDDY', 'FEW_TIMES_A_MONTH',
         'english president blabla', 'INTERMEDIATE'),
-       ('joep', false, 'joep', 'meloen', '25-04-1951', 14, 'joepmeloen@gmail.com', 'ROLE_BUDDY', 'FEW_TIMES_A_WEEK',
+       ('joep', true, 'joep', 'meloen', '25-04-1951', 14, 'joepmeloen@gmail.com', 'ROLE_BUDDY', 'FEW_TIMES_A_WEEK',
         'joep meloen hier', 'UPPER_INTERMEDIATE');
 
 INSERT INTO users (username, password, enabled, user_profile)

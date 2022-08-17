@@ -31,7 +31,8 @@ public class User {
         username = userInputDto.getUsername();
         password = userInputDto.getPassword();
         profile = new Profile(userInputDto.getUsername(), userInputDto.getFirstName(), userInputDto.getLastName(),
-                userInputDto.getDob(), userInputDto.getEmail(), userInputDto.getFrequency(), userInputDto.getAboutMe(), userInputDto.getLevel());
+                userInputDto.getDob(), userInputDto.getEmail(), userInputDto.getFrequency(), userInputDto.getAboutMe(),
+                userInputDto.getLevel());
     }
 
     public User() {

@@ -1,6 +1,5 @@
 package nl.novi.eindopdracht.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
@@ -14,7 +13,7 @@ public class ProfileOutputDto {
     private String firstName;
     private String lastName;
 
-    private Boolean isActivated;
+    private boolean isActivated;
 
     private int age;
     private String email;
@@ -49,11 +48,11 @@ public class ProfileOutputDto {
         this.lastName = lastName;
     }
 
-    public Boolean getActivated() {
+    public boolean isActivated() {
         return isActivated;
     }
 
-    public void setActivated(Boolean activated) {
+    public void setActivated(boolean activated) {
         isActivated = activated;
     }
 
