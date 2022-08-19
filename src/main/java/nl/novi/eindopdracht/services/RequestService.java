@@ -34,7 +34,6 @@ public class RequestService {
             throw new RecordNotFoundException("De ontvanger van dit verzoek is niet bekend");
         }
         Request newRequest = new Request(optionalSender.get(), optionalReceiver.get(), requestDto.getMessage());
-        profileService.assignRequestToProfiles();
         return requestRepository.save(newRequest);
     }
 

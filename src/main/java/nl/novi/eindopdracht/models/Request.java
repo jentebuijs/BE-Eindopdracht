@@ -1,5 +1,8 @@
 package nl.novi.eindopdracht.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,9 +14,11 @@ public class Request {
     private Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Profile sender;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Profile receiver;
 
     private String message;

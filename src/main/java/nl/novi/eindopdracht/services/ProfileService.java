@@ -82,7 +82,7 @@ public class ProfileService {
         }
     }
 
-    public void assignRequestToProfile(Request request, String username)
+//    public void assignRequestToProfile(Request request, String username) {}
 
     public ProfileOutputDto profileToDto(Profile profile) {
         ProfileOutputDto profileDto = new ProfileOutputDto();

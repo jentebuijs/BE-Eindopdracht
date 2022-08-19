@@ -38,14 +38,6 @@ public class Profile {
     @OneToOne(cascade = CascadeType.ALL)
     FileUploadResponse photo;
 
-    @OneToMany(mappedBy = "receiver",
-            cascade = CascadeType.ALL)
-    Set<Request> incomingRequests;
-
-    @OneToMany(mappedBy = "sender",
-            cascade = CascadeType.ALL)
-    Set<Request> outgoingRequests;
-
     public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
         this.isActivated = true;
@@ -155,20 +147,20 @@ public class Profile {
         this.photo = photo;
     }
 
-    public Set<Request> getIncomingRequests() {
-        return incomingRequests;
-    }
-
-    public void setIncomingRequests(Set<Request> incomingRequests) {
-        this.incomingRequests = incomingRequests;
-    }
-
-    public Set<Request> getOutgoingRequests() {
-        return outgoingRequests;
-    }
-
-    public void setOutgoingRequests(Set<Request> outgoingRequests) {
-        this.outgoingRequests = outgoingRequests;
-    }
+//    public Set<Request> getIncomingRequests() {
+//        return incomingRequests;
+//    }
+//
+//    public void setIncomingRequests(Set<Request> incomingRequests) {
+//        this.incomingRequests = incomingRequests;
+//    }
+//
+//    public Set<Request> getOutgoingRequests() {
+//        return outgoingRequests;
+//    }
+//
+//    public void setOutgoingRequests(Set<Request> outgoingRequests) {
+//        this.outgoingRequests = outgoingRequests;
+//    }
 }
 
