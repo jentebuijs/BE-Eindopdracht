@@ -26,7 +26,7 @@ public class PhotoController {
     }
 
     @PostMapping("/upload/{username}")
-    FileUploadResponse uploadFile(@PathVariable String username, @RequestParam("file") MultipartFile file){
+    FileUploadResponse uploadFile(@PathVariable String username, @RequestBody MultipartFile file){
         return photoService.storeFile(file, username);
     }
 

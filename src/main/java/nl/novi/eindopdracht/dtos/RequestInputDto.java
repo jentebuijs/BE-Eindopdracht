@@ -29,6 +29,4 @@ public class RequestInputDto {
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
-
-
 }

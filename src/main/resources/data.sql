@@ -99,6 +99,6 @@ VALUES ('Interessant artikel', 'Doggo ipsum pupper fluffer. Shoob long doggo pug
        ('Inspirerend verhaal', 'What a nice floof I am bekom fat, you are doin me a concern extremely cuuuuuute. Bork ' ||
                   'good spot boof blop, noodle horse wow very biscit lotsa pats.', false, true, true),
        ('Misschien heb je hier iets aan', 'Corgo very good spot snoot very jealous pupper doggorino, heckin fluffer. ' ||
-                  'shooberino super chub, I am bekom fat mlem h*ck. Borkf puggo.', false, false, true),
+                  'shooberino super chub, I am bekom fat mlem h*ck. Borkf puggo.', true, false, true),
        ('Tip van de meester', ' Blep shibe puggo shoob waggy wags floofs such treat, very good spot length boy boof. Vvv ' ||
-                  'blop. Ruff long woofer shoob porgo, wow very biscit.', false, false, true);
+                  'blop. Ruff long woofer shoob porgo, wow very biscit.', false, true, true);

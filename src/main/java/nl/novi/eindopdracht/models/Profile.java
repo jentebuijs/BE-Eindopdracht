@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Set;
 
 @Entity
 @Table(name = "profiles")
@@ -18,7 +19,7 @@ public class Profile {
     private String firstName;
     private String lastName;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dob;
 
     private int age;
@@ -34,8 +35,16 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private Level level;
 
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     FileUploadResponse photo;
+
+    @OneToMany(mappedBy = "receiver",
+            cascade = CascadeType.ALL)
+    Set<Request> incomingRequests;
+
+    @OneToMany(mappedBy = "sender",
+            cascade = CascadeType.ALL)
+    Set<Request> outgoingRequests;
 
     public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
@@ -145,4 +154,21 @@ public class Profile {
     public void setPhoto(FileUploadResponse photo) {
         this.photo = photo;
     }
+
+    public Set<Request> getIncomingRequests() {
+        return incomingRequests;
+    }
+
+    public void setIncomingRequests(Set<Request> incomingRequests) {
+        this.incomingRequests = incomingRequests;
+    }
+
+    public Set<Request> getOutgoingRequests() {
+        return outgoingRequests;
+    }
+
+    public void setOutgoingRequests(Set<Request> outgoingRequests) {
+        this.outgoingRequests = outgoingRequests;
+    }
 }
+

@@ -5,6 +5,7 @@ import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Profile;
+import nl.novi.eindopdracht.models.Request;
 import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,8 @@ public class ProfileService {
             profileRepository.save(profile);
         }
     }
+
+    public void assignRequestToProfile(Request request, String username)
 
     public ProfileOutputDto profileToDto(Profile profile) {
         ProfileOutputDto profileDto = new ProfileOutputDto();
