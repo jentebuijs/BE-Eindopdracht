@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.novi</groupId>
-    <artifactId>eindopdracht</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>eindopdracht</name>
-    <description>eindopdracht</description>
+    <artifactId>DIGITAALBUDDY</artifactId>
+    <version>1</version>
+    <name>DIGITAALBUDDY</name>
+    <description>Eindopdracht Fullstack-Developer Bootcamp</description>
     <properties>
         <java.version>17</java.version>
     </properties>

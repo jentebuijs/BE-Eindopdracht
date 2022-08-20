@@ -36,12 +36,6 @@ public class UserController {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(token);
     }
-//
-//    @GetMapping("/{username}")
-//    public ResponseEntity<UserOutputDto> getUser(@PathVariable String username) {
-//        UserOutputDto userOutputDto = userService.getUser(username);
-//        return ResponseEntity.ok().body(userOutputDto);
-//    }
 
     @DeleteMapping("/{username}")
     public ResponseEntity<Object> deleteUser(@PathVariable String username) {

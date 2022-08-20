@@ -1,9 +1,9 @@
 INSERT INTO profiles (username, is_activated, first_name, last_name, dob, age, email, role, frequency, about_me, level)
-VALUES ('Admin', true, 'Voornaam', 'Achternaam', '01-01-1970', 55, 'admin@gmail.com', 'ROLE_ADMIN', 'ONCE_A_WEEK',
+VALUES ('Admin', true, 'Admin', 'Admin', '01-01-1970', 55, 'admin@gmail.com', 'ROLE_ADMIN', 'ONCE_A_WEEK',
         'Ik ben zo blij om admin te zijn', null),
-       ('Student', true, 'Voornaam', 'Achternaam', '01-01-1970', 44, 'student@gmail.com', 'ROLE_STUDENT', 'ONCE_A_MONTH',
+       ('Student', true, 'Student', 'Student', '01-01-1970', 44, 'student@gmail.com', 'ROLE_STUDENT', 'ONCE_A_MONTH',
         'Ik ben zo hard aan het studeren', 'BEGINNER'),
-       ('Buddy', true, 'Voornaam', 'Achternaam', '01-01-1970', 33, 'buddy@gmail.com', 'ROLE_BUDDY', 'EVERY_DAY',
+       ('Buddy', true, 'Buddy', 'Buddy', '01-01-1970', 33, 'buddy@gmail.com', 'ROLE_BUDDY', 'EVERY_DAY',
         'Klaar om je te helpen', null),
        ('Vulling1', true, 'Voornaam', 'Achternaam', '01-01-1970', 22, 'vulling@gmail.com', 'ROLE_STUDENT', 'FEW_TIMES_A_MONTH',
         'Loze tekst zonder enige betekenis. Onzin. Quatsch. Gelul in de ruimte.', 'INTERMEDIATE'),

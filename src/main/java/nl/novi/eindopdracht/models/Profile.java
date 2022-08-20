@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Set;
 
 @Entity
 @Table(name = "profiles")
