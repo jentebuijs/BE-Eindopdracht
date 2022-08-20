@@ -3,13 +3,11 @@ package nl.novi.eindopdracht.controllers;
 import nl.novi.eindopdracht.dtos.AuthDto;
 import nl.novi.eindopdracht.dtos.UserInputDto;
 import nl.novi.eindopdracht.dtos.UserOutputDto;
-import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.User;
 import nl.novi.eindopdracht.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 
@@ -37,18 +35,6 @@ public class UserController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .body(token);
-    }
-
-    @GetMapping("/{username}")
-    public ResponseEntity<UserOutputDto> getUser(@PathVariable String username) {
-        UserOutputDto userOutputDto = userService.getUser(username);
-        return ResponseEntity.ok().body(userOutputDto);
-    }
-
-    @PutMapping("/{username}")
-    public ResponseEntity<UserOutputDto> updateUser(@PathVariable String username, @RequestBody UserInputDto userInputDto) {
-        UserOutputDto userOutputDto = userService.updateUser(username, userInputDto);
-        return ResponseEntity.ok().body(userOutputDto);
     }
 
     @DeleteMapping("/{username}")

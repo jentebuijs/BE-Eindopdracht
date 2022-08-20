@@ -1,39 +1,27 @@
 package nl.novi.eindopdracht.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
-public class ProfileDto {
+public class ProfileOutputDto {
     @Id
     private String username;
 
     private String firstName;
     private String lastName;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
-//    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate dob;
+    private boolean isActivated;
 
     private int age;
     private String email;
     private String aboutMe;
     private String role;
-    private String frequency;
-    private String level;
+    private Frequency frequency;
+    private Level level;
 
-    @OneToOne(cascade = CascadeType.ALL)
     FileUploadResponse photo;
 
     public String getUsername() {
@@ -60,12 +48,12 @@ public class ProfileDto {
         this.lastName = lastName;
     }
 
-    public LocalDate getDob() {
-        return dob;
+    public boolean isActivated() {
+        return isActivated;
     }
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 
     public int getAge() {
@@ -100,19 +88,19 @@ public class ProfileDto {
         this.role = role;
     }
 
-    public String getFrequency() {
+    public Frequency getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(String frequency) {
+    public void setFrequency(Frequency frequency) {
         this.frequency = frequency;
     }
 
-    public String getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(Level level) {
         this.level = level;
     }
 

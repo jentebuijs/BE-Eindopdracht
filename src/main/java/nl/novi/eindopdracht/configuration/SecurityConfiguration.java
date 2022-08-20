@@ -53,16 +53,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .cors()
-                .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/signin").permitAll()
-                .antMatchers("/photos/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/messages?type=admin").hasAuthority("ROLE_ADMIN")
-//                .anyRequest().denyAll()
+                .antMatchers("/users/signin").permitAll()
+                .antMatchers("/users/signup").permitAll()
+                .antMatchers( "/messages?type=admin").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/messages").permitAll()
+                .anyRequest().hasAnyAuthority("ROLE_STUDENT", "ROLE_BUDDY", "ROLE_ADMIN")
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable();

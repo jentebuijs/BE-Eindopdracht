@@ -1,10 +1,11 @@
 package nl.novi.eindopdracht.services;
 
-import nl.novi.eindopdracht.dtos.ProfileDto;
+import nl.novi.eindopdracht.dtos.ProfileOutputDto;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.FileUploadResponse;
 import nl.novi.eindopdracht.models.Profile;
+import nl.novi.eindopdracht.models.Request;
 import nl.novi.eindopdracht.repositories.FileUploadRepository;
 import nl.novi.eindopdracht.repositories.ProfileRepository;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
@@ -25,19 +27,26 @@ public class ProfileService {
         this.userService = userService;
     }
 
-    public List<ProfileDto> getProfiles() {
+    public List<ProfileOutputDto> getProfiles() {
         String username = userService.getCurrentUsername();
         Optional<Profile> optionalProfile = profileRepository.findById(username);
         EAuthority role = optionalProfile.get().getRole();
-        List<Profile> profileList = profileRepository.getProfilesByRoleIsNot(role);
-        List<ProfileDto> profileDtoList = new ArrayList<>();
+        List<ProfileOutputDto> profileDtoList = new ArrayList<>();
+        List<Profile> profileList;
+        if ((role.getString().equals("Admin"))) {
+            profileList = profileRepository.findAll();
+        } else {
+            profileList = profileRepository.getProfilesByIsActivatedIsTrueAndRoleIsNot(role);
+            profileList = profileList.stream().filter(profile -> !profile.getRole().getString().equals("Admin"))
+                    .collect(Collectors.toList());
+        }
         for (Profile profile : profileList) {
             profileDtoList.add(profileToDto(profile));
         }
         return profileDtoList;
     }
 
-    public ProfileDto getProfile(String username) {
+    public ProfileOutputDto getProfile(String username) {
         Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
@@ -46,27 +55,20 @@ public class ProfileService {
         }
     }
 
-    public void updateProfile(String username, Profile newProfile) {
+    public ProfileOutputDto updateProfile(String username, Profile newProfile) {
         Optional<Profile> possibleProfile = profileRepository.findById(username);
         if (possibleProfile.isEmpty()) {
             throw new RecordNotFoundException("Dit profiel is niet bekend");
         }
         Profile profileToUpdate = possibleProfile.get();
-        if (!newProfile.getFirstName().isEmpty()) {
-            profileToUpdate.setFirstName(newProfile.getFirstName());
-        }
-        if (!newProfile.getLastName().isEmpty()) {
-            profileToUpdate.setLastName(newProfile.getLastName());
-        }
-        if (newProfile.getDob() != null) {
-            profileToUpdate.setDob(newProfile.getDob());
-        }
+        profileToUpdate.setFirstName(newProfile.getFirstName());
+        profileToUpdate.setLastName(newProfile.getLastName());
         profileToUpdate.setLevel(newProfile.getLevel());
         profileToUpdate.setFrequency(newProfile.getFrequency());
-        if (!newProfile.getAboutMe().isEmpty()) {
-            profileToUpdate.setAboutMe(newProfile.getAboutMe());
-        }
+        profileToUpdate.setAboutMe(newProfile.getAboutMe());
+        profileToUpdate.setActivated(newProfile.isActivated());
         profileRepository.save(profileToUpdate);
+        return profileToDto(profileToUpdate);
     }
 
     public void assignPhotoToProfile(String fileName, String username) {
@@ -80,18 +82,21 @@ public class ProfileService {
         }
     }
 
-    public ProfileDto profileToDto(Profile profile) {
-        ProfileDto profileDto = new ProfileDto();
+//    public void assignRequestToProfile(Request request, String username) {}
+
+    public ProfileOutputDto profileToDto(Profile profile) {
+        ProfileOutputDto profileDto = new ProfileOutputDto();
         profileDto.setUsername(profile.getUsername());
         profileDto.setFirstName(profile.getFirstName());
         profileDto.setLastName(profile.getLastName());
-        profileDto.setDob(profile.getDob());
         profileDto.setAge(profile.getAge());
         profileDto.setEmail(profile.getEmail());
         profileDto.setAboutMe(profile.getAboutMe());
         profileDto.setRole(profile.getRole().getString());
-        profileDto.setFrequency(profile.getFrequency().getString());
-        profileDto.setLevel(profile.getLevel().getString());
+        profileDto.setFrequency(profile.getFrequency());
+        profileDto.setLevel(profile.getLevel());
+        profileDto.setPhoto(profile.getPhoto());
+        profileDto.setActivated(profile.isActivated());
         return profileDto;
     }
 }

@@ -3,8 +3,11 @@ package nl.novi.eindopdracht.services;
 import nl.novi.eindopdracht.exceptions.NotAllowedException;
 import nl.novi.eindopdracht.exceptions.RecordNotFoundException;
 import nl.novi.eindopdracht.models.Message;
+import nl.novi.eindopdracht.models.Request;
+import nl.novi.eindopdracht.models.Status;
 import nl.novi.eindopdracht.repositories.MessageRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +20,12 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public List<Message> getMessages() {
+    public List<Message> getApprovedMessages() {
         return messageRepository.getAllByApprovedIsTrue();
     }
 
-    public List<Message> getUnapprovedMessages() { return messageRepository.getAllByApprovedIsFalse(); }
+    public List<Message> getUnapprovedMessages() {
+        return messageRepository.getAllByApprovedIsFalse(); }
 
     public Message getMessage(Long id) {
         Optional<Message> possibleMessage = messageRepository.findById(id);
@@ -58,4 +62,19 @@ public class MessageService {
         } messageRepository.deleteById(id);
         }
 
+    public String updateMessageStatus(Long id, String status) {
+        if (!messageRepository.existsById(id)) {
+            throw new RecordNotFoundException("Dit bericht is niet bekend");
+        } else {
+            Message message = messageRepository.findById(id).get();
+            switch (status) {
+                case ("accepted") -> {
+                    message.setApproved(true);
+                    messageRepository.save(message);
+                }
+                case ("declined") -> messageRepository.deleteById(id);
+            }
+        }
+        return status;
+    }
 }

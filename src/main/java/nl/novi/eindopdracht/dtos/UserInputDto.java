@@ -1,14 +1,7 @@
 package nl.novi.eindopdracht.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import nl.novi.eindopdracht.models.EAuthority;
 import nl.novi.eindopdracht.models.Frequency;
 import nl.novi.eindopdracht.models.Level;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -18,12 +11,7 @@ public class UserInputDto {
     private String password;
     private String firstName;
     private String lastName;
-
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
-//    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dob;
-
     private Level level;
     private Frequency frequency;
     private String aboutMe;

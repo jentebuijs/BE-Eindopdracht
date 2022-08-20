@@ -1,16 +1,11 @@
 package nl.novi.eindopdracht.controllers;
 
-import nl.novi.eindopdracht.dtos.ProfileDto;
-import nl.novi.eindopdracht.models.FileUploadResponse;
+import nl.novi.eindopdracht.dtos.ProfileOutputDto;
 import nl.novi.eindopdracht.models.Profile;
-import nl.novi.eindopdracht.services.PhotoService;
 import nl.novi.eindopdracht.services.ProfileService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,13 +25,10 @@ public class ProfileController {
         } else {
             return ResponseEntity.ok().body(profileService.getProfiles());
         }
-
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<Object> updateProfile(@PathVariable String username, @RequestBody Profile newProfile) {
-        profileService.updateProfile(username, newProfile);
-        return ResponseEntity.ok().body("Je wijzigingen zijn opgeslagen");
+    public ResponseEntity<ProfileOutputDto> updateProfile(@PathVariable String username, @RequestBody Profile newProfile) {
+            return ResponseEntity.ok().body(profileService.updateProfile(username, newProfile));
     }
-
 }

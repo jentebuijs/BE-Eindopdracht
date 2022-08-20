@@ -1,11 +1,6 @@
 package nl.novi.eindopdracht.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -18,12 +13,12 @@ public class Profile {
     @Id
     private String username;
 
+    private boolean isActivated;
+
     private String firstName;
     private String lastName;
 
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
-//    @JsonDeserialize(using = LocalDateDeserializer.class)
-//    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dob;
 
     private int age;
@@ -39,11 +34,12 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private Level level;
 
-    @OneToOne (cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     FileUploadResponse photo;
 
     public Profile(String username, String firstName, String lastName, LocalDate dob, String email, Frequency frequency, String aboutMe, Level level) {
         this.username = username;
+        this.isActivated = true;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dob = dob;
@@ -64,6 +60,14 @@ public class Profile {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        isActivated = activated;
     }
 
     public String getFirstName() {
@@ -141,4 +145,21 @@ public class Profile {
     public void setPhoto(FileUploadResponse photo) {
         this.photo = photo;
     }
+
+//    public Set<Request> getIncomingRequests() {
+//        return incomingRequests;
+//    }
+//
+//    public void setIncomingRequests(Set<Request> incomingRequests) {
+//        this.incomingRequests = incomingRequests;
+//    }
+//
+//    public Set<Request> getOutgoingRequests() {
+//        return outgoingRequests;
+//    }
+//
+//    public void setOutgoingRequests(Set<Request> outgoingRequests) {
+//        this.outgoingRequests = outgoingRequests;
+//    }
 }
+

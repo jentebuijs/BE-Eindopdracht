@@ -25,18 +25,15 @@ public class RequestService {
     }
 
     public Request addRequest(RequestInputDto requestDto) {
-        Request newRequest = new Request();
         Optional<Profile> optionalSender = profileRepository.findById(requestDto.getSender());
         if (optionalSender.isEmpty()) {
             throw new RecordNotFoundException("De afzender van dit verzoek is niet bekend");
         }
-        newRequest.setSender(optionalSender.get());
         Optional<Profile> optionalReceiver = profileRepository.findById(requestDto.getReceiver());
         if (optionalReceiver.isEmpty()) {
             throw new RecordNotFoundException("De ontvanger van dit verzoek is niet bekend");
         }
-        newRequest.setReceiver(optionalReceiver.get());
-        newRequest.setMessage(requestDto.getMessage());
+        Request newRequest = new Request(optionalSender.get(), optionalReceiver.get(), requestDto.getMessage());
         return requestRepository.save(newRequest);
     }
 

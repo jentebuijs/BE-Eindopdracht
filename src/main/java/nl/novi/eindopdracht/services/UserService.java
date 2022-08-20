@@ -11,7 +11,6 @@ import nl.novi.eindopdracht.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -72,49 +71,14 @@ public class UserService {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return jwtService.generateToken(userDetails);
     }
-
-    public UserOutputDto getUser(String username) {
-        Optional<User> optionalUser = userRepository.findById(username);
-        if (optionalUser.isEmpty()) {
-            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        }
-        return fromUserToDto(optionalUser.get());
-    }
-
-//    public List<Profile> filterByAuthorities() {
-//        List<String> strings = new ArrayList<>();
-//        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach((authority) -> {
-//            strings.add(authority.toString());
-//        });
-//        List<Profile> profileList = new ArrayList<>();
-//        List<User> userList = userRepository.findAll();
-//        strings.forEach(authority -> {
-//            switch (authority) {
-//                case "ROLE_ADMIN" -> {
-//                    userList.forEach(user -> profileList.add(user.getProfile()));
-//                }
-//                case "ROLE_BUDDY" -> {
-//                    userList.stream().filter(user -> user.getAuthorities().toString().equals("ROLE_STUDENT"))
-//                            .forEach(user -> profileList.add(user.getProfile()));
-//                }
-//                case "ROLE_STUDENT" -> {
-//                    userList.stream().filter(user -> user.getAuthorities().contains("ROLE_BUDDY")).forEach(user -> profileList.add(user.getProfile()));
-//                }
-//            }
-//        });
-//        return profileList;
+//
+//    public UserOutputDto getUser(String username) {
+//        Optional<User> optionalUser = userRepository.findById(username);
+//        if (optionalUser.isEmpty()) {
+//            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
+//        }
+//        return fromUserToDto(optionalUser.get());
 //    }
-
-
-    public UserOutputDto updateUser(String username, UserInputDto userInputDto) {
-        Optional<User> possibleUser = userRepository.findById(username);
-        if (possibleUser.isEmpty()) {
-            throw new RecordNotFoundException("Deze gebruiker is niet bekend");
-        }
-        User updatedUser = possibleUser.get();
-        updatedUser.setEnabled(userInputDto.getEnabled());
-        return fromUserToDto(userRepository.save(updatedUser));
-    }
 
     public void deleteUser(String username) {
         boolean userExists = userRepository.existsById(username);
